@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import LoginModal from './LoginModal.js';
+import LoginButtonModal from './LoginButtonModal.js';
 import {
   Button,
   Container,
@@ -16,16 +17,8 @@ import {
 } from 'semantic-ui-react';
 
 class App extends Component {
-	state = { openModal: false }
-
+	state = {};
 	handleItemClick = (e, { name }) => this.setState({ activeItem: name })
-	handleLoginClick = (e) => {
-		console.log('hello');
-		this.setState({ openModal: true 
-	})};
-	handleModalClose = () => this.setState({ openModal: false});
-
-
 
   render() {
   	const { activeItem } = this.state;
@@ -40,13 +33,13 @@ class App extends Component {
             <Input icon='search' placeholder='Search...' />
           </Menu.Item>
           <Menu.Item> 
-          	<Button content='Log In' onClick={this.handleLoginClick} />
+          	{/*<Button content='Log In' onClick={this.handleLoginClick} /> */}
+          	<LoginButtonModal />
           </Menu.Item>
           <Menu.Item> 
           	<Button primary content='Sign Up' onClick={this.handleLoginClick} />
           </Menu.Item>
         </Menu.Menu>
-        <LoginModal openModal={this.state.openModal} handleModalClose={this.handleModalClose} /> 
       </Menu>
     );
   }
