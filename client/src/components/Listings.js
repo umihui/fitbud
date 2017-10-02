@@ -7,13 +7,14 @@ class Listings extends Component {
   render() {
     var { listings } = this.props;
     console.log(listings);
+    console.log(this.images);
 
     return (
       <Container style={{marginTop: '20px'}}>
         <Card.Group itemsPerRow={3}>
           {listings.map(listing => (
             <Card 
-              image={this.images[Math.floor(Math.random() * this.images.length)]}
+              image={'/' + this.images[Math.floor(Math.random() * this.images.length)]}
               header={listing.posted_by}
               meta={listing.activity}
               description={`Schedule on ${listing.scheduled} for ${listing.duration} hours`}

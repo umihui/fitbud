@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import MainNav from './MainNav';
 import Home from './Home';
 import Listings from './Listings';
+import NoMatch from './NoMatch';
 import data from '../sampleData';
-import {
-  BrowserRouter as Router,
-  Route
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 class App extends Component {
   state = {};
@@ -17,10 +15,14 @@ class App extends Component {
       <Router>
         <div>
           <MainNav />
-          <Route exact path='/' component={Home} />
-          <Route exact path='/listings' render={props => (
-            <Listings listings={data} />
-          )} />
+          <Switch>
+            <Route exact path='/' component={Home} />
+            <Route exact path='/listings' render={props => (
+              <Listings listings={data} />
+            )} />
+            <Redirect from='/test' to='/listings' />
+            <Route component={NoMatch} />
+          </Switch>
         </div>
       </Router>
     );
