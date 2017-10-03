@@ -29,7 +29,52 @@
 		  }
 		  
 		});
- 	})	
+ 	})
+ </script>
+ <p>
+ <input id = "title" type="text">
+ <button id="submitTitle">Submit Title</button>	
+ 
+ <script type="text/javascript">
+ 	var getWorkout = function(workoutObj) {
+ 		console.log('get workout obj:', workoutObj);
+ 			$.ajax({
+		  type: "GET",
+		  data: {id: workoutObj.title},
+		  url: 'http://localhost:3000/postings/workout/:id',
+		  contentType: 'application/json',
+		  dataType: 'json',
+		  success: function(data){ //data is json obj
+		  	console.log('getting workout', data[0].location);
+		  	// rerender a state
+		  },
+		  error: function(err){
+		  	console.log('error getting workout', err);
+		  }
+		  
+		});
+ 	}
+ 
+ 	$('#submitTitle').click(function(){
+ 		var title = document.getElementById('title').value;
+ 		console.log(title);
+ 		$.ajax({
+		  type: "POST",
+		  url: 'http://localhost:3000/postings/workout',
+		  contentType: 'application/json',
+		  data: JSON.stringify({title: title}),
+		  success: function(workoutTitle){
+		  	console.log('getting workout title', workoutTitle.title);
+		  	getWorkout(workoutTitle); 
+		  },
+		  error: function(err){
+		  	console.log('error getting workout', err);
+		  }
+		  
+		});
+ 	})
+ 	
+ 	
  </script>
 </body>
 </html>
