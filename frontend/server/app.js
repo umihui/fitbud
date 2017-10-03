@@ -27,17 +27,23 @@ app.use(function (req, res, next) {
   next();
 })
 app.use(express.static(path.join(__dirname, 'public')));
-
-
-
-app.post('/login', (req, res) => {
-  console.log(req.body);
-  res.status(201).json(req.body);
-})
-
 app.use('/', index);
 app.use('/users', users);
 
+app.get('/login', (req, res) => {
+  if (req.cookies.test === 'true') {
+    res.json({authorized: true});
+  } else {
+    res.json({authorized: false});
+  }
+})
+
+app.post('/login', (req, res) => {
+  console.log(req.body);
+  console.log(req.cookies);
+  res.cookie('test', 'true');
+  res.status(201).json(req.body);
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
