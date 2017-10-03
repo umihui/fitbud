@@ -3,7 +3,7 @@ var mysql = require('mysql');
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : 'plantlife',
+  password : '',
   database : 'fitbud'
 });
 
@@ -32,8 +32,11 @@ var checkUser = function(username, callback) {
 		if (err) {
 			console.log('error when finding user');
 		} else{
-			console.log(result);
-			callback(false);
+			console.log('result of finding a user', result);
+			if (result.length === 0) {
+				callback(false);
+			}
+			else callback(true);
 		}
 	})
 }

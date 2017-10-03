@@ -9,7 +9,8 @@ router.get('/', (req, res) => {
   });
 });
 
-//from clicking on a workout
+//when we click a single workout we will open up the workout page - first a post request to retrieve the title
+//then a get request to get it by the id
 router.post('/workout', (req, res) => {
   var title = req.body.title;
   console.log('post req.body', req.body.title);

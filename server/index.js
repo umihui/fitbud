@@ -13,6 +13,8 @@ var routeLogin = require('../routes/login');
 var routePostings = require('../routes/postings');
 var routeProfile = require('../routes/profile');
 var routeWorkout = require('../routes/workout');
+var routeDashboard = require('../routes/dashboard');
+
 
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -26,6 +28,9 @@ app.use('/postings', routePostings);
 app.use('/profile', routeProfile);
 
 app.use('/workout', routeWorkout);
+
+app.use('/dashboard', routeDashboard);
+
 
 
 app.listen(3000, function(err){
