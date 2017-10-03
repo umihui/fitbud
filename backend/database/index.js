@@ -1,9 +1,11 @@
 var mysql = require('mysql');
+var bcrypt = require('bcrypt');
+
 
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : '',
+  password : 'plantlife',
   database : 'fitbud'
 });
 
@@ -15,15 +17,20 @@ connection.connect(function(err){
 	}
 });
 
-var createUser = function(username, pass) {
+var createUser = function(userObj) {
 	var query = 'INSERT INTO users (email, password) values (?, ?)';
-	connection.query(query, [username, pass], function(err, result){
-		if (err) {
-			console.log('error inserting user');
-		} else {
-			console.log('successfully added');
-		}
-	})
+	bcrypt.genSalt(10, function(err, salt) {
+		    bcrypt.hash(userObj.password, salt, function(err, hash) {
+		        userObj.password = hash;
+		        connection.query(query, [userObj.username, userObj.password], function(err, result){
+		        	if (err) {
+		        		console.log('error inserting user');
+		        	} else {
+		        		console.log('successfully added');
+		        	}
+		        })
+		    });
+		});
 }
 
 var checkUser = function(username, callback) {
@@ -39,6 +46,22 @@ var checkUser = function(username, callback) {
 			else callback(true);
 		}
 	})
+}
+
+let findbyId = function(id, callback) {
+	console.log('database finding by id');
+	
+	var query = 'SELECT * from users WHERE id = ?';
+	connection.query(query, [id], function(err, result){
+		if (err) {
+			console.log('error when finding id');
+		} else {
+			console.log('result of finding a id', result);
+			
+			callback(result);
+		}
+	})
+	
 }
 
 var getWorkouts = function(callback) {
@@ -97,7 +120,8 @@ module.exports = {
 	getWorkouts,
 	getSingleWorkout,
 	createWorkout,
-	createProfile
+	createProfile,
+	findbyId
 };
 
 
