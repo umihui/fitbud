@@ -15,6 +15,20 @@ class App extends Component {
     this.state = {
       authenticated: false
     }
+
+    this.checkAuth();
+  }
+
+  checkAuth = () => {
+    fetch('/login', {
+      credentials: 'include'
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data);
+        if (data.authorized) {
+          this.setState({authenticated: true});
+        }
+      })
   }
 
   handleAuthenticated = () => {
