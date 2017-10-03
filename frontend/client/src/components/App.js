@@ -4,6 +4,7 @@ import Home from './Home';
 import Login from './Login';
 import Listings from './Listings';
 import NoMatch from './NoMatch';
+import Dashboard from './Dashboard';
 import data from '../sampleData';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
@@ -40,6 +41,10 @@ class App extends Component {
             <Route exact path='/login' render={props => (
               <Login authenticate={this.handleAuthenticated} {...props} />
             )} />
+            <Route exact path='/dashboard' render={props => (
+              <Dashboard listings={data} />
+            )} />
+
             <Redirect from='/test' to='/listings' />
 
             <Route component={NoMatch} />
