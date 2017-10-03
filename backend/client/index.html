@@ -5,7 +5,7 @@
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 </head>
 <body>
- <h3>Form</h3>
+ <h3>Register Form</h3>
  Email: <input id = "user" type="text" name="user">
  Password: <input id = "pass" type="text" name="password">
  <button class= "submit">Submit</button>
@@ -17,7 +17,7 @@
  		console.log(user);
  		$.ajax({
 		  type: "POST",
-		  url: 'http://localhost:3000/login',
+		  url: 'http://localhost:3000/register',
 		  contentType: 'application/json',
 		  data: JSON.stringify(user),
 		  success: function(data){
@@ -74,7 +74,36 @@
 		});
  	})
  	
- 	
  </script>
+ 
+ 
+ <h3>Login Form</h3>
+ Email: <input id = "loginuser" type="text" name="user">
+ Password: <input id = "loginpass" type="text" name="password">
+ <button class= "submit">Submit</button>
+ <script type="text/javascript">
+ 	$('.submit').click(function(){
+ 		var username = document.getElementById('loginuser').value;
+ 		var password = document.getElementById('loginpass').value;
+ 		var user = {username: username, password: password};
+ 		console.log(user);
+ 		$.ajax({
+		  type: "POST",
+		  url: 'http://localhost:3000/login',
+		  contentType: 'application/json',
+		  data: JSON.stringify(user),
+		  success: function(data){
+		  	console.log('data sent', data);
+
+		  },
+		  error: function(err){
+		  	console.log('could notpost', err);
+		  }
+		  
+		});
+ 	})
+ </script>
+ 
+ 
 </body>
 </html>
