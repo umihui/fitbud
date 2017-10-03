@@ -1,0 +1,41 @@
+DROP DATABASE IF EXISTS fitbud;
+
+CREATE DATABASE fitbud;
+
+USE fitbud;
+
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS postings;
+
+CREATE TABLE users (
+	id int NOT NULL AUTO_INCREMENT,
+	email varchar(255) NOT NULL,
+	password varchar(255) NOT NULL,
+  
+	PRIMARY KEY (id)
+);
+
+
+CREATE TABLE postings (
+  id INT NOT NULL AUTO_INCREMENT,
+  title varchar(20),
+  location varchar(255) NOT NULL,
+  date DATETIME,
+  duration INT NOT NULL,
+  details varchar(255) NOT NULL,
+  meetup_spot varchar(255) NOT NULL,
+  userId INT,
+  
+  PRIMARY KEY (id),
+  FOREIGN KEY (userId) REFERENCES users(id)
+);
+
+CREATE TABLE profile (
+  id INT NOT NULL AUTO_INCREMENT,
+  gender varchar(20), 
+  activity varchar(255) NOT NULL,
+  userId INT,  
+  PRIMARY KEY (id),
+  FOREIGN KEY (userId) REFERENCES users(id)
+);
+
