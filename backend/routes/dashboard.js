@@ -6,4 +6,49 @@ var db = require('../database/index.js');
 // get all the workouts posted by the user - select * from postings where userId = "x"
 // 
 
+router.get('/', (req, res) => {
+  var id = req.session.passport.user;
+  
+  db.getUserPostings(id, (dbResult) => {
+    res.send(dbResult);
+  })
+})
+
+
+router.get('/requests', (req, res) => {
+  var id = req.session.passport.user;
+  // will need user id and workout posting id
+  db.getUserRequestPostings(id, (dbResult) => {
+    res.send(dbResult);
+  })
+})
+
+
+router.get('/accepted', (req,res) => {
+  var id = req.session.passport.user;
+  // will need user id and workout posting id
+  db.getUserAcceptPostings(id, (dbResult) => {
+    res.send(dbResult);
+  })
+});
+
+router.post('/accepted', (req,res) => {
+  var id = req.session.passport.user;
+  
+  var acceptObj = {
+    postUserId: 
+    acceptUserId: id,
+    postingId: 
+  };
+  
+  // will need user id and workout posting id
+  db.createPair(id, (dbResult) => {
+    res.send(dbResult);
+  })
+});
+
+
+
+
 module.exports = router;
+
