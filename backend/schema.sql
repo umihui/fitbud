@@ -6,6 +6,9 @@ USE fitbud;
 
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS postings;
+DROP TABLE IF EXISTS profile;
+DROP TABLE IF EXISTS requests;
+
 
 CREATE TABLE users (
 	id int NOT NULL AUTO_INCREMENT,
@@ -38,4 +41,29 @@ CREATE TABLE profile (
   PRIMARY KEY (id),
   FOREIGN KEY (userId) REFERENCES users(id)
 );
+
+CREATE TABLE requests (
+  id INT NOT NULL AUTO_INCREMENT,
+  postingId INT, 
+  userId INT,  
+  
+  PRIMARY KEY (id),
+  FOREIGN KEY (postingId) REFERENCES postings(id),
+  FOREIGN KEY (userId) REFERENCES users(id)
+  
+);
+
+CREATE TABLE pairs (
+  id INT NOT NULL AUTO_INCREMENT,
+  postUserId INT,
+  acceptUserId INT,  
+  postingId INT,
+  
+  PRIMARY KEY (id),
+  FOREIGN KEY (postUserId) REFERENCES postings(id),
+  FOREIGN KEY (userId) REFERENCES users(id)
+  FOREIGN KEY (acceptUserId) REFERENCES users(id)
+);
+
+
 

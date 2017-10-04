@@ -18,6 +18,7 @@ var routePostings = require('../routes/postings');
 var routeProfile = require('../routes/profile');
 var routeWorkout = require('../routes/workout');
 var routeDashboard = require('../routes/dashboard');
+var routeLogout = require('../routes/logout');
 
 
 app.use(bodyParser.json()); 
@@ -25,6 +26,13 @@ app.use(cookieParser());
 app.use(express.static('client'));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
+app.use(session({
+    secret: 'secret',
+    saveUninitialized: true,
+    resave: true
+}));
+
 
 app.use('/register', routeRegister);
 
@@ -38,6 +46,7 @@ app.use('/workout', routeWorkout);
 
 app.use('/dashboard', routeDashboard);
 
+app.use('/logout', routeLogout);
 
 
 app.listen(3000, function(err){

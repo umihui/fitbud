@@ -5,6 +5,7 @@ var db = require('../database/index.js');
 // /workout
 // user creating a new workout
 router.post('/', (req, res) => {
+  var id = req.session.passport.user;
   var workoutObj = {
     title: req.body.title,
     location: req.body.location,
@@ -12,7 +13,7 @@ router.post('/', (req, res) => {
     duration: req.body.duration,
     details: req.body.details,
     meetup_spot: req.body.meetup_spot,
-    userId: req.body.userId
+    userId: id
   };
   db.createWorkout(workoutObj, (result) => {
     console.log('createworkout result', result);
