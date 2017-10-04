@@ -1,9 +1,11 @@
 var mysql = require('mysql');
+var bcrypt = require('bcrypt');
+
 
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : '',
+  password : 'plantlife',
   database : 'fitbud'
 });
 
@@ -15,30 +17,59 @@ connection.connect(function(err){
 	}
 });
 
-var createUser = function(username, pass) {
+var createUser = function(userObj) {
 	var query = 'INSERT INTO users (email, password) values (?, ?)';
-	connection.query(query, [username, pass], function(err, result){
-		if (err) {
-			console.log('error inserting user');
-		} else {
-			console.log('successfully added');
-		}
-	})
+	bcrypt.genSalt(10, function(err, salt) {
+		    bcrypt.hash(userObj.password, salt, function(err, hash) {
+		        userObj.password = hash;
+		        connection.query(query, [userObj.username, userObj.password], function(err, result){
+		        	if (err) {
+		        		console.log('error inserting user');
+		        	} else {
+		        		console.log('successfully added');
+		        	}
+		        })
+		    });
+		});
 }
 
 var checkUser = function(username, callback) {
 	var query = 'SELECT * from users WHERE email = ?';
-	connection.query(query, [username], function(err, result){
+	connection.query(query, [username], function(err, dbUserResult){
 		if (err) {
 			console.log('error when finding user');
 		} else{
-			console.log('result of finding a user', result);
-			if (result.length === 0) {
-				callback(false);
+			console.log('result of finding a user', dbUserResult);
+			if (dbUserResult.length === 0) {
+				callback(err, null);
 			}
-			else callback(true);
+			else callback(null, dbUserResult);
 		}
 	})
+}
+
+let comparePassword = function(passwordEntered, hash, callback) {
+	bcrypt.compare(passwordEntered, hash, function(err, isMatch){
+		if (err) throw err;
+		callback(null, isMatch)
+	});
+	
+};
+
+let findbyId = function(id, callback) {
+	console.log('database finding by id');
+	
+	var query = 'SELECT * from users WHERE id = ?';
+	connection.query(query, [id], function(err, result){
+		if (err) {
+			console.log('error when finding id');
+		} else {
+			console.log('result of finding a id', result);
+			
+			callback(result);
+		}
+	})
+	
 }
 
 var getWorkouts = function(callback) {
@@ -67,8 +98,6 @@ var getSingleWorkout = function(title, callback){
 
 //'INSERT INTO posts SET ?', {title: 'test'},
 
-
-
 var createWorkout = function(workoutObj, callback) {
 	var query = 'INSERT INTO postings SET ?';
 	connection.query(query, workoutObj, (err, result) => {
@@ -80,6 +109,7 @@ var createWorkout = function(workoutObj, callback) {
 		}
 	});
 };
+
 var createProfile = function(profileObj, callback) {
 	var query = 'INSERT INTO profile SET ?';
 	connection.query(query, profileObj, (err, result) => {
@@ -91,13 +121,95 @@ var createProfile = function(profileObj, callback) {
 		}
 	});
 };
+
+var getUserPostings = function(userId, callback) {
+	var query = 'select postings.title, postings.location, postings.date, postings.duration from postings where userId = ?';
+	connection.query(query, [userId], (err, result) => {
+		if (err) {
+			console.log('error getting posting by userId');
+		} else {
+			console.log('success posting by userId:', result);
+			callback(result);
+		}
+	});
+};
+
+var getUserRequestPostings = function(userId, callback) {
+//title, loation, date, duration
+	var query = 'select p.location, p.date, p.duration, p.details from requests r left join postings p on r.postingId = p.id where r.status = "pending" and r.userId = ?';
+	connection.query(query, [userId], (err, result) => {
+		if (err) {
+			console.log('error getting requests by userId');
+		} else {
+			console.log('success requests by userId:', result);
+			callback(result);
+		}
+	});
+};
+
+var createRequest = function(requestObj, callback) {
+	var query = 'INSERT INTO requests SET ?';
+	connection.query(query, requestObj, (err, result) => {
+		if (err) {
+			console.log('error creating request');
+		} else {
+			console.log('created request:', result);
+			callback(result);
+		}
+	});
+};
+
+var createPair = function(requestObj, callback) {
+	var query = 'INSERT INTO requests SET ?';
+	connection.query(query, requestObj, (err, result) => {
+		if (err) {
+			console.log('error creating request');
+		} else {
+			console.log('created request:', result);
+			callback(result);
+		}
+	});
+};
+
+var getUserAcceptPostings = function(userId, callback) {
+	var query = 'select p.location, p.date, p.duration, p.details from requests r left join postings p on r.postingId = p.id where r.UserId = ? and r.status = true';
+	connection.query(query, [userId], (err, result) => {
+		if (err) {
+			console.log('error getting accepted requests');
+		} else {
+			console.log('accepted requests', result);
+			callback(result);
+		}
+	});
+};
+
+
+var updateRequest = function(userId, callback) {
+	var query = "update requests set status = ? where userId=?";
+	connection.query(query, ['accept', userId], (err, result) => {
+		if (err) {
+			console.log('error updating reqest');
+		} else {
+			console.log('updated request to accept!', result);
+			callback(result);
+		}
+	});
+};
+
 module.exports = {
 	checkUser,
+	comparePassword,
 	createUser,
 	getWorkouts,
 	getSingleWorkout,
 	createWorkout,
-	createProfile
+	createProfile,
+	findbyId,
+	getUserPostings,
+	getUserRequestPostings,
+	createRequest,
+	createPair,
+	getUserAcceptPostings
 };
 
 

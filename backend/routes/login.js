@@ -1,24 +1,86 @@
 var express = require('express');
 var router = express.Router();
 var db = require('../database/index.js');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var flash = require('connect-flash');
 
 
-router.post('/', function (req, res) {
-  // check if username exists
-  //if it doesn't then we need to create user
-  console.log('hello login');
-  db.checkUser(req.body.username, function(result) {
-    if (result === true) {
-      // we'll check the password
-      //if the password matches log them in
-      //else keep them on this page with a message wrong password
-      res.redirect('/postings');
 
-    } else {
-      db.createUser(req.body.username, req.body.password);
-      res.send('Hello World!')
-    }
-  })
+function middleware(req, res, next){
+  console.log('req body in middleware:', req.body);
+  console.log('req user Object>>>>>>:', req.user)
+  // console.log('res:', res);
+  next();
+  
+}
+
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    console.log('username and password:', username, password);
+    db.checkUser(username, function (err, dbUserResult) { 
+      console.log('user inside passport:', dbUserResult)
+      if (err) { return done(err); }
+      if (!dbUserResult) { return done(null, false); }
+      db.comparePassword(password, dbUserResult[0].password, function(err, isMatch){
+        if (err) {
+          console.log('cannot compare passwords');
+        }
+        if(isMatch) {
+          return done (null, dbUserResult);
+        } else {
+          return done(null, false, {message: 'Invalid password'});
+        }
+      });
+  
+      
+  });
+    
+}));
+
+
+
+
+passport.serializeUser(function(user, done) {
+  console.log('user in serialize', user);
+  done(null, user[0].id);
+});
+
+passport.deserializeUser(function(id, done) {
+  console.log('in deserialize');
+  db.findById(id, function(err, user) {
+  console.log('user in deserialize', user);
+    done(err, user);
+  });
+});
+
+
+// on success login, redirect to dashboards
+// successRedirect:'/', 
+
+// on successful login
+router.post('/',
+  passport.authenticate('local', {successRedirect:'/dashboard', failureRedirect:'/login', failureFlash: 'auth failed', successFlash: 'auth success'}),
+   function(req, res) {
+    console.log('request inside login:', req.user)
+    res.redirect('/dashboard');
+});
+
+// router.post('/',
+//   middleware,
+//   function(req, res) {
+//     console.log('request inside login:', req.body)
+//     res.send('hello')
+//     // res.redirect('/');
+// });
+
+
+
+router.get('/', (req, res) => {
+  console.log('login get')
+  res.end();
 });
 
 module.exports = router;
+//create register
+//login 
