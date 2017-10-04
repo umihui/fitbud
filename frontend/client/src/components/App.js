@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Cookies from 'universal-cookie';                                                                                                                                      
 import MainNav from './MainNav';
 import Home from './Home';
 import Login from './Login';
@@ -16,9 +17,10 @@ class App extends Component {
       authenticated: false
     }
 
+    this.cookies = new Cookies();
     this.checkAuth();
   }
-
+  
   checkAuth = () => {
     fetch('/login', {
       credentials: 'include'
@@ -38,6 +40,7 @@ class App extends Component {
 
   handleSignOff = () => {
     this.setState({authenticated: false});
+    this.cookies.remove('test');
     console.log('User signed off...');
   }
 
