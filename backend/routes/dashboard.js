@@ -23,7 +23,8 @@ router.get('/requests', (req, res) => {
   })
 })
 
-
+// all rows from accepted where userid = acceptUserid
+// click on accept button from eachPosting
 router.get('/accepted', (req,res) => {
   var id = req.session.passport.user;
   // will need user id and workout posting id
@@ -32,23 +33,9 @@ router.get('/accepted', (req,res) => {
   })
 });
 
-// all rows from accepted where userid = acceptUserid
-// click on accept button from eachPosting
 
-router.post('/accepted', (req,res) => {
-  // var id = req.session.passport.user;
-  
-  // var acceptObj = {
-  //   postUserId: 
-  //   acceptUserId: id,
-  //   postingId: 
-  // };
-  
-  // will need user id and workout posting id
-  db.createPair(id, (dbResult) => {
-    res.send(dbResult);
-  })
-});
+
+
 
 
 

@@ -29,17 +29,27 @@ router.get('/workout/:id', (req, res) => {
 });
 
 router.post('/workout/:id', (req, res) => {
-  console.log('workout req query', req.query.id);
+  console.log('workout req query', req.params.id);
   var id = req.session.passport.user;
   var reqObj = {
-    postingId: req.query.id,
-    userId: id
+    postingId: req.params.id,
+    userId: id,
+    status: 'pending'
   }
   db.createRequest(reqObj, (result) => {
     console.log('request created in the table', result);
-    res.status(200).send('request createds');
+    res.status(200).send('request created');
   });
 });
 
+router.patch('/workout/:id/accept', (req, res) => {
+  console.log('workout req query', req.params.id);
+  var id = req.session.passport.user;
+  
+  db.updateRequest(id, (result) => {
+    console.log('request created in the table', result);
+    res.status(200).send('request accepted');
+  });
+});
 
 module.exports = router;

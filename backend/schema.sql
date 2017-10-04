@@ -45,7 +45,8 @@ CREATE TABLE profile (
 CREATE TABLE requests (
   id INT NOT NULL AUTO_INCREMENT,
   postingId INT, 
-  userId INT,  
+  userId INT,
+  status ENUM('pending', 'accept', 'request'),
   
   PRIMARY KEY (id),
   FOREIGN KEY (postingId) REFERENCES postings(id),
@@ -53,17 +54,7 @@ CREATE TABLE requests (
   
 );
 
-CREATE TABLE pairs (
-  id INT NOT NULL AUTO_INCREMENT,
-  postUserId INT,
-  acceptUserId INT,  
-  postingId INT,
-  
-  PRIMARY KEY (id),
-  FOREIGN KEY (postUserId) REFERENCES postings(id),
-  FOREIGN KEY (userId) REFERENCES users(id)
-  FOREIGN KEY (acceptUserId) REFERENCES users(id)
-);
+
 
 
 

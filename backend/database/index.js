@@ -123,7 +123,7 @@ var createProfile = function(profileObj, callback) {
 };
 
 var getUserPostings = function(userId, callback) {
-	var query = 'select * from postings where userId = ?';
+	var query = 'select postings.title, postings.location, postings.date, postings.duration from postings where userId = ?';
 	connection.query(query, [userId], (err, result) => {
 		if (err) {
 			console.log('error getting posting by userId');
@@ -135,7 +135,8 @@ var getUserPostings = function(userId, callback) {
 };
 
 var getUserRequestPostings = function(userId, callback) {
-	var query = 'select * from requests where userId = ?';
+//title, loation, date, duration
+	var query = 'select p.location, p.date, p.duration, p.details from requests r left join postings p on r.postingId = p.id where r.status = "pending" and r.userId = ?';
 	connection.query(query, [userId], (err, result) => {
 		if (err) {
 			console.log('error getting requests by userId');
@@ -171,7 +172,7 @@ var createPair = function(requestObj, callback) {
 };
 
 var getUserAcceptPostings = function(userId, callback) {
-	var query = 'select * from requests where acceptUserId = ?';
+	var query = 'select p.location, p.date, p.duration, p.details from requests r left join postings p on r.postingId = p.id where r.UserId = ? and r.status = true';
 	connection.query(query, [userId], (err, result) => {
 		if (err) {
 			console.log('error getting accepted requests');
@@ -182,6 +183,18 @@ var getUserAcceptPostings = function(userId, callback) {
 	});
 };
 
+
+var updateRequest = function(userId, callback) {
+	var query = "update requests set status = ? where userId=?";
+	connection.query(query, ['accept', userId], (err, result) => {
+		if (err) {
+			console.log('error updating reqest');
+		} else {
+			console.log('updated request to accept!', result);
+			callback(result);
+		}
+	});
+};
 
 module.exports = {
 	checkUser,
