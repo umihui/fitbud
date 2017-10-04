@@ -21,10 +21,10 @@ router.post('/workout', (req, res) => {
 });
 
 router.get('/workout/:id', (req, res) => {
-  console.log('workout req query', req.query.id);
-  db.getSingleWorkout(req.query.id, (result) => {
+  console.log('workout req query', req.params.id);
+  db.getSingleWorkout(req.params.id, (result) => {
     console.log('result of the get for a single workout', result);
-    res.status(200).send(JSON.stringify(result));
+    res.status(200).json(result);
   });
 });
 
