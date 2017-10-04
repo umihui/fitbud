@@ -3,6 +3,7 @@ import Cookies from 'universal-cookie';
 import MainNav from './MainNav';
 import Home from './Home';
 import Login from './Login';
+import Signup from './Signup';
 import Listings from './Listings';
 import NoMatch from './NoMatch';
 import Dashboard from './Dashboard';
@@ -58,6 +59,8 @@ class App extends Component {
             <Route exact path='/login' render={props => (
               <Login authenticate={this.handleAuthenticated} {...props} />
             )} />
+            <Route exact path='/signup' component={Signup} />
+
             <Route exact path='/dashboard' render={props => (
               <Dashboard listings={data} />
             )} />
