@@ -46,14 +46,19 @@ app.post('/login', (req, res) => {
   res.status(201).json(req.body);
 })
 
-app.post('/signup', (req, res) => {
+app.post('/register', (req, res) => {
   console.log(req.body);
   console.log(req.cookies);
-  var { email, password } = req.body;
+  var { username, password } = req.body;
 
-  usersDB[email] = password;
-  console.log('Current UserDB: ', usersDB);
-  res.json(req.body);
+  if (usersDB[username]) {
+    res.json({userExists: true});
+  } else {
+    usersDB[username] = password;
+    console.log('Current UserDB: ', usersDB);
+    res.json(req.body);    
+  }
+
 })
 
 // catch 404 and forward to error handler
