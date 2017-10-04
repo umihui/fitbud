@@ -1,27 +1,39 @@
 import React from 'react';
-import { Segment, Container, Header, Button, Icon } from 'semantic-ui-react';
+import { Segment, Container, Header, Button, Icon, Transition } from 'semantic-ui-react';
 
-const Home = () => (
-  <Segment inverted textAlign='center' vertical style={{ minHeight: 700, padding: '1em 0em' }}> 
-    <Container text>
-      <Header
-        as='h1'
-        content='Fitbud'
-        inverted
-        style={{ fontSize: '4em', fontWeight: 'normal', marginBottom: 0, marginTop: '3em' }}
-      />
-      <Header
-        as='h2'
-        content='Life is better with a buddy.'
-        inverted
-        style={{ fontSize: '1.7em', fontWeight: 'normal' }}
-      />
-      <Button primary size='huge'>
-        Get Started
-        <Icon name='right arrow' />
-      </Button>
-    </Container>
-  </Segment>
-);
+class Home extends React.Component {
+  state = {
+    visible: false
+  }
+
+  componentDidMount() {
+    this.setState({visible: true});
+  }
+
+  render() {
+    return (
+      <Transition visible={this.state.visible} animation='fade up' duration={1500}>
+        <Segment textAlign='center' vertical style={{ minHeight: 700, padding: '1em 0em' }}> 
+          <Container text>
+            <Header
+              as='h1'
+              content='Fitbud'
+              style={{ fontSize: '4em', fontWeight: 'normal', marginBottom: 0, marginTop: '3em' }}
+            />
+            <Header
+              as='h2'
+              content='Life is better with a buddy.'
+              style={{ fontSize: '1.7em', fontWeight: 'normal' }}
+            />
+            <Button primary size='huge'>
+              Get Started
+              <Icon name='right arrow' />
+            </Button>
+          </Container>
+        </Segment>
+      </Transition>)
+  }
+}
+
 
 export default Home;
