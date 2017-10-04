@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Input } from 'formsy-semantic-ui-react';
-import { Container, Grid, Header, Image, Segment, Button, Transition, Label } from 'semantic-ui-react';
+import { Container, Grid, Header, Image, Segment, Button, Transition, Label, Message } from 'semantic-ui-react';
 import { Redirect, Link } from 'react-router-dom';
 
 const styles = {
@@ -46,11 +46,20 @@ class Signup extends Component {
       body: JSON.stringify(formData)
     }
 
-    fetch('/signup', options)
+    fetch('/register', options)
       .then(response => response.json())
       .then(data => {
         console.log(data);
-        this.props.history.replace('/login');
+        if (data.userExists) {
+          this.setState({
+            errorHeader: 'Username already exists...',
+            errorContent: 'Please proceed to login.',
+            formError: true,
+            submit: false
+          })
+        } else {
+          this.props.history.replace('/login');
+        }
       });
   };
 
@@ -61,7 +70,7 @@ class Signup extends Component {
       <Input
         ref={input => this.inputRef = input}
         autoFocus
-        name="email"
+        name="username"
         placeholder="E-mail"
         icon="mail"
         iconPosition="left"
@@ -136,6 +145,7 @@ class Signup extends Component {
                 Signup today!
               </Header>
               <Form size='large'
+                    error={this.state.formError}
                     noValidate
                     onValidSubmit={this.onValidSubmit}
               >
@@ -145,6 +155,10 @@ class Signup extends Component {
                   { passwordConfirmInput }
                 </Form.Group>
                 <Button loading={this.state.submit} color='teal' size='large' fluid>CREATE AN ACCOUNT</Button>                                                                                                                                                          
+                <Message error 
+                         header={this.state.errorHeader}
+                         content={this.state.errorContent}
+                />
               </Form>
             </Grid.Column>
           </Grid>
