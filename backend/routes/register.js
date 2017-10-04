@@ -9,11 +9,9 @@ router.post('/', function (req, res) {
   //if it doesn't then we need to create user
   console.log('hello register');
   db.checkUser(req.body.username, function(result) {
-    if (result === true) {
-      // we'll check the password
-      //if the password matches log them in
-      //else keep them on this page with a message wrong password
-      res.redirect('/postings');
+    if (result[0].length !== 0) {
+      // the user exists and we will need to send a message and redirect them to login instead
+      res.redirect('/login');
 
     } else {
       db.createUser(req.body);
