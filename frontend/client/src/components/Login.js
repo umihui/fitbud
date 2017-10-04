@@ -79,13 +79,13 @@ class Login extends Component {
             style={{ height: '100%' }}
             verticalAlign='middle'
           >
-            <Grid.Column style={{ maxWidth: 450 }}>
+            <Grid.Column style={{ maxWidth: 500 }}>
               <Header as='h2' color='teal' textAlign='center'>
                 <Image src='logo.svg' />
                 {' '}Log-in to your account
               </Header>
               <Form size='large' onSubmit={this.handleSubmit}>
-                <Segment stacked>
+                <Segment>
                   <Form.Input
                     autoFocus='true'
                     fluid
@@ -113,17 +113,6 @@ class Login extends Component {
               </Message>
             </Grid.Column>
           </Grid>
-          {/*<Container>
-            <Form loading={this.state.submit} onSubmit={this.handleSubmit.bind(this)}>
-              <Form.Input icon='user' iconPosition='left' width={5}
-                placeholder='Username or email address' 
-                label='Username' type='text' name='username' onChange={this.handleInputChange} />
-              <Form.Input icon='lock' iconPosition='left' width={5}
-                placeholder='Password' label='Password' 
-                type='password' name='password' onChange={this.handleInputChange} />
-              <Form.Button>Log In</Form.Button>
-            </Form>
-          </Container>*/}
         </div>
       </Transition>
     )

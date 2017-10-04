@@ -9,6 +9,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+var usersDB = {};
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -43,6 +44,16 @@ app.post('/login', (req, res) => {
   console.log(req.cookies);
   res.cookie('test', 'true');
   res.status(201).json(req.body);
+})
+
+app.post('/signup', (req, res) => {
+  console.log(req.body);
+  console.log(req.cookies);
+  var { email, password } = req.body;
+
+  usersDB[email] = password;
+  console.log('Current UserDB: ', usersDB);
+  res.json(req.body);
 })
 
 // catch 404 and forward to error handler
