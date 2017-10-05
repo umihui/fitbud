@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
 
-  console.log('user from request', req.session.passport.user);
+  //console.log('user from request', req.session.passport.user);
   var id = req.session.passport.user;
   var profileObj = {
     gender: req.body.gender,
@@ -22,7 +22,7 @@ router.post('/', (req, res) => {
   };
   
   db.createProfile(profileObj, (result) => {
-    console.log('created profile');
+    //console.log('created profile');
     
     res.redirect('/postings');
   });
