@@ -16,7 +16,7 @@ var options = {
   user: 'root',
   password: '',
   database: 'fitbud',
-  checkExpirationInterval: 60000,// How frequently expired sessions will be cleared; milliseconds. 
+  checkExpirationInterval: 60000,
   expiration: 3600000,
 }
 
