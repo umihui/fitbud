@@ -6,10 +6,13 @@ var db = require('../database/index.js');
 
 router.get('/', (req, res) => {
   // res.send('RENDER profile page');
-  res.send('profile get success')
+  if (req.user) {
+    res.json(req.user);
+  } 
 });
 
 router.post('/', (req, res) => {
+
   console.log('user from request', req.session.passport.user);
   var id = req.session.passport.user;
   var profileObj = {
