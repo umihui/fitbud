@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Card, Container, Icon, Image, List } from 'semantic-ui-react';
 import { NavLink, Link, Redirect } from 'react-router-dom';
 
-class Workouts extends Component {
+class Invites extends Component {
+  images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
 
   render() {
     var { listings } = this.props;
@@ -12,8 +13,8 @@ class Workouts extends Component {
         {listings.map(listing => (
           <Card>
             <Card.Content>
-              <Image src={this.props.user} size='mini' floated='left'/>
-              <Card.Header>Username</Card.Header>
+              <Image src={'/' + this.images[Math.floor(Math.random() * this.images.length)]} size='mini' floated='left'/>
+              <Card.Header>{listing.posted_by}</Card.Header>
               <Card.Meta>{listing.activity}</Card.Meta>
               <Card.Description>{`Schedule on ${listing.scheduled} for ${listing.duration} hours`}</Card.Description>
               <Card.Content extra>
@@ -28,4 +29,4 @@ class Workouts extends Component {
 
 }
 
-export default Workouts;
+export default Invites;

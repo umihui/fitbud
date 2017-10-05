@@ -5,6 +5,8 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import ProfilePic from './ProfilePic';
 import DashNav from './DashNav';
 import Workouts from './Workouts';
+import Requests from './Requests';
+import Invites from './Invites';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -26,18 +28,21 @@ class Dashboard extends Component {
 
   images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
 
+  user = '/' + this.images[Math.floor(Math.random() * this.images.length)];
+
   render() {
     var { listings } = this.props;
 
     return (
       <Container style={{marginTop: '20px'}}>
 
-        <ProfilePic />
+        <ProfilePic user={this.user}/>
 
-        <DashNav handleClick={this.handleTabClick}/>
+        <DashNav handleClick={this.handleTabClick} view={this.state.view}/>
 
-
-        <Workouts listings={listings} />
+        {this.state.view === 'my workouts' && ([<Workouts listings={listings} user={this.user}/>])}
+        {this.state.view === 'my requests' && ([<Requests listings={listings} />])}
+        {this.state.view === 'my invites' && ([<Invites listings={listings} />])}
         
       </Container>
     )
