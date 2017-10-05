@@ -48,6 +48,7 @@ app.use(function (req, res, next) {
   console.log('body', req.body);
   console.log('session', req.session);
   console.log('isAuth?', req.isAuthenticated());
+  console.log('cookie', req.cookie);
   next();
 })
 
@@ -58,6 +59,10 @@ app.use('/login', routeLogin);
 
 app.use('/postings', routePostings);
 
+app.use(checkAuth);
+
+// Below are the protected routes
+
 app.use('/profile', routeProfile);
 
 app.use('/workout', routeWorkout);
@@ -66,6 +71,16 @@ app.use('/dashboard', routeDashboard);
 
 app.use('/logout', routeLogout);
 
+// middleware function to check if this is one of the protected routes
+
+function checkAuth(req, res, next) {
+  if (req.isAuthenticated()) { //check if it's an authenticated route 
+    next();
+  }
+  else {
+    res.redirect('/login');
+  }
+}
 
 
 
