@@ -66,7 +66,6 @@ var findById = function(id, callback) {
 			console.log('error when finding id');
 		} else {
 			console.log('result of finding a id', result);
-			
 			callback(null, result);
 		}
 	})
