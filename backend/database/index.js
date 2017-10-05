@@ -49,6 +49,7 @@ var checkUser = function(username, callback) {
 }
 
 let comparePassword = function(passwordEntered, hash, callback) {
+	console.log('inside compare password');
 	bcrypt.compare(passwordEntered, hash, function(err, isMatch){
 		if (err) throw err;
 		callback(null, isMatch)

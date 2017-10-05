@@ -9,14 +9,16 @@ router.post('/', function (req, res) {
   //if it doesn't then we need to create user
   console.log('hello register');
   db.checkUser(req.body.username, function(result) {
-    if (result[0].length !== 0) {
+    if (result) {
       // the user exists and we will need to send a message and redirect them to login instead
-      res.redirect('/login');
+      // res.redirect('/login');
+      res.json({userExists: true});
 
     } else {
       db.createUser(req.body);
       // res.send('go to login')
-      res.redirect('/login')
+      // res.redirect('/login')
+      res.json({userCreated: true});
     }
   })
 });
