@@ -44,16 +44,22 @@ class Login extends Component {
     // console.log(this.props);
 
     fetch('/login', options)
-      .then(response => response.json())
-      .then(function (data) {
-        console.log('response', data);
-        this.props.authenticate();
-        this.setState({
-          submit: false
-        });
-        this.props.history.replace('/');
-      }.bind(this))
-      .catch(err => console.log(err));
+      .then(response => {
+        if (response.ok) {
+          this.props.authenticate();
+          this.setState({
+            submit: false
+          });
+          this.props.history.replace('/');          
+        } else {
+          this.setState({
+            errorHeader: 'Incorrect credentials',
+            errorContent: 'Please try again',
+            formError: true,
+            submit: false
+          })
+        }
+      });
   }
 
   handleInputChange = (event) => {
@@ -84,7 +90,7 @@ class Login extends Component {
                 <Image src='logo.svg' />
                 {' '}Log-in to your account
               </Header>
-              <Form size='large' onSubmit={this.handleSubmit}>
+              <Form size='large' onSubmit={this.handleSubmit} error={this.state.formError}>
                 <Segment>
                   <Form.Input
                     autoFocus='true'
@@ -107,6 +113,10 @@ class Login extends Component {
 
                   <Button loading={this.state.submit} color='teal' fluid size='large'>Login</Button>
                 </Segment>
+                <Message error 
+                         header={this.state.errorHeader}
+                         content={this.state.errorContent}
+                />
               </Form>
               <Message>
                 New to us? <Link to='/signup'>Sign Up</Link>

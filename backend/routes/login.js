@@ -67,7 +67,8 @@ router.post('/',
   
 
   function(req, res) {
-    console.log('request inside login:', req)
+    // console.log('request inside login:', req)
+    console.log('cookies', req.cookies);
     // res.redirect('/dashboard');
     console.log('auth info:', req.authInfo)
     res.json(req.authInfo);
