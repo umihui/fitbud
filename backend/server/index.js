@@ -15,7 +15,9 @@ var options = {
   port: 3306,
   user: 'root',
   password: '',
-  database: 'fitbud'
+  database: 'fitbud',
+  checkExpirationInterval: 60000,// How frequently expired sessions will be cleared; milliseconds. 
+  expiration: 3600000,
 }
 
 var sessionStore = new MYSQLStore(options);
@@ -38,7 +40,8 @@ app.use(session({
     secret: 'secret',
     store: sessionStore,
     saveUninitialized: false,
-    resave: false
+    resave: false,
+    cookie: { secure: true, maxAge: 3600000}
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -54,21 +57,16 @@ app.use(function (req, res, next) {
 
 
 app.use('/register', routeRegister);
-
 app.use('/login', routeLogin);
-
 app.use('/postings', routePostings);
+
 
 app.use(checkAuth);
 
 // Below are the protected routes
-
 app.use('/profile', routeProfile);
-
 app.use('/workout', routeWorkout);
-
 app.use('/dashboard', routeDashboard);
-
 app.use('/logout', routeLogout);
 
 // middleware function to check if this is one of the protected routes
