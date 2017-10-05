@@ -49,11 +49,11 @@ app.use('/dashboard', routeDashboard);
 app.use('/logout', routeLogout);
 
 
-app.listen(3000, function(err){
+app.listen(3001, function(err){
 	if(err) {
 		console.log('cannot connect to the server');
 	}
-	console.log('listening on 3000');
+	console.log('listening on 3001');
 })
 
 
