@@ -15,6 +15,7 @@ function middleware(req, res, next){
   
 }
 
+
 passport.use(new LocalStrategy(
   function(username, password, done) {
     console.log('username and password:', username, password);
@@ -23,13 +24,15 @@ passport.use(new LocalStrategy(
       if (err) { return done(err); }
       if (!dbUserResult) { return done(null, false); }
       db.comparePassword(password, dbUserResult[0].password, function(err, isMatch){
+        console.log('inside passports compare password');
         if (err) {
           console.log('cannot compare passwords');
         }
         if(isMatch) {
-          return done (null, dbUserResult);
+          return done (null, dbUserResult, {message: 'password matched'});
         } else {
-          return done(null, false, {message: 'Invalid password'});
+          console.log('checking for invalid password')
+          return done(null, false, {message: 'invalid password'});
         }
       });
   
@@ -60,10 +63,14 @@ passport.deserializeUser(function(id, done) {
 
 // on successful login
 router.post('/',
-  passport.authenticate('local', {successRedirect:'/dashboard', failureRedirect:'/login', failureFlash: 'auth failed', successFlash: 'auth success'}),
-   function(req, res) {
-    console.log('request inside login:', req.user)
-    res.redirect('/dashboard');
+  passport.authenticate('local', {failureFlash: true, successFlash: true}),
+  
+
+  function(req, res) {
+    console.log('request inside login:', req)
+    // res.redirect('/dashboard');
+    console.log('auth info:', req.authInfo)
+    res.json(req.authInfo);
 });
 
 // router.post('/',
