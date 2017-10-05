@@ -67,6 +67,8 @@ app.use('/dashboard', routeDashboard);
 app.use('/logout', routeLogout);
 
 
+
+
 app.listen(3001, function(err){
 	if(err) {
 		console.log('cannot connect to the server');
