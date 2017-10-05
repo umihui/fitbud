@@ -19,7 +19,7 @@ class App extends Component {
     }
 
     this.cookies = new Cookies();
-    this.checkAuth();
+    // this.checkAuth();
   }
   
   checkAuth = () => {
