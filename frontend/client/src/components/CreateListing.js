@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Container, Icon, Image, List } from 'semantic-ui-react';
+// import { Card, Container, Icon, Image, List } from 'semantic-ui-react';
 
 class CreateListing extends Component {
   render() {
