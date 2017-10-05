@@ -47,20 +47,18 @@ class Signup extends Component {
     }
 
     fetch('/register', options)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        if (data.userExists) {
+      .then(response => {
+        if (response.ok) {
+          this.props.history.replace('/login');
+        } else {
           this.setState({
-            errorHeader: 'Username already exists...',
-            errorContent: 'Please proceed to login.',
+            errorHeader: 'User already exists',
+            errorContent: 'Please login instead',
             formError: true,
             submit: false
           })
-        } else {
-          this.props.history.replace('/login');
         }
-      });
+      })
   };
 
   render() {
