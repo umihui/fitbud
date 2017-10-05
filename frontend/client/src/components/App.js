@@ -16,32 +16,49 @@ class App extends Component {
     super(props);
 
     this.state = {
-      authenticated: false
+      authenticated: false,
+      user: null,
+      visible: null
     }
 
     this.cookies = new Cookies();
-    // this.checkAuth();
+    console.log('checking auth...');
+    this.checkAuth();
   }
   
   checkAuth = () => {
-    fetch('/login', {
+    fetch('/profile', {
       credentials: 'include'
-    }).then(response => response.json())
-      .then(data => {
-        console.log(data);
-        if (data.authorized) {
-          this.setState({authenticated: true});
-        }
-      })
+    }).then(response => {
+      console.log(response.ok);
+      if (response.ok) {
+        return response.json();
+      }
+    }).then(data => {
+      console.log(data);
+      if (data[0] && data[0].email) {
+        this.setState({
+          user: data[0].email,
+          authenticated: true
+        })
+      }
+      this.setState({visible: true})  
+    })
   }
 
-  handleAuthenticated = () => {
-    this.setState({authenticated: true});
+  handleAuthenticated = (user) => {
+    this.setState({
+      authenticated: true,
+      user: user.email
+    });
     console.log('User authenticated...');
   }
 
   handleSignOff = () => {
-    this.setState({authenticated: false});
+    this.setState({
+      authenticated: false,
+      user: null
+    });
     fetch('/logout', {
       credentials: 'include'
     }).then(response => console.log(response.status));
@@ -54,7 +71,9 @@ class App extends Component {
           <MainNav authenticate={this.handleAuthenticated} isAuthed={this.state.authenticated} 
                    signoff={this.handleSignOff} />
           <Switch>
-            <Route exact path='/' component={Home} />
+            <Route exact path='/' render={props => (
+              <Home user={this.state.user} visible={this.state.visible} {...props} />
+            )} />
             <Route exact path='/listings' render={props => (
               <Listings listings={data} />
             )} />

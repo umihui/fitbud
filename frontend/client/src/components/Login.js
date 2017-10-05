@@ -46,11 +46,10 @@ class Login extends Component {
     fetch('/login', options)
       .then(response => {
         if (response.ok) {
-          this.props.authenticate();
           this.setState({
             submit: false
           });
-          this.props.history.replace('/');          
+          return response.json();
         } else {
           this.setState({
             errorHeader: 'Incorrect credentials',
@@ -58,6 +57,11 @@ class Login extends Component {
             formError: true,
             submit: false
           })
+        }
+      }).then(user => {
+        if (user[0].email) {
+          this.props.authenticate(user[0]);
+          this.props.history.replace('/');                    
         }
       });
   }
