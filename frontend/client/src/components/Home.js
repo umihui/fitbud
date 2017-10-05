@@ -2,13 +2,18 @@ import React from 'react';
 import { Segment, Container, Header, Button, Icon, Transition } from 'semantic-ui-react';
 
 class Home extends React.Component {
-  state = {
-    visible: this.props.visible
-  }
+  state = {visible: false};
 
   componentDidMount() {
     this.setState({
       visible: true
+    })
+    console.log('mounting');
+  }
+
+  componentDidUpdate() {
+    this.setState({
+      visible: false
     })
   }
 

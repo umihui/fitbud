@@ -40,7 +40,6 @@ class App extends Component {
           authenticated: true
         })
       }
-      this.setState({visible: true})  
     })
   }
 
