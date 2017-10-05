@@ -3,11 +3,11 @@ var router = express.Router();
 var db = require('../database/index.js');
 
 router.get('/', (req, res) => {
-  req.logout();
-  req.flash('success_msg', 'You are logged out');
-  res.redirect('/postings');
+  console.log('auth?', req.isAuthenticated());
+  req.session.destroy(function (err) {
+    if (!err) res.status(200).clearCookie('connect.sid').json({status: "Success"});
+  })
+  console.log('auth?', req.isAuthenticated());  
 });
-
-
 
 module.exports = router;
