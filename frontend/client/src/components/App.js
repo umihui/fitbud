@@ -30,10 +30,8 @@ class App extends Component {
     fetch('/profile', {
       credentials: 'include'
     }).then(response => {
-      console.log(response.ok);
-      if (response.ok) {
-        return response.json();
-      }
+      console.log(response);
+      return response.json();
     }).then(data => {
       console.log(data);
       if (data[0] && data[0].email) {
