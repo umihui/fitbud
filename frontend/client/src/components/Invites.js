@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Container, Icon, Image, List } from 'semantic-ui-react';
-import { NavLink, Link, Redirect } from 'react-router-dom';
+import { Card, Icon, Image } from 'semantic-ui-react';
 
 class Invites extends Component {
   images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
