@@ -12,7 +12,6 @@ function middleware(req, res, next){
   console.log('req user Object>>>>>>:', req.user)
   // console.log('res:', res);
   next();
-  
 }
 
 
@@ -50,9 +49,9 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-  console.log('in deserialize');
+  console.log('in deserialize', id);
   db.findById(id, function(err, user) {
-  console.log('user in deserialize', user);
+  // console.log('user in deserialize', user);
     done(err, user);
   });
 });

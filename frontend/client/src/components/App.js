@@ -41,8 +41,9 @@ class App extends Component {
 
   handleSignOff = () => {
     this.setState({authenticated: false});
-    this.cookies.remove('test');
-    console.log('User signed off...');
+    fetch('/logout', {
+      credentials: 'include'
+    }).then(response => console.log(response.status));
   }
 
   render() {

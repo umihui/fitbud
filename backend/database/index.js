@@ -48,7 +48,7 @@ var checkUser = function(username, callback) {
 	})
 }
 
-let comparePassword = function(passwordEntered, hash, callback) {
+var comparePassword = function(passwordEntered, hash, callback) {
 	console.log('inside compare password');
 	bcrypt.compare(passwordEntered, hash, function(err, isMatch){
 		if (err) throw err;
@@ -57,7 +57,7 @@ let comparePassword = function(passwordEntered, hash, callback) {
 	
 };
 
-let findbyId = function(id, callback) {
+var findById = function(id, callback) {
 	console.log('database finding by id');
 	
 	var query = 'SELECT * from users WHERE id = ?';
@@ -67,7 +67,7 @@ let findbyId = function(id, callback) {
 		} else {
 			console.log('result of finding a id', result);
 			
-			callback(result);
+			callback(null, result);
 		}
 	})
 	
@@ -205,7 +205,7 @@ module.exports = {
 	getSingleWorkout,
 	createWorkout,
 	createProfile,
-	findbyId,
+	findById,
 	getUserPostings,
 	getUserRequestPostings,
 	createRequest,

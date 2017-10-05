@@ -4,10 +4,21 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var morgan = require('morgan');
 var session = require('express-session');
+var MYSQLStore = require('express-mysql-session')(session);
 var passport = require('passport');
 var db = require('../database/index.js');
 var flash = require('connect-flash');
 var LocalStrategy = require('passport-local').Strategy;
+
+var options = {
+  host: 'localhost',
+  port: 3306,
+  user: 'root',
+  password: '',
+  database: 'fitbud'
+}
+
+var sessionStore = new MYSQLStore(options);
 
 var app = express();
 app.use(morgan('dev'));
@@ -20,18 +31,25 @@ var routeWorkout = require('../routes/workout');
 var routeDashboard = require('../routes/dashboard');
 var routeLogout = require('../routes/logout');
 
-
 app.use(bodyParser.json()); 
 app.use(cookieParser());
 app.use(express.static('client'));
+app.use(session({
+    secret: 'secret',
+    store: sessionStore,
+    saveUninitialized: false,
+    resave: false
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-app.use(session({
-    secret: 'secret',
-    saveUninitialized: true,
-    resave: true
-}));
+
+app.use(function (req, res, next) {
+  console.log('body', req.body);
+  console.log('session', req.session);
+  console.log('isAuth?', req.isAuthenticated());
+  next();
+})
 
 
 app.use('/register', routeRegister);
