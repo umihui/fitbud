@@ -25,14 +25,16 @@ class Dashboard extends Component {
   };
 
   componentDidMount() {
-    var myHeaders = new Headers();
+    fetch('/dashboard', { credentials: "include" })
+      .then(response => response.json()
+        .then(
+          response => {
+            this.setState({ data: response })
+          }
+        )
+      )
 
-    var myInit = { method: 'GET',
-      headers: myHeaders,
-      mode: 'cors',
-      cache: 'default' };
-
-    fetch('/dashboard', myInit).then(response => console.log(response));
+    console.log('getting data...')
   }
 
   images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
@@ -49,7 +51,7 @@ class Dashboard extends Component {
 
         <DashNav handleClick={this.handleTabClick} view={this.state.view}/>
 
-        {this.state.view === 'my workouts' && ([<Workouts listings={listings} user={this.user}/>])}
+        {this.state.view === 'my workouts' && (<Workouts data={this.state.data} user={this.user}/>)}
         {this.state.view === 'my requests' && ([<Requests listings={listings} />])}
         {this.state.view === 'my invites' && ([<Invites listings={listings} />])}
         
