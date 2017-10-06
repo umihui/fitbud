@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Container, Icon, Image, List } from 'semantic-ui-react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { Container } from 'semantic-ui-react';
 
 import ProfilePic from './ProfilePic';
 import DashNav from './DashNav';
@@ -13,7 +12,8 @@ class Dashboard extends Component {
     super(props);
 
     this.state = {
-      view: 'my workouts'
+      view: 'my workouts',
+      data: []
     };
 
     this.handleTabClick = this.handleTabClick.bind(this);
@@ -21,10 +21,21 @@ class Dashboard extends Component {
 
   handleTabClick(e, { name }) {
     // console.log('I\'ve been clicked, and my name is: ' + name);
-    this.setState({ view: name }, () => {
-      console.log(this.state);
-    });
+    this.setState({ view: name });
   };
+
+  componentDidMount() {
+    fetch('/dashboard', { credentials: "include" })
+      .then(response => response.json()
+        .then(
+          response => {
+            this.setState({ data: response })
+          }
+        )
+      )
+
+    console.log('getting data...')
+  }
 
   images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
 
@@ -40,7 +51,7 @@ class Dashboard extends Component {
 
         <DashNav handleClick={this.handleTabClick} view={this.state.view}/>
 
-        {this.state.view === 'my workouts' && ([<Workouts listings={listings} user={this.user}/>])}
+        {this.state.view === 'my workouts' && (<Workouts data={this.state.data} user={this.user}/>)}
         {this.state.view === 'my requests' && ([<Requests listings={listings} />])}
         {this.state.view === 'my invites' && ([<Invites listings={listings} />])}
         

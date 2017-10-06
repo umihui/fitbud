@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-import { Menu, Input, Button, Dropdown } from 'semantic-ui-react';
-import { NavLink, Link, Redirect } from 'react-router-dom';
+import { Menu } from 'semantic-ui-react';
 
 class DashNav extends Component {
   constructor(props) {
-    super(props)
-
-    console.log(props);
+    super(props);
   }
 
   render() {

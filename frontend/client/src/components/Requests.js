@@ -1,25 +1,41 @@
 import React, { Component } from 'react';
-import { Card, Container, Icon, Image, List } from 'semantic-ui-react';
-import { NavLink, Link, Redirect } from 'react-router-dom';
+import { Card, Icon, Image } from 'semantic-ui-react';
 
 class Requests extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      requests: []
+    };
+  }
+
+  componentDidMount() {
+    fetch('/dashboard/requests', { credentials: "include" })
+      .then(response => response.json()
+        .then(
+          response => {
+            this.setState({ requests: response });
+            console.log(response);
+          }
+        )
+      )
+
+    console.log('getting requests...')
+  }
+
   images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
 
   render() {
-    var { listings } = this.props;
-
     return (
       <Card.Group itemsPerRow={3}>
-        {listings.map(listing => (
+        {this.state.requests.map(listing => (
           <Card>
             <Card.Content>
               <Image src={'/' + this.images[Math.floor(Math.random() * this.images.length)]} size='mini' floated='left'/>
               <Card.Header>{listing.posted_by}</Card.Header>
-              <Card.Meta>{listing.activity}</Card.Meta>
-              <Card.Description>{`Schedule on ${listing.scheduled} for ${listing.duration} hours`}</Card.Description>
-              <Card.Content extra>
-                {(<a><Icon name='user' /> {listing.buddies} {listing.buddies === 1 ? 'buddy' : 'buddies'} </a>)}
-              </Card.Content>
+              <Card.Meta>{listing.details}</Card.Meta>
+              <Card.Description>{`Schedule on ${listing.date} for ${listing.duration} hours`}</Card.Description>
             </Card.Content>
           </Card>
         ))}
