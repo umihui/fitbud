@@ -103,6 +103,7 @@ class Signup extends Component {
 
     const passwordConfirmInput = (
       <Input
+        instantValidation
         name="passwordConfirm"
         placeholder="Confirm password"
         type='password'
