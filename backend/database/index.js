@@ -121,9 +121,10 @@ var createProfile = function(profileObj, callback) {
 		}
 	});
 };
+// send back user requests (accepts and pendings) by postings id 
 
 var getUserPostings = function(userId, callback) {
-	var query = 'select postings.title, postings.location, postings.date, postings.duration from postings where userId = ?';
+	var query = 'select r.postingId, r.userId, r.status, p.title,p.location, p.date, p.duration  from requests r  join postings p on r.postingId = p.id where p.userId = ?';
 	connection.query(query, [userId], (err, result) => {
 		if (err) {
 			console.log('error getting posting by userId');
@@ -195,6 +196,8 @@ var updateRequest = function(userId, callback) {
 		}
 	});
 };
+
+//insert into postings (title, location, date, duration, details, meetup_spot, userId) values ('hike', 'sf' '2017-01-01 00:00:00', 1, 'hike in muir woods', 'parking', 1);
 
 module.exports = {
 	checkUser,
