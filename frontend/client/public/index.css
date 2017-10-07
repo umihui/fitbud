@@ -4,6 +4,6 @@ body {
   font-family: sans-serif;
 }
 
-.ui.form > label {
+.ui.form .field > label {
 	display: none;
 }

@@ -1,11 +1,55 @@
 import React, { Component } from 'react';
 import { Container, Grid, Header, Image, Segment, Button, Transition, Label, Message } from 'semantic-ui-react';
-import { Form, Input } from 'formsy-semantic-ui-react';
+import { Form, Input, TextArea } from 'formsy-semantic-ui-react';
 
 // import { Card, Container, Icon, Image, List } from 'semantic-ui-react';
 
 class CreateListing extends Component {
-  state = {visible: false}
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      visible: false,
+      submit: false,
+      formData: null
+    }
+  }
+
+  componentDidMount() {
+    this.setState({
+      visible: true
+    });
+  }
+
+  onValidSubmit = (formData) => {
+    this.setState({submit: true});
+    formData.date = new Date(formData.date).toISOString().slice(0, 19).replace('T', ' ');
+
+    console.log('create postings formdata', formData);
+
+    var options = {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify(formData)
+    }
+
+    fetch('/postings', options)
+      .then(response => {
+        if (response.ok) {
+          this.props.history.replace('/login');
+        } else {
+          this.setState({
+            errorHeader: 'Error encountered',
+            errorContent: 'Please try again',
+            formError: true,
+            submit: false
+          })
+        }
+      })
+  };
 
   componentDidMount() {
     this.setState({visible: true})
@@ -43,8 +87,7 @@ class CreateListing extends Component {
           isDefaultRequiredValue: 'Title is required',
           isWords: 'Only letters allowed for title'
         }}
-        errorLabel={ <div style={ styles.customErrorLabel }/> }
-        rootStyle={ styles.formElement }
+        errorLabel={ <Label basic color='red' pointing /> }
       />
     );
 
@@ -63,8 +106,73 @@ class CreateListing extends Component {
           isDefaultRequiredValue: 'Location is required',
           isWords: 'Only letters allowed for location'
         }}
-        errorLabel={ <div style={ styles.customErrorLabel }/> }
-        rootStyle={ styles.formElement }
+        errorLabel={ <Label basic color='red' pointing /> }
+      />
+    );
+
+    const meetupInput = (
+      <Input
+        name="meetup_point"
+        placeholder="Meeting point"
+        type='text'
+        icon="point"
+        iconPosition="left"
+        required
+        validations={{
+          isWords: true
+        }}
+        validationErrors={{
+          isDefaultRequiredValue: 'Meeting point is required',
+          isWords: 'Only words allowed for meeting point'
+        }}
+        errorLabel={ <Label basic color='red' pointing /> }
+      />
+    );
+
+    const dateInput = (
+      <Input
+        name="date"
+        placeholder="Date MM/DD/YYYY"
+        type='text'
+        icon="calendar"
+        iconPosition="left"
+        required
+        validationErrors={{
+          isDefaultRequiredValue: 'Date is required'
+        }}
+        errorLabel={ <Label basic color='red' pointing /> }
+      />
+    );
+
+    const durationInput = (
+      <Input
+        name="duration"
+        placeholder="Duration in hours"
+        type='text'
+        icon="clock"
+        iconPosition="left"
+        required
+        validationErrors={{
+          isDefaultRequiredValue: 'Duration is required'
+        }}
+        errorLabel={ <Label basic color='red' pointing /> }
+      />
+    );
+
+    const detailsInput = (
+      <TextArea
+        name="details"
+        type='text'
+        required
+        placeholder="Details for the event"
+        validations={{
+          minLength: 10
+        }}
+        validationErrors={{
+          minLength: 'Minimum of 10 characters',
+          isDefaultRequiredValue: 'Details are required'
+        }}
+        errorLabel={ <Label basic color='red' pointing /> }
       />
     );
 
@@ -95,7 +203,11 @@ class CreateListing extends Component {
               >
                 { titleInput }
                 { locationInput }
-                <Button loading={this.state.submit} color='teal' size='large' fluid>CREATE AN ACCOUNT</Button>                                                                                                                                                          
+                { meetupInput }
+                { dateInput }
+                { durationInput }
+                { detailsInput }
+                <Button loading={this.state.submit} color='teal' size='large' fluid>CREATE LISTING</Button>                                                                                                                                                          
                 <Message error 
                          header={this.state.errorHeader}
                          content={this.state.errorContent}
