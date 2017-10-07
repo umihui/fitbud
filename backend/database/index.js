@@ -84,13 +84,14 @@ var getWorkouts = function(callback) {
 	});
 }
 
-var getSingleWorkout = function(title, callback){
-	var query = 'SELECT * from postings where title = ?';
-	connection.query(query, [title], (err, result) => {
+//get workout id, user associated with that posting
+var getSingleWorkout = function(postingId, callback){
+	var query = 'select postings.*, users.name from postings inner join users on postings.userId=users.id where postings.id=?';
+	connection.query(query, [postingId], (err, result) => {
 		if (err) {
 			console.log('error getting single posting');
 		} else {
-			console.log('SINGLE DB POSTING RESULT:', result);
+			console.log('SINGLE POSTING with username RESULT:', result);
 			callback(result);
 		}
 	});
@@ -121,8 +122,11 @@ var createProfile = function(profileObj, callback) {
 		}
 	});
 };
-// send back user requests (accepts and pendings) by postings id 
 
+
+
+
+// send back user requests (accepts and pendings) by postings id 
 var getUserPostings = function(userId, callback) {
 	// var query = 'select r.postingId, r.userId, r.status, p.title,p.location, p.date, p.duration  from requests r join postings p on r.postingId = p.id where p.userId = ?';
 	var query = 'select * from postings where userId=?';
