@@ -3,11 +3,9 @@ var router = express.Router();
 var db = require('../database/index.js');
 
 // /postings
-router.get('/', (req, res) => {
-  console.log('session id in workout', req.session.passport.user);
-  
+router.get('/', (req, res) => {  
   db.getWorkouts((result) => {
-    res.status(200).send(result);
+    res.status(200).json(result);
   });
 });
 

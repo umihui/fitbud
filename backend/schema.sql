@@ -22,7 +22,7 @@ CREATE TABLE users (
 
 CREATE TABLE postings (
   id INT NOT NULL AUTO_INCREMENT,
-  title varchar(20),
+  title varchar(50),
   location varchar(255) NOT NULL,
   date DATETIME,
   duration INT NOT NULL,

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Container, Icon, Transition } from 'semantic-ui-react';
+import ListingCard from './ListingCard.js';
+import ListingModal from './ListingModal.js';
 
 class Listings extends Component {
   images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
@@ -7,36 +9,66 @@ class Listings extends Component {
     super(props);
 
     this.state = {
-      visible: false
+      visible: false,
+      listings: [],
+      showModal: false,
+      selectedListing: null
     }
   }
 
   componentDidMount() {
     this.setState({visible: true})
     console.log('mounting');
+
+    fetch('/postings', {
+      credentials: 'include'
+    }).then(response => response.json())
+      .then(listings => {
+        console.log('listings', listings);
+        this.setState({listings: listings})
+      })
+  }
+
+  showListingModal(listing) {
+    this.setState({
+      showModal: true,
+      selectedListing: listing
+    })
+  }
+
+  hideListingModal = () => {
+    this.setState({
+      showModal: false,
+      selectedListing: null
+    })
   }
 
   render() {
-    var { listings } = this.props;
+    var { listings, showModal, selectedListing } = this.state;
     console.log(listings);
     console.log(this.images);
 
     return (
-      <Transition visible={this.state.visible} duration={1000} animation='fade'>
+      [<Transition visible={this.state.visible} duration={1000} animation='fade'>
         <Container style={{marginTop: '20px'}}>
           <Card.Group itemsPerRow={3}>
             {listings.map(listing => (
-              <Card 
-                image={'/' + this.images[Math.floor(Math.random() * this.images.length)]}
-                header={listing.posted_by}
-                meta={listing.activity}
-                description={`Schedule on ${listing.scheduled} for ${listing.duration} hours`}
-                extra={(<a><Icon name='user' /> {listing.buddies} {listing.buddies === 1 ? 'buddy' : 'buddies'} </a>)}
+
+              <ListingCard listing={listing} showListingModal={this.showListingModal.bind(this)}
+                           user={'/' + this.images[Math.floor(Math.random() * this.images.length)]} 
               />
+
             ))}
-            </Card.Group>
+          </Card.Group>
         </Container>
-      </Transition>
+      </Transition>,
+      <Container>
+        {this.state.showModal && (
+          <ListingModal listing={selectedListing} open={this.state.showModal} 
+                        hideListingModal={this.hideListingModal} 
+                        user={'/' + this.images[Math.floor(Math.random() * this.images.length)]}  />
+        )}
+      </Container>]
     )
   }
 }
