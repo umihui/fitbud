@@ -26,13 +26,11 @@ class Dashboard extends Component {
 
   componentDidMount() {
     fetch('/dashboard', { credentials: "include" })
-      .then(response => response.json()
-        .then(
-          response => {
-            this.setState({ data: response })
-          }
-        )
-      )
+      .then(response => response.json())
+      .then(response => {
+        console.log('response', response);
+        this.setState({ data: response })
+      })
 
     console.log('getting data...')
   }
