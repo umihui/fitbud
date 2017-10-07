@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Grid, Header, Image, Segment, Button, Transition, Label, Message } from 'semantic-ui-react';
-import { Form, Input, TextArea } from 'formsy-semantic-ui-react';
+import { Form, Input, TextArea, Select } from 'formsy-semantic-ui-react';
+import _ from 'lodash';
 
 // import { Card, Container, Icon, Image, List } from 'semantic-ui-react';
 
@@ -13,6 +14,14 @@ class CreateListing extends Component {
       submit: false,
       formData: null
     }
+
+    this.options = _.range(1, 11).map(num => {
+      return {
+        key: num,
+        text: num > 1 ? num + ' buddies' : num + ' buddy',
+        value: num
+      }
+    })
   }
 
   componentDidMount() {
@@ -39,7 +48,7 @@ class CreateListing extends Component {
     fetch('/postings', options)
       .then(response => {
         if (response.ok) {
-          this.props.history.replace('/login');
+          this.props.history.replace('/listings');
         } else {
           this.setState({
             errorHeader: 'Error encountered',
@@ -159,6 +168,19 @@ class CreateListing extends Component {
       />
     );
 
+    const buddiesInput = (
+      <Select
+        name="buddies"
+        options={ this.options }
+        placeholder="Number of buddies"
+        required
+        errorLabel={ <Label basic color='red' pointing /> }
+        validationErrors={{
+          isDefaultRequiredValue: 'Buddies are required',
+        }}
+      />
+    )
+
     const detailsInput = (
       <TextArea
         name="details"
@@ -188,10 +210,11 @@ class CreateListing extends Component {
           `}</style>
           <Grid
             textAlign='center'
-            style={{ height: '100%' }}
-            verticalAlign='middle'
+            style={{ height: '100%',
+                     marginTop: '3em',
+                     marginBottom: '3em' }}
           >
-            <Grid.Column style={{ maxWidth: 500 }}>
+            <Grid.Column style={{ maxWidth: 550 }}>
               <Header as='h2' color='teal' textAlign='center'>
                 Find your next buddy
                 </Header>
@@ -205,7 +228,10 @@ class CreateListing extends Component {
                 { locationInput }
                 { meetupInput }
                 { dateInput }
-                { durationInput }
+                <Form.Group widths='equal'>
+                  { durationInput }
+                  { buddiesInput }
+                </Form.Group>
                 { detailsInput }
                 <Button loading={this.state.submit} color='teal' size='large' fluid>CREATE LISTING</Button>                                                                                                                                                          
                 <Message error 
