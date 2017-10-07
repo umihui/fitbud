@@ -3,10 +3,17 @@ import { Card, Container, Icon, Transition } from 'semantic-ui-react';
 
 class Listings extends Component {
   images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
-  state = {visible: false}
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      visible: false
+    }
+  }
 
   componentDidMount() {
     this.setState({visible: true})
+    console.log('mounting');
   }
 
   render() {
@@ -15,7 +22,7 @@ class Listings extends Component {
     console.log(this.images);
 
     return (
-      <Transition visible={this.state.visible} duration={1000}>
+      <Transition visible={this.state.visible} duration={1000} animation='fade'>
         <Container style={{marginTop: '20px'}}>
           <Card.Group itemsPerRow={3}>
             {listings.map(listing => (
