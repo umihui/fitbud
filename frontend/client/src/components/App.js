@@ -33,10 +33,10 @@ class App extends Component {
       console.log(response);
       return response.ok ? response.json() : {};
     }).then(data => {
-      console.log(data);
-      if (data && data.email) {
+      console.log(user);
+      if (user && user.name) {
         this.setState({
-          user: data.email,
+          user: user.name,
           authenticated: true
         })
       }
@@ -46,7 +46,7 @@ class App extends Component {
   handleAuthenticated = (user) => {
     this.setState({
       authenticated: true,
-      user: user.email
+      user: user.name
     });
     console.log('User authenticated...');
   }
