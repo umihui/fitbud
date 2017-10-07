@@ -52,7 +52,7 @@ app.use(function (req, res, next) {
   console.log('session', req.session);
   console.log('isAuth?', req.isAuthenticated());
   console.log('req user:', req.user);
-  console.log('cookie', req.cookie);
+  console.log('cookie', req.cookies);
   next();
 })
 

@@ -31,12 +31,12 @@ class App extends Component {
       credentials: 'include'
     }).then(response => {
       console.log(response);
-      return response.okay ? response.json() : {};
+      return response.ok ? response.json() : {};
     }).then(data => {
       console.log(data);
-      if (data[0] && data[0].email) {
+      if (data && data.email) {
         this.setState({
-          user: data[0].email,
+          user: data.email,
           authenticated: true
         })
       }
