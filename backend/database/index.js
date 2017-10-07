@@ -18,11 +18,11 @@ connection.connect(function(err){
 });
 
 var createUser = function(userObj) {
-	var query = 'INSERT INTO users (email, password) values (?, ?)';
+	var query = 'INSERT INTO users (name, email, password) values (?, ?, ?)';
 	bcrypt.genSalt(10, function(err, salt) {
 		    bcrypt.hash(userObj.password, salt, function(err, hash) {
 		        userObj.password = hash;
-		        connection.query(query, [userObj.username, userObj.password], function(err, result){
+		        connection.query(query, [userObj.name, userObj.username, userObj.password], function(err, result){
 		        	if (err) {
 		        		console.log('error inserting user');
 		        	} else {
