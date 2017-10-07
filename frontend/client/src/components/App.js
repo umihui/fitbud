@@ -31,7 +31,7 @@ class App extends Component {
       credentials: 'include'
     }).then(response => {
       console.log(response);
-      return response.json();
+      return response.okay ? response.json() : {};
     }).then(data => {
       console.log(data);
       if (data[0] && data[0].email) {
