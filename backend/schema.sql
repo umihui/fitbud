@@ -56,7 +56,7 @@ CREATE TABLE requests (
   
 );
 
-
+select postings.*, users.name from postings inner join users on postings.userId=users.id where postings.id=3;
 
 
 
