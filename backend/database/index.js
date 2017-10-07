@@ -37,7 +37,7 @@ var checkUser = function(username, callback) {
 	var query = 'SELECT * from users WHERE email = ?';
 	connection.query(query, [username], function(err, dbUserResult){
 		if (err) {
-			console.log('error when finding user');
+			console.log('error when finding user', err);
 		} else{
 			console.log('result of finding a user', dbUserResult);
 			if (dbUserResult.length === 0) {
