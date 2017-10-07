@@ -38,7 +38,7 @@ class MainNav extends Component {
             <Menu.Item style={{paddingLeft: '0px'}}> 
               <Button as={Link} to='/create' primary content='Create Listing' />
             </Menu.Item>,
-            <Dropdown text='Account' className='link item' pointing>          
+            <Dropdown text={this.props.name} className='link item' pointing>          
               <Dropdown.Menu> 
                 <Dropdown.Item as={Link} to='/dashboard'>Dashboard</Dropdown.Item>
                 <Dropdown.Item>Profile</Dropdown.Item>
