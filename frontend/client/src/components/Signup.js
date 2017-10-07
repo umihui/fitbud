@@ -64,6 +64,25 @@ class Signup extends Component {
   render() {
     const errorLabel = <Label color="red" pointing/>;
 
+    const nameInput = (
+      <Input
+        name="name"
+        placeholder="Full name"
+        type='text'
+        icon="id card outline"
+        iconPosition="left"
+        required
+        validations={{
+          isWords: true
+        }}
+        validationErrors={{
+          isDefaultRequiredValue: 'Name is required',
+          isWords: 'Only alphabetical characters allowed'
+        }}
+        errorLabel={ <Label basic color='red' pointing /> }
+      />
+    );
+
     const emailInput = (
       <Input
         ref={input => this.inputRef = input}
@@ -148,6 +167,7 @@ class Signup extends Component {
                     noValidate
                     onValidSubmit={this.onValidSubmit}
               >
+                { nameInput }
                 { emailInput }
                 <Form.Group widths='equal'>
                   { passwordInput }
