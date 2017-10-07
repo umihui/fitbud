@@ -8,13 +8,6 @@ class Home extends React.Component {
     this.setState({
       visible: true
     })
-    console.log('mounting');
-  }
-
-  componentDidUpdate() {
-    this.setState({
-      visible: false
-    })
   }
 
   render() {

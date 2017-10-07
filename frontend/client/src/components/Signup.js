@@ -78,7 +78,7 @@ class Signup extends Component {
           isEmail: 'Invalid email format',
           isDefaultRequiredValue: 'Email is Required',
         }}
-        errorLabel={ <div style={ styles.customErrorLabel }/> }
+        errorLabel={ <Label basic color='red' pointing /> }
         rootStyle={ styles.formElement }
       />
     );
@@ -96,13 +96,14 @@ class Signup extends Component {
           minLength: 'Minimum of 8 characters',
           isDefaultRequiredValue: 'Password is Required',
         }}
-        errorLabel={ <div style={ styles.customErrorLabel }/> }
+        errorLabel={ <Label basic color='red' pointing /> }
         rootStyle={ styles.formElement }
       />
     );
 
     const passwordConfirmInput = (
       <Input
+        instantValidation
         name="passwordConfirm"
         placeholder="Confirm password"
         type='password'
@@ -118,7 +119,7 @@ class Signup extends Component {
           isDefaultRequiredValue: 'Password is Required',
           equalsField: 'Passwords do not match'
         }}
-        errorLabel={ <div style={ styles.customErrorLabel }/> }
+        errorLabel={ <Label basic color='red' pointing /> }
         rootStyle={ styles.formElement }
       />
     );
