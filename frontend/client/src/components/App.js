@@ -32,7 +32,7 @@ class App extends Component {
     }).then(response => {
       console.log(response);
       return response.ok ? response.json() : {};
-    }).then(data => {
+    }).then(user => {
       console.log(user);
       if (user && user.name) {
         this.setState({
