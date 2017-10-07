@@ -72,7 +72,7 @@ class App extends Component {
               <Home user={this.state.user} visible={this.state.visible} {...props} />
             )} />
             <Route exact path='/listings' render={props => (
-              <Listings listings={data} {...props} />
+              <Listings {...props} />
             )} />
             <Route exact path='/login' render={props => (
               <Login authenticate={this.handleAuthenticated} {...props} />

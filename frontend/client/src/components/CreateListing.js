@@ -89,10 +89,12 @@ class CreateListing extends Component {
         required
         validations={{
           minLength: 8,
+          maxLength: 50,
           isWords: true
         }}
         validationErrors={{
           minLength: 'Minimum of 8 characters',
+          maxLength: 'Maximum of 50 characters',
           isDefaultRequiredValue: 'Title is required',
           isWords: 'Only letters allowed for title'
         }}
