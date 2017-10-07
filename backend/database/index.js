@@ -61,12 +61,12 @@ var findById = function(id, callback) {
 	console.log('database finding by id');
 	
 	var query = 'SELECT * from users WHERE id = ?';
-	connection.query(query, [id], function(err, result){
+	connection.query(query, [id], function(err, dbResultArr){
 		if (err) {
 			console.log('error when finding id');
 		} else {
-			console.log('result of finding a id', result);
-			callback(null, result);
+			console.log('result of finding a id', dbResultArr[0]);
+			callback(null, dbResultArr[0]);
 		}
 	})
 	
@@ -102,7 +102,7 @@ var createWorkout = function(workoutObj, callback) {
 	var query = 'INSERT INTO postings SET ?';
 	connection.query(query, workoutObj, (err, result) => {
 		if (err) {
-			console.log('error creating workout');
+			console.log('error creating workout', err);
 		} else {
 			console.log('created workout result:', result);
 			callback(result);
@@ -124,7 +124,8 @@ var createProfile = function(profileObj, callback) {
 // send back user requests (accepts and pendings) by postings id 
 
 var getUserPostings = function(userId, callback) {
-	var query = 'select r.postingId, r.userId, r.status, p.title,p.location, p.date, p.duration  from requests r  join postings p on r.postingId = p.id where p.userId = ?';
+	// var query = 'select r.postingId, r.userId, r.status, p.title,p.location, p.date, p.duration  from requests r join postings p on r.postingId = p.id where p.userId = ?';
+	var query = 'select * from postings where userId=?';
 	connection.query(query, [userId], (err, result) => {
 		if (err) {
 			console.log('error getting posting by userId');
