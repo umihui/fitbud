@@ -66,7 +66,7 @@ class App extends Component {
       <Router>
         <div>
           <MainNav authenticate={this.handleAuthenticated} isAuthed={this.state.authenticated} 
-                   signoff={this.handleSignOff} />
+                   signoff={this.handleSignOff} name={this.state.user} />
           <Switch>
             <Route exact path='/' render={props => (
               <Home user={this.state.user} visible={this.state.visible} {...props} />
