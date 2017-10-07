@@ -31,12 +31,12 @@ class App extends Component {
       credentials: 'include'
     }).then(response => {
       console.log(response);
-      return response.okay ? response.json() : {};
+      return response.ok ? response.json() : {};
     }).then(data => {
       console.log(data);
-      if (data[0] && data[0].email) {
+      if (data && data.email) {
         this.setState({
-          user: data[0].email,
+          user: data.email,
           authenticated: true
         })
       }
@@ -72,7 +72,7 @@ class App extends Component {
               <Home user={this.state.user} visible={this.state.visible} {...props} />
             )} />
             <Route exact path='/listings' render={props => (
-              <Listings listings={data} />
+              <Listings listings={data} {...props} />
             )} />
             <Route exact path='/login' render={props => (
               <Login authenticate={this.handleAuthenticated} {...props} />
@@ -80,10 +80,10 @@ class App extends Component {
             <Route exact path='/signup' component={Signup} />
 
             <Route exact path='/dashboard' render={props => (
-              <Dashboard listings={data} />
+              <Dashboard listings={data} {...props} />
             )} />
             <Route exact path='/create' render={props => (
-              <CreateListing />
+              <CreateListing {...props} />
             )} />
 
             <Redirect from='/test' to='/listings' />

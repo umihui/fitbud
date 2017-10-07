@@ -9,7 +9,7 @@ class ProfilePic extends Component {
 
         <Image src={this.props.user} size='small' shape='circular' centered style={{margin: 'auto'}} />
       
-        <Container style={{"text-align": "center"}}>
+        <Container style={{"textAlign": "center"}}>
           <List style={{margin: '10px'}}>
             <List.Item>
               <List.Header>Username</List.Header>
