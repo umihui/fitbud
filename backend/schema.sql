@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS requests;
 
 CREATE TABLE users (
   id int NOT NULL AUTO_INCREMENT,
+  name varchar(255) NOT NULL,
   email varchar(255) NOT NULL,
   password varchar(255) NOT NULL,
   
@@ -27,6 +28,7 @@ CREATE TABLE postings (
   duration INT NOT NULL,
   details varchar(255) NOT NULL,
   meetup_spot varchar(255) NOT NULL,
+  buddies INT NOT NULL,
   userId INT,
   
   PRIMARY KEY (id),

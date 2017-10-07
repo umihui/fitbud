@@ -18,11 +18,11 @@ connection.connect(function(err){
 });
 
 var createUser = function(userObj) {
-	var query = 'INSERT INTO users (email, password) values (?, ?)';
+	var query = 'INSERT INTO users (name, email, password) values (?, ?, ?)';
 	bcrypt.genSalt(10, function(err, salt) {
 		    bcrypt.hash(userObj.password, salt, function(err, hash) {
 		        userObj.password = hash;
-		        connection.query(query, [userObj.username, userObj.password], function(err, result){
+		        connection.query(query, [userObj.name, userObj.username, userObj.password], function(err, result){
 		        	if (err) {
 		        		console.log('error inserting user');
 		        	} else {
@@ -37,7 +37,7 @@ var checkUser = function(username, callback) {
 	var query = 'SELECT * from users WHERE email = ?';
 	connection.query(query, [username], function(err, dbUserResult){
 		if (err) {
-			console.log('error when finding user');
+			console.log('error when finding user', err);
 		} else{
 			console.log('result of finding a user', dbUserResult);
 			if (dbUserResult.length === 0) {
