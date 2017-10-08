@@ -4,6 +4,16 @@ import { Modal, Header, Button, Image, Icon } from 'semantic-ui-react';
 class ListingModal extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      requestSent: false
+    }
+  }
+
+  sendRequest = () => {
+    this.setState({
+      requestSent: true
+    })
   }
 
   render() {
@@ -32,7 +42,10 @@ class ListingModal extends Component {
 
         <Modal.Actions>
           <Button secondary onClick={hideListingModal}>
-            Close <Icon name='right chevron' />
+            Close <Icon name='close' />
+          </Button>
+          <Button disabled={this.state.requestSent} primary onClick={this.sendRequest}>
+            { this.state.requestSent ? 'Pending' : 'Request to join' } <Icon name='right chevron' />
           </Button>
         </Modal.Actions>
       </Modal>
