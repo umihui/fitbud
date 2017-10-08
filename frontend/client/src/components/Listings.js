@@ -16,10 +16,7 @@ class Listings extends Component {
     }
   }
 
-  componentDidMount() {
-    this.setState({visible: true})
-    console.log('mounting');
-
+  updateListings = () => {
     fetch('/postings', {
       credentials: 'include'
     }).then(response => response.json())
@@ -27,6 +24,13 @@ class Listings extends Component {
         console.log('listings', listings);
         this.setState({listings: listings})
       })
+  }
+
+  componentDidMount() {
+    this.setState({visible: true})
+    console.log('mounting');
+
+    this.updateListings();
   }
 
   showListingModal(listing) {
@@ -37,6 +41,8 @@ class Listings extends Component {
   }
 
   hideListingModal = () => {
+    this.updateListings(); 
+
     this.setState({
       showModal: false,
       selectedListing: null
@@ -66,7 +72,8 @@ class Listings extends Component {
         {this.state.showModal && (
           <ListingModal listing={selectedListing} open={this.state.showModal} 
                         hideListingModal={this.hideListingModal} 
-                        user={'/' + this.images[Math.floor(Math.random() * this.images.length)]}  />
+                        user={this.props.user}
+                        userImage={'/' + this.images[Math.floor(Math.random() * this.images.length)]}  />
         )}
       </Container>]
     )

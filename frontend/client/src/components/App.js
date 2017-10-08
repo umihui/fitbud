@@ -36,7 +36,7 @@ class App extends Component {
       console.log(user);
       if (user && user.name) {
         this.setState({
-          user: user.name,
+          user: user,
           authenticated: true
         })
       }
@@ -46,7 +46,7 @@ class App extends Component {
   handleAuthenticated = (user) => {
     this.setState({
       authenticated: true,
-      user: user.name
+      user: user
     });
     console.log('User authenticated...');
   }
@@ -66,13 +66,13 @@ class App extends Component {
       <Router>
         <div>
           <MainNav authenticate={this.handleAuthenticated} isAuthed={this.state.authenticated} 
-                   signoff={this.handleSignOff} name={this.state.user} />
+                   signoff={this.handleSignOff} user={this.state.user} />
           <Switch>
             <Route exact path='/' render={props => (
               <Home user={this.state.user} visible={this.state.visible} {...props} />
             )} />
             <Route exact path='/listings' render={props => (
-              <Listings {...props} />
+              <Listings {...props} user={this.state.user} />
             )} />
             <Route exact path='/login' render={props => (
               <Login authenticate={this.handleAuthenticated} {...props} />

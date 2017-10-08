@@ -18,7 +18,7 @@ class Home extends React.Component {
             {this.props.user && (
               <Header
                 as='h1'
-                content={`Welcome ${this.props.user.split(' ')[0]}`}
+                content={`Welcome ${this.props.user.name.split(' ')[0]}`}
                 style={{ fontSize: '4em', fontWeight: 'normal', marginBottom: 0, marginTop: '3em' }}
               />
             )}

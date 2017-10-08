@@ -73,7 +73,11 @@ var findById = function(id, callback) {
 }
 
 var getWorkouts = function(id, callback) {
-	var query = 'select * from (select users.name, postings.* from postings inner join users on postings.userId=users.id) as posting left outer join requests on requests.postingId=Posting.id AND requests.userId=?'
+	var query = 'select posting.*, requests.status \
+               from (select users.name, users.id as ownerId, postings.* from postings inner join users on postings.userId=users.id) as posting \
+               left outer join requests \
+               on requests.postingId=posting.id \
+               AND requests.userId=?';
 
 	connection.query(query, [id], (err, result) => {
 		if (err) {
@@ -158,7 +162,7 @@ var createRequest = function(requestObj, callback) {
 	var query = 'INSERT INTO requests SET ?';
 	connection.query(query, requestObj, (err, result) => {
 		if (err) {
-			console.log('error creating request');
+			console.log('error creating request', err);
 		} else {
 			console.log('created request:', result);
 			callback(result);
