@@ -3,8 +3,10 @@ var router = express.Router();
 var db = require('../database/index.js');
 
 // /postings
-router.get('/', (req, res) => {  
-  db.getWorkouts((result) => {
+router.get('/', (req, res) => {
+  var id = req.user ? req.user.id : null;
+
+  db.getWorkouts(id, (result) => {
     res.status(200).json(result);
   });
 });

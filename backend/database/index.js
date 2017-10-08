@@ -72,9 +72,10 @@ var findById = function(id, callback) {
 	
 }
 
-var getWorkouts = function(callback) {
-	var query = 'select postings.*, users.name from postings inner join users on postings.userId=users.id';
-	connection.query(query, (err, result) => {
+var getWorkouts = function(id, callback) {
+	var query = 'select * from (select users.name, postings.* from postings inner join users on postings.userId=users.id) as posting left outer join requests on requests.postingId=Posting.id AND requests.userId=?'
+
+	connection.query(query, [id], (err, result) => {
 		if (err) {
 			console.log('error getting postings');
 		} else {
