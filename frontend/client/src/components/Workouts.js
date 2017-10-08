@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Card, Icon, Image } from 'semantic-ui-react';
 
+import WorkoutDropdown from './WorkoutDropdown';
+
 class Workouts extends Component {
   constructor(props) {
     super(props);
@@ -17,7 +19,7 @@ class Workouts extends Component {
               <Card.Meta>{listing.title}</Card.Meta>
               <Card.Description>{`Schedule on ${listing.date} for ${listing.duration} hours`}</Card.Description>
               <Card.Content extra>
-                {(<a><Icon name='user' /> {listing.buddies} {listing.buddies === 1 ? 'buddy' : 'buddies'} </a>)}
+                <WorkoutDropdown />
               </Card.Content>
             </Card.Content>
           </Card>
@@ -27,6 +29,8 @@ class Workouts extends Component {
   }
 
 }
+
+//dropdown menu fetches request postings
 
 //once endpoint is created, data can be passed from dashboard to workouts
   //create accept button function inside workouts or dashboard
