@@ -5,6 +5,7 @@ var db = require('../database/index.js');
 // /postings
 router.get('/', (req, res) => {
   var id = req.user ? req.user.id : null;
+  console.log('id is ' + id);
 
   db.getWorkouts(id, (result) => {
     res.status(200).json(result);

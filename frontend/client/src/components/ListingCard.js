@@ -18,7 +18,7 @@ class ListingCard extends Component {
           <Card.Meta>{listing.name}</Card.Meta>
           <Card.Description>{`Schedule on ${new Date(listing.date).toDateString()} for ${listing.duration} hours`}</Card.Description>
           <Card.Content extra>
-            {(<a><Icon name='user' /> {listing.buddies} more {listing.buddies === 1 ? 'buddy' : 'buddies'} needed</a>)}
+            <Icon name='user' /> {listing.buddies} more {listing.buddies === 1 ? 'buddy' : 'buddies'} needed
           </Card.Content>
         </Card.Content>
       </Card>

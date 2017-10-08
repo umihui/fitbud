@@ -14,11 +14,18 @@ class ListingModal extends Component {
     this.setState({
       requestSent: true
     })
+
+    fetch(`/postings/${this.props.listing.id}`, {
+      credentials: 'include',
+      method: 'POST'
+    }).then(response => {
+      if (response.ok) console.log('request made!');
+    })
   }
 
   render() {
-    var { listing, open, hideListingModal, user } = this.props;
-    console.log('listing modal');
+    var { listing, open, hideListingModal, userImage, user } = this.props;
+    console.log('listing modal user', user);
 
     return (
       <Modal open={open} onClose={hideListingModal} closeIcon dimmer='blurring'>
@@ -27,7 +34,7 @@ class ListingModal extends Component {
         <Modal.Content image scrolling>
           <Image
             size='small'
-            src={user}
+            src={userImage}
             wrapped
           />
 
@@ -44,8 +51,8 @@ class ListingModal extends Component {
           <Button secondary onClick={hideListingModal}>
             Close <Icon name='close' />
           </Button>
-          <Button disabled={this.state.requestSent} primary onClick={this.sendRequest}>
-            { this.state.requestSent ? 'Pending' : 'Request to join' } <Icon name='right chevron' />
+          <Button disabled={this.state.requestSent || listing.status !== null || user.id === listing.ownerId} primary onClick={this.sendRequest}>
+            { this.state.requestSent || listing.status ? 'Pending' : 'Request to join' } <Icon name='right chevron' />
           </Button>
         </Modal.Actions>
       </Modal>
