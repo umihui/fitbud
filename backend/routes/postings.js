@@ -41,6 +41,14 @@ router.get('/:id', (req, res) => {
   });
 });
 
+router.get('/requests/:id', (req, res) => {
+  //console.log('workout req query', req.params.id);
+  db.getRequestsByPostingId(req.params.id, (result) => {
+    //console.log('result of the get for a single workout', result);
+    res.status(200).json(result);
+  });
+});
+
 router.post('/:id', (req, res) => {
   //console.log('workout req query', req.params.id);
   var id = req.user.id;

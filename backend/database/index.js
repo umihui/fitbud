@@ -133,8 +133,9 @@ var createProfile = function(profileObj, callback) {
 
 // send back user requests (accepts and pendings) by postings id 
 var getUserPostings = function(userId, callback) {
-	// var query = 'select r.postingId, r.userId, r.status, p.title,p.location, p.date, p.duration  from requests r join postings p on r.postingId = p.id where p.userId = ?';
+	
 	var query = 'select * from postings where userId=?';
+	// var query = 'select p.location, p.date, p.duration, p.details from postings p where userId=?'
 	connection.query(query, [userId], (err, result) => {
 		if (err) {
 			console.log('error getting posting by userId');
@@ -144,6 +145,19 @@ var getUserPostings = function(userId, callback) {
 		}
 	});
 };
+
+var getRequestsByPostingId = function(postingId, callback) {
+	var query = 'select r.postingId, r.userId, r.status, p.title,p.location, p.date, p.duration  from requests r join postings p on r.postingId = p.id where r.postingId = ?';
+	connection.query(query, [postingId], (err, result) => {
+		if (err) {
+			console.log('error getting posting by userId');
+		} else {
+			console.log('success posting by userId:', result);
+			callback(result);
+		}
+	});
+};
+
 
 var getUserRequestPostings = function(userId, callback) {
 //title, loation, date, duration
