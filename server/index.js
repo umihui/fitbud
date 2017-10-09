@@ -87,11 +87,11 @@ function checkAuth(req, res, next) {
 
 
 
-app.listen(3001, function(err){
+app.listen(process.env.PORT || 3000, function(err){
 	if(err) {
 		console.log('cannot connect to the server');
 	}
-	console.log('listening on 3001');
+	console.log(`listening on ${process.env.PORT || 3000}`);
 })
 
 
