@@ -35,7 +35,7 @@ var routeLogout = require('../routes/logout');
 
 app.use(bodyParser.json()); 
 app.use(cookieParser());
-app.use(express.static('client'));
+app.use(express.static('build'));
 app.use(session({
     secret: 'secret',
     store: sessionStore,
