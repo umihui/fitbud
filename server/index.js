@@ -10,6 +10,10 @@ var db = require('../database/index.js');
 var flash = require('connect-flash');
 var LocalStrategy = require('passport-local').Strategy;
 
+console.log('db server', process.env.DBSERVER);
+console.log('db user', process.env.DBUSER);
+console.log('db password', process.env.DBPASSWORD);
+
 var options = {
   host: process.env.DBSERVER || 'localhost',
   port: 3306,
