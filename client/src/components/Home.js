@@ -1,5 +1,6 @@
 import React from 'react';
 import { Segment, Container, Header, Button, Icon, Transition } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
 class Home extends React.Component {
   state = {visible: false};
@@ -33,7 +34,7 @@ class Home extends React.Component {
                 content='Life is better with a buddy.'
                 style={{ fontSize: '1.7em', fontWeight: 'normal' }}
               />,
-              <Button primary size='huge'>
+              <Button as={Link} to='/signup' primary size='huge'>
                 Get Started
                 <Icon name='right arrow' />
               </Button>
