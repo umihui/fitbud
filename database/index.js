@@ -236,7 +236,8 @@ module.exports = {
 	getUserRequestPostings,
 	createRequest,
 	createPair,
-	getUserAcceptPostings
+	getUserAcceptPostings,
+	getRequestsByPostingId
 };
 
 
