@@ -42,7 +42,7 @@ router.get('/:id', (req, res) => {
 });
 
 router.get('/requests/:id', (req, res) => {
-  //console.log('workout req query', req.params.id);
+  console.log('workout req query', req.params.id);
   db.getRequestsByPostingId(req.params.id, (result) => {
     //console.log('result of the get for a single workout', result);
     res.status(200).json(result);
@@ -63,9 +63,9 @@ router.post('/:id', (req, res) => {
   });
 });
 
-router.patch('/:id/accept', (req, res) => {
-  //console.log('workout req query', req.params.id);
-  var id = req.user.id;
+router.patch('/accept/:id', (req, res) => {
+  console.log('workout req query', req.params.id);
+  var id = req.params.id;
   db.updateRequest(id, (result) => {
     //console.log('request created in the table', result);
     res.status(200).send('request accepted');

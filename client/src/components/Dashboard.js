@@ -13,18 +13,16 @@ class Dashboard extends Component {
 
     this.state = {
       view: 'my workouts',
-      data: []
+      data: [],
+      var: true
     };
 
     this.handleTabClick = this.handleTabClick.bind(this);
+    this.update = this.update.bind(this);
+    this.dataPull = this.dataPull.bind(this);
   }
 
-  handleTabClick(e, { name }) {
-    // console.log('I\'ve been clicked, and my name is: ' + name);
-    this.setState({ view: name });
-  };
-
-  componentDidMount() {
+  dataPull() {
     fetch('/dashboard', { credentials: "include" })
       .then(response => response.json())
       .then(response => {
@@ -33,6 +31,36 @@ class Dashboard extends Component {
       })
 
     console.log('getting data...')
+  }
+
+  update = (userid) => {
+    console.log(userid);
+    fetch(`/postings/accept/${userid}`, { method: "PATCH" })
+      .then(response => {
+        var newVar = !this.state.var;
+        this.setState({ var: newVar });
+        this.dataPull();
+      })
+
+    var id = this.props.postingId;
+
+    fetch(`/postings/requests/${id}`, { credentials: "include" })
+      .then(response => response.json())
+      .then(response => {
+        console.log('requests response #' + id, response);
+        this.setState({ requests: response })
+      })
+
+    console.log('getting posting requests');
+  }
+
+  handleTabClick(e, { name }) {
+    // console.log('I\'ve been clicked, and my name is: ' + name);
+    this.setState({ view: name });
+  };
+
+  componentDidMount() {
+    this.dataPull();
   }
 
   images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
@@ -49,9 +77,9 @@ class Dashboard extends Component {
 
         <DashNav handleClick={this.handleTabClick} view={this.state.view}/>
 
-        {this.state.view === 'my workouts' && (<Workouts data={this.state.data} user={this.user}/>)}
-        {this.state.view === 'my requests' && ([<Requests listings={listings} />])}
-        {this.state.view === 'my invites' && ([<Invites listings={listings} />])}
+        {this.state.view === 'my workouts' && (<Workouts data={this.state.data} user={this.user} update={this.update} dataPull={this.dataPull} />)}
+        {this.state.view === 'my requests' && ([<Requests />])}
+        {this.state.view === 'upcoming workouts' && ([<Invites />])}
         
       </Container>
     )

@@ -15,11 +15,11 @@ class Workouts extends Component {
           <Card>
             <Card.Content>
               <Image src={this.props.user} size='mini' floated='left'/>
-              <Card.Header>Username</Card.Header>
-              <Card.Meta>{listing.title}</Card.Meta>
-              <Card.Description>{`Schedule on ${listing.date} for ${listing.duration} hours`}</Card.Description>
+              <Card.Header>{listing.title}</Card.Header>
+              <Card.Meta>{listing.location}</Card.Meta>
+              <Card.Description>{`${listing.details} on ${listing.date} for ${listing.duration} hour(s)`}</Card.Description>
               <Card.Content extra>
-                <WorkoutDropdown />
+                <WorkoutDropdown postingId={listing.id} buddies={listing.buddies} update={this.props.update} dataPull={this.props.dataPull} />
               </Card.Content>
             </Card.Content>
           </Card>

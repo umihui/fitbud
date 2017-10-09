@@ -12,10 +12,7 @@ class ProfilePic extends Component {
         <Container style={{"textAlign": "center"}}>
           <List style={{margin: '10px'}}>
             <List.Item>
-              <List.Header>Username</List.Header>
-            </List.Item>
-            <List.Item>
-              Citytown, USA
+              <List.Header>My Dashboard</List.Header>
             </List.Item>
           </List>
         </Container>

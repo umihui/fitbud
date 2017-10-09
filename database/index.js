@@ -147,7 +147,7 @@ var getUserPostings = function(userId, callback) {
 };
 
 var getRequestsByPostingId = function(postingId, callback) {
-	var query = 'select r.postingId, r.userId, r.status, p.title,p.location, p.date, p.duration  from requests r join postings p on r.postingId = p.id where r.postingId = ?';
+	var query = 'select r.postingId, r.userId, r.status, p.title,p.location, p.date, p.duration, u.name  from requests r join postings p on r.postingId = p.id join users u  on r.userId = u.id where r.postingId = ?';
 	connection.query(query, [postingId], (err, result) => {
 		if (err) {
 			console.log('error getting posting by userId');
@@ -221,7 +221,7 @@ var updateRequest = function(userId, callback) {
 	});
 };
 
-//insert into postings (title, location, date, duration, details, meetup_spot, userId) values ('hike', 'sf' '2017-01-01 00:00:00', 1, 'hike in muir woods', 'parking', 1);
+//insert into postings (title, location, date, duration, details, meetup_spot, buddies, userId) values ('hike', 'sf', '2017-01-01 00:00:00', 1, 'hike in muir woods', 'parking', 2, 1);
 
 module.exports = {
 	checkUser,
@@ -237,7 +237,8 @@ module.exports = {
 	createRequest,
 	createPair,
 	getUserAcceptPostings,
-	getRequestsByPostingId
+	getRequestsByPostingId,
+	updateRequest
 };
 
 
