@@ -42,7 +42,7 @@ class WorkoutDropdown extends Component {
         <Accordion>
           <Accordion.Title active={this.state.activeIndex === 0} index={0} onClick={this.dropdown}>
             <Icon name='dropdown' />
-            Requests ({this.props.buddies})
+            Requests ({this.state.requests.length})
           </Accordion.Title>
           <Accordion.Content active={this.state.activeIndex === 0}>
             <DropdownRequest requests={this.state.requests} update={this.props.update} />
