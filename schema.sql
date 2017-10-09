@@ -48,7 +48,7 @@ CREATE TABLE requests (
   id INT NOT NULL AUTO_INCREMENT,
   postingId INT, 
   userId INT,
-  status ENUM('pending', 'accept', 'request'),
+  status ENUM('pending', 'accept', 'reject'),
   
   PRIMARY KEY (id),
   FOREIGN KEY (postingId) REFERENCES postings(id),
