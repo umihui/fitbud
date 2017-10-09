@@ -11,10 +11,10 @@ var flash = require('connect-flash');
 var LocalStrategy = require('passport-local').Strategy;
 
 var options = {
-  host: 'localhost',
+  host: process.env.DBSERVER || 'localhost',
   port: 3306,
-  user: 'root',
-  password: '',
+  user: process.env.DBUSER || 'root',
+  password: process.env.DBPASSWORD || '',
   database: 'fitbud',
   checkExpirationInterval: 60000,
   expiration: 3600000,
