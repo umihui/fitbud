@@ -36,12 +36,14 @@ class ListingModal extends Component {
             size='small'
             src={userImage}
             wrapped
+            shape='circular'
           />
 
           <Modal.Description>
             <Header>{listing.name}</Header>
             <p>Location: <span>{listing.location}</span></p>
             <p>Meetup point: <span>{listing.meetup_spot}</span></p>
+            <p>Date: <span>{new Date(listing.date).toDateString()}</span></p>
             <p>Duration: <span>{listing.duration} hours</span></p>
             <p>Details: <span>{listing.details}</span></p>
           </Modal.Description>
@@ -51,9 +53,9 @@ class ListingModal extends Component {
           <Button secondary onClick={hideListingModal}>
             Close <Icon name='close' />
           </Button>
-          <Button disabled={this.state.requestSent || listing.status !== null || user.id === listing.ownerId} primary onClick={this.sendRequest}>
+          {user && <Button disabled={this.state.requestSent || listing.status !== null || user.id === listing.ownerId} primary onClick={this.sendRequest}>
             { this.state.requestSent || listing.status ? 'Pending' : 'Request to join' } <Icon name='right chevron' />
-          </Button>
+          </Button>}
         </Modal.Actions>
       </Modal>
     )
