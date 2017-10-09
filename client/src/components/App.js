@@ -71,22 +71,24 @@ class App extends Component {
             <Route exact path='/' render={props => (
               <Home user={this.state.user} visible={this.state.visible} {...props} />
             )} />
+            
             <Route exact path='/listings' render={props => (
               <Listings {...props} user={this.state.user} />
             )} />
+
             <Route exact path='/login' render={props => (
               <Login authenticate={this.handleAuthenticated} {...props} />
             )} />
+
             <Route exact path='/signup' component={Signup} />
 
             <Route exact path='/dashboard' render={props => (
               <Dashboard listings={data} {...props} />
             )} />
+
             <Route exact path='/create' render={props => (
               <CreateListing {...props} />
             )} />
-
-            <Redirect from='/test' to='/listings' />
 
             <Route component={NoMatch} />
           </Switch>
