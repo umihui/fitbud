@@ -73,7 +73,7 @@ var findById = function(id, callback) {
 }
 
 var getWorkouts = function(id, callback) {
-	var query = 'select posting.*, requests.status \
+	var query = 'select posting.*, requests.status, (posting.buddies - 1) as modified_buddies \
                from (select users.name, users.id as ownerId, postings.* from postings inner join users on postings.userId=users.id) as posting \
                left outer join requests \
                on requests.postingId=posting.id \
