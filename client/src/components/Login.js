@@ -91,8 +91,7 @@ class Login extends Component {
           >
             <Grid.Column style={{ maxWidth: 500 }}>
               <Header as='h2' color='teal' textAlign='center'>
-                <Image src='logo.svg' />
-                {' '}Log-in to your account
+                Log in to your account
               </Header>
               <Form size='large' onSubmit={this.handleSubmit} error={this.state.formError}>
                 <Segment>
@@ -115,7 +114,7 @@ class Login extends Component {
                     onChange={this.handleInputChange}
                   />
 
-                  <Button loading={this.state.submit} color='teal' fluid size='large'>Login</Button>
+                  <Button loading={this.state.submit} color='teal' fluid size='large'>Log In</Button>
                 </Segment>
                 <Message error 
                          header={this.state.errorHeader}

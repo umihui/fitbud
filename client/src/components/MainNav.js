@@ -17,7 +17,7 @@ class MainNav extends Component {
       <Menu secondary size='huge' style={{marginBottom: 0}}>
         <Menu.Item exact name='home' as={NavLink} to='/' />
         <Menu.Item name='listings' as={NavLink} to='/listings' />
-        <Menu.Item name='about' as={NavLink} to='/testing' />
+        <Menu.Item name='about' as={NavLink} to='/about' />
         <Menu.Menu position='right'>
           <Menu.Item>
             <Input icon='search' placeholder='Search...' />

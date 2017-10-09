@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Cookies from 'universal-cookie';                                                                                                                                      
 import MainNav from './MainNav';
 import Home from './Home';
+import About from './About';
 import Login from './Login';
 import Signup from './Signup';
 import Listings from './Listings';
@@ -75,6 +76,8 @@ class App extends Component {
             <Route exact path='/listings' render={props => (
               <Listings {...props} user={this.state.user} />
             )} />
+
+            <Route exact path='/about' component={About} />
 
             <Route exact path='/login' render={props => (
               <Login authenticate={this.handleAuthenticated} {...props} />

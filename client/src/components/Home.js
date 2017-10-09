@@ -26,12 +26,12 @@ class Home extends React.Component {
             {!this.props.user && ([
               <Header
                 as='h1'
-                content='Fitbud'
+                content='FitBud'
                 style={{ fontSize: '4em', fontWeight: 'normal', marginBottom: 0, marginTop: '3em' }}
               />,
               <Header
                 as='h2'
-                content='Life is better with a buddy.'
+                content='Fitness is better with a buddy.'
                 style={{ fontSize: '1.7em', fontWeight: 'normal' }}
               />,
               <Button as={Link} to='/signup' primary size='huge'>
