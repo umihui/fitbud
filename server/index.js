@@ -83,7 +83,7 @@ app.get('/login', (req, res) => {
   res.end();
 });
 
-app.get('/auth/facebook', passport.authenticate('facebook',{display:'popup'}));
+app.get('/auth/facebook', passport.authenticate('facebook'));
 
 app.get(
   '/auth/facebook/callback',
@@ -94,8 +94,8 @@ app.get(
 	  }
   ),
   (req, res, next) => {
-    console.log("REQEUST", req);
-    res.json(req.user);
+    console.log("REQEUST UMIUMIUMI", req);
+    res.redirect(res.headers.location);
   }
 );
 

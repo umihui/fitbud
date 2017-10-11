@@ -81,9 +81,6 @@ var findById = function(id, callback) {
 			callback(null, dbResultArr[0]);
 		}
 	})
-<<<<<<< HEAD
-
-=======
 }
 
 var findByFB = function(fb_id, callback) {
@@ -97,7 +94,7 @@ var findByFB = function(fb_id, callback) {
 			callback(null, dbResultArr[0]);
 		}
 	})
->>>>>>> make passport for facebook, working on front end
+
 }
 
 var getWorkouts = function(id, callback) {
