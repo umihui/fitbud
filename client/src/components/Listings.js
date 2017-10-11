@@ -67,7 +67,6 @@ class Listings extends Component {
               <ListingCard listing={listing} showListingModal={this.showListingModal.bind(this)}
                            user={'/' + this.images[Math.floor(Math.random() * this.images.length)]}
               />
-
             ))}
           </Card.Group>
         </Container>
