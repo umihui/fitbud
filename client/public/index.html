@@ -27,6 +27,23 @@
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
+
+    <script src="https://www.gstatic.com/firebasejs/4.5.0/firebase.js"></script>
+    <script>
+    // Initialize Firebase
+    const config = {
+      apiKey: "AIzaSyAo5s-QPerxfgkN6FkST4O2Lg12LdY-0as",
+      authDomain: "fitbud-33534.firebaseapp.com",
+      databaseURL: "https://fitbud-33534.firebaseio.com",
+      projectId: "fitbud-33534",
+      storageBucket: "",
+      messagingSenderId: "659046601111"
+    };
+    firebase.initializeApp(config);
+    window.firebase = firebase;
+    </script>
+
+
     <div id="root"></div>
     <!--
       This HTML file is a template.

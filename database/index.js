@@ -54,12 +54,12 @@ var comparePassword = function(passwordEntered, hash, callback) {
 		if (err) throw err;
 		callback(null, isMatch)
 	});
-	
+
 };
 
 var findById = function(id, callback) {
 	console.log('database finding by id');
-	
+
 	var query = 'SELECT * from users WHERE id = ?';
 	connection.query(query, [id], function(err, dbResultArr){
 		if (err) {
@@ -69,7 +69,7 @@ var findById = function(id, callback) {
 			callback(null, dbResultArr[0]);
 		}
 	})
-	
+
 }
 
 var getWorkouts = function(id, callback) {
@@ -131,9 +131,9 @@ var createProfile = function(profileObj, callback) {
 
 
 
-// send back user requests (accepts and pendings) by postings id 
+// send back user requests (accepts and pendings) by postings id
 var getUserPostings = function(userId, callback) {
-	
+
 	var query = 'select * from postings where userId=?';
 	// var query = 'select p.location, p.date, p.duration, p.details from postings p where userId=?'
 	connection.query(query, [userId], (err, result) => {
@@ -210,7 +210,7 @@ var getUserAcceptPostings = function(userId, callback) {
 
 
 var updateRequest = function(userId, callback) {
-	var query = "update requests set status = ? where userId=?";
+	var query = "UPDATE requests SET STATUS = ? WHERE userId=?";
 	connection.query(query, ['accept', userId], (err, result) => {
 		if (err) {
 			console.log('error updating reqest');
@@ -220,6 +220,45 @@ var updateRequest = function(userId, callback) {
 		}
 	});
 };
+
+var createFriendsRequest = function(originator, receiver, callback) {
+  var query = "INSERT INTO friends (originator, receiver, status) VALUES (?, ?, ?)";
+  connection.query(query, [originator, receiver, 'pending'], (err, result) => {
+    if (err) {
+      console.log('error updating friend request');
+    } else {
+      console.log('created friends request!', result);
+      callback(result);
+    }
+  })
+}
+
+var updateFriendsRequest = function(originator, receiver, callback) {
+  var query = "UPDATE friends SET STATUS=? WHERE (originator=? AND receiver=?)";
+  connection.query(query, ['accept', originator, receiver], (err, result) => {
+    if (err) {
+      console.log('error updating friend request');
+    } else {
+      console.log('updated friends request to accept!', result);
+      callback(result);
+    }
+  })
+}
+
+var getFriendsList = function(userId, callback) {
+  var query = `SELECT * FROM users INNER JOIN (SELECT receiver AS id FROM friends
+               WHERE (originator=? AND status='accept') UNION ALL SELECT originator
+               FROM friends WHERE (receiver=? AND status='accept')) AS allFriends
+               WHERE users.id = allFriends.id`;
+  connection.query(query, [userId, userId], (err, result) => {
+    if (err) {
+			console.log('error getting friends list');
+		} else {
+			console.log('friends list retrieved', result);
+			callback(result.allFriends);
+		}
+  })
+}
 
 //insert into postings (title, location, date, duration, details, meetup_spot, buddies, userId) values ('hike', 'sf', '2017-01-01 00:00:00', 1, 'hike in muir woods', 'parking', 2, 1);
 
@@ -238,8 +277,8 @@ module.exports = {
 	createPair,
 	getUserAcceptPostings,
 	getRequestsByPostingId,
-	updateRequest
+	updateRequest,
+  createFriendsRequest,
+  updateFriendsRequest,
+  getFriendsList
 };
-
-
-
