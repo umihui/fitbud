@@ -3,6 +3,22 @@ var router = express.Router();
 var db = require('../database/index.js');
 
 
+const multer  = require('multer')
+
+const storage = multer.diskStorage({
+  destination: './database/files',
+  filename(req, file, cb) {
+    var fname = req.user.name;
+    console.log(file.mimetype);
+    if(file.mimetype === 'image/jpeg') {
+      fname += '.jpg';
+    } else if (file.mimtype === 'image/png') {
+      fname += '.png';
+    }
+    cb(null, fname);
+  },
+});
+const upload = multer({ storage });
 
 router.get('/', (req, res) => {
   // res.send('RENDER profile page');
@@ -29,6 +45,17 @@ router.post('/', (req, res) => {
     
     res.redirect('/postings');
   });
+});
+
+router.post('/file', upload.single('file'), (req, res) => {
+  console.log('here');
+  console.log('file body:', req.body.name, req.body.filename);
+  console.log('file file:', req.file);
+  // db.saveImageInfo();
+  // models.saveFileInformation(req.body.username, req.body.roomname, req.file.filename)
+  //   .then(data => {
+  //     res.status(201).send();
+  //   });
 });
 
 module.exports = router;
