@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Card, Container, Icon, Transition } from 'semantic-ui-react';
+import { Card, Container, Icon, Transition, Grid, Rail } from 'semantic-ui-react';
 import ListingCard from './ListingCard.js';
 import ListingModal from './ListingModal.js';
+import Messaging from './Messaging.js';
+
 
 class Listings extends Component {
   images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
@@ -41,7 +43,7 @@ class Listings extends Component {
   }
 
   hideListingModal = () => {
-    this.updateListings(); 
+    this.updateListings();
 
     this.setState({
       showModal: false,
@@ -49,8 +51,10 @@ class Listings extends Component {
     })
   }
 
+  handleContextRef = contextRef => this.setState({ contextRef })
+
   render() {
-    var { listings, showModal, selectedListing } = this.state;
+    var { listings, showModal, selectedListing, contextRef } = this.state;
     console.log(listings);
     console.log(this.images);
 
@@ -61,7 +65,7 @@ class Listings extends Component {
             {listings.map(listing => (
 
               <ListingCard listing={listing} showListingModal={this.showListingModal.bind(this)}
-                           user={'/' + this.images[Math.floor(Math.random() * this.images.length)]} 
+                           user={'/' + this.images[Math.floor(Math.random() * this.images.length)]}
               />
 
             ))}
@@ -70,12 +74,21 @@ class Listings extends Component {
       </Transition>,
       <Container>
         {this.state.showModal && (
-          <ListingModal listing={selectedListing} open={this.state.showModal} 
-                        hideListingModal={this.hideListingModal} 
+          <ListingModal listing={selectedListing} open={this.state.showModal}
+                        hideListingModal={this.hideListingModal}
                         user={this.props.user}
                         userImage={'/' + this.images[Math.floor(Math.random() * this.images.length)]}  />
         )}
-      </Container>]
+      </Container>,
+      <Grid centered columns={3}>
+        <Grid.Column>
+          <div ref={this.handleContextRef}>
+            <Rail position='right'>
+              <Messaging context={this.contextRef}/>
+            </Rail>
+          </div>
+        </Grid.Column>
+      </Grid>]
     )
   }
 }
