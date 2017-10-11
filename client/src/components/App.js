@@ -98,7 +98,7 @@ class App extends Component {
               <CreateListing {...props} />
             )} />
 
-            <Route component={NoMatch} />
+
           </Switch>
         </div>
       </Router>

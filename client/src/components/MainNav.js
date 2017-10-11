@@ -5,6 +5,7 @@ import { NavLink, Link, Redirect } from 'react-router-dom';
 import _ from 'lodash';
 import $ from 'jquery';
 
+
 class MainNav extends Component {
   constructor(props) {
     super(props);
@@ -34,9 +35,9 @@ class MainNav extends Component {
   handleResultSelect = (e, { result }) => console.log(result);
 
   handleSearchChange = (e, { value }) => {
-    this.setState({ 
-      isLoading: true, 
-      value 
+    this.setState({
+      isLoading: true,
+      value
     });
 
     this.debouncedSearch(value)
@@ -87,22 +88,22 @@ class MainNav extends Component {
           </Menu.Item>
 
           {!this.props.isAuthed && ([
-            <Menu.Item style={{paddingLeft: '0px'}}> 
+            <Menu.Item style={{paddingLeft: '0px'}}>
               {/*<Button content='Log In' onClick={this.handleLoginClick} /> */}
               {/*<LoginButtonModal authenticate={this.props.authenticate}/> */}
               <Button as={Link} to='/login' content='Log In' />
             </Menu.Item>,
-            <Menu.Item style={{paddingLeft: '0px'}}> 
-              <Button as={Link} to='/signup' primary content='Sign Up' />
+            <Menu.Item style={{paddingLeft: '0px'}}>
+              <Button as={Link} to='/signup' color='teal' primary content='Sign Up' />
             </Menu.Item>
           ])}
 
           {this.props.isAuthed && ([
-            <Menu.Item style={{paddingLeft: '0px'}}> 
+            <Menu.Item style={{paddingLeft: '0px'}}>
               <Button as={Link} to='/create' primary content='Create Listing' />
             </Menu.Item>,
-            <Dropdown text={this.props.user.name} className='link item' pointing>          
-              <Dropdown.Menu> 
+            <Dropdown text={this.props.user.name} className='link item' pointing>
+              <Dropdown.Menu>
                 <Dropdown.Item as={Link} to='/dashboard'>Dashboard</Dropdown.Item>
                 <Dropdown.Item>Profile</Dropdown.Item>
                 <Dropdown.Item>Referral</Dropdown.Item>
@@ -118,4 +119,3 @@ class MainNav extends Component {
 }
 
 export default MainNav;
-

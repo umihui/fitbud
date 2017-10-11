@@ -17,6 +17,18 @@ connection.connect(function(err){
 	}
 });
 
+var insertFBuser = function(userObj, cb) {
+  var query = 'INSERT INTO users (fb_id, name, email) values (?, ?, ?)';
+  var values = [userObj.id, userObj.name, userObj.email];
+  connection.query(query, values,function(err, result){
+    if (err) {
+      console.log('error inserting FBuser');
+    } else {
+      cb(result);
+    }
+  });
+}
+
 var createUser = function(userObj) {
 	var query = 'INSERT INTO users (name, email, password) values (?, ?, ?)';
 	bcrypt.genSalt(10, function(err, salt) {
@@ -37,9 +49,9 @@ var checkUser = function(username, callback) {
 	var query = 'SELECT * from users WHERE email = ?';
 	connection.query(query, [username], function(err, dbUserResult){
 		if (err) {
-			console.log('error when finding user', err);
+			//console.log('error when finding user', err);
 		} else{
-			console.log('result of finding a user', dbUserResult);
+			//console.log('result of finding a user', dbUserResult);
 			if (dbUserResult.length === 0) {
 				callback(err, null);
 			}
@@ -69,7 +81,23 @@ var findById = function(id, callback) {
 			callback(null, dbResultArr[0]);
 		}
 	})
+<<<<<<< HEAD
 
+=======
+}
+
+var findByFB = function(fb_id, callback) {
+
+	var query = 'SELECT * from users WHERE fb_id=?';
+	connection.query(query, [option], function(err, dbResultArr){
+		if (err) {
+			console.log('error when finding ');
+		} else {
+			console.log('result of finding a ', dbResultArr[0]);
+			callback(null, dbResultArr[0]);
+		}
+	})
+>>>>>>> make passport for facebook, working on front end
 }
 
 var getWorkouts = function(id, callback) {
@@ -319,6 +347,8 @@ var updateProfilePic = function(username) {
 //insert into postings (title, location, date, duration, details, meetup_spot, buddies, userId) values ('hike', 'sf', '2017-01-01 00:00:00', 1, 'hike in muir woods', 'parking', 2, 1);
 
 module.exports = {
+  findByFB,
+  insertFBuser,
 	checkUser,
 	comparePassword,
 	createUser,

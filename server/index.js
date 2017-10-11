@@ -8,11 +8,7 @@ var MYSQLStore = require('express-mysql-session')(session);
 var passport = require('passport');
 var db = require('../database/index.js');
 var flash = require('connect-flash');
-var LocalStrategy = require('passport-local').Strategy;
-
-console.log('db server', process.env.DBSERVER);
-console.log('db user', process.env.DBUSER);
-console.log('db password', process.env.DBPASSWORD);
+var cors = require('cors')
 
 var options = {
   host: process.env.DBSERVER || 'localhost',
@@ -24,13 +20,17 @@ var options = {
   expiration: 3600000,
 }
 
+require('../config/passport.js')(passport);
+
 var sessionStore = new MYSQLStore(options);
 
 var app = express();
 app.use(morgan('dev'));
+app.use(cors());
 
 var routeRegister = require('../routes/register');
-var routeLogin = require('../routes/login');
+// var routeLogin = require('../routes/login');
+// var routeFBLogin = require('../routes/fblogin');
 var routePostings = require('../routes/postings');
 var routeProfile = require('../routes/profile');
 var routeWorkout = require('../routes/workout');
@@ -39,7 +39,7 @@ var routeLogout = require('../routes/logout');
 var routeSearch = require('../routes/search');
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json()); 
+app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static('client/build'));
 app.use(session({
@@ -63,8 +63,42 @@ app.use(function (req, res, next) {
 })
 
 app.use('/register', routeRegister);
-app.use('/login', routeLogin);
+
 app.use('/postings', routePostings);
+
+app.post('/login',
+  passport.authenticate('local', {failureFlash: true, successFlash: true}),
+
+
+  function(req, res) {
+    // console.log('request inside login:', req)
+    //console.log('cookies', req.cookies);
+    // res.redirect('/dashboard');
+    console.log('auth user:', req.user)
+    res.json(req.user);
+});
+
+app.get('/login', (req, res) => {
+  //console.log('login get')
+  res.end();
+});
+
+app.get('/auth/facebook', passport.authenticate('facebook',{display:'popup'}));
+
+app.get(
+  '/auth/facebook/callback',
+	passport.authenticate(
+    'facebook',
+    {
+		  failureRedirect : '/'
+	  }
+  ),
+  (req, res, next) => {
+    console.log("REQEUST", req);
+    res.json(req.user);
+  }
+);
+
 app.use('/search', routeSearch);
 
 app.use(checkAuth);
@@ -78,7 +112,7 @@ app.use('/logout', routeLogout);
 // middleware function to check if this is one of the protected routes
 
 function checkAuth(req, res, next) {
-  if (req.isAuthenticated()) { //check if it's an authenticated route 
+  if (req.isAuthenticated()) { //check if it's an authenticated route
     next();
   }
   else {
@@ -96,5 +130,5 @@ app.listen(process.env.PORT || 3001, function(err){
 })
 
 
-// express session 
+// express session
 // express validator
