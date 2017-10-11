@@ -280,5 +280,5 @@ module.exports = {
 	updateRequest,
   createFriendsRequest,
   updateFriendsRequest,
-  getFriends
+  getFriendsList
 };
