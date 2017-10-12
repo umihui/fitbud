@@ -45,6 +45,11 @@ class App extends Component {
   }
 
   handleAuthenticated = (user) => {
+    if(!user.photo){
+      var defaultImg = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
+      var usrImgPath = '/' + defaultImg[Math.floor(Math.random() * defaultImg.length)];
+      user.photo = usrImgPath;
+    }
     this.setState({
       authenticated: true,
       user: user
