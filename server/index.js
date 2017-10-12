@@ -42,7 +42,7 @@ app.use(cookieParser());
 app.use(express.static('build'));
 app.use(session({
     secret: 'secret',
-    store: sessionStore,
+    // store: sessionStore,
     saveUninitialized: false,
     resave: false,
     cookie: { maxAge: 3600000}
@@ -52,11 +52,11 @@ app.use(passport.session());
 app.use(flash());
 
 app.use(function (req, res, next) {
-  console.log('body', req.body);
-  console.log('session', req.session);
-  console.log('isAuth?', req.isAuthenticated());
-  console.log('req user:', req.user);
-  console.log('cookie', req.cookies);
+  // console.log('body', req.body);
+  // console.log('session', req.session);
+  // console.log('isAuth?', req.isAuthenticated());
+  // console.log('req user:', req.user);
+  // console.log('cookie', req.cookies);
   next();
 })
 

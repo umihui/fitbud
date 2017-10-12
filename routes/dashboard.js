@@ -8,9 +8,9 @@ var db = require('../database/index.js');
 
 router.get('/', (req, res) => {
   var id = req.session.passport.user;
-  console.log('user id>>>>>>>>>>>:', id);
+  // console.log('user id>>>>>>>>>>>:', id);
   db.getUserPostings(id, (dbResult) => {
-    console.log('database RESULTS>>:', dbResult);
+    // console.log('database RESULTS>>:', dbResult);
     res.send(dbResult);
   })
 })

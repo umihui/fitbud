@@ -9,9 +9,9 @@ var flash = require('connect-flash');
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
-    console.log('username and password:', username, password);
+    // console.log('username and password:', username, password);
     db.checkUser(username, function (err, dbUserResult) { 
-      console.log('user inside passport:', dbUserResult)
+      // console.log('user inside passport:', dbUserResult)
       if (err) { return done(err); }
       if (!dbUserResult) { return done(null, false); }
       db.comparePassword(password, dbUserResult[0].password, function(err, isMatch){
@@ -41,7 +41,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-  console.log('in deserialize', id);
+  // console.log('in deserialize', id);
   db.findById(id, function(err, user) {
   // console.log('user in deserialize', user);
     done(err, user);
@@ -61,7 +61,16 @@ router.post('/',
     // console.log('request inside login:', req)
     //console.log('cookies', req.cookies);
     // res.redirect('/dashboard');
-    console.log('auth user:', req.user)
+    // console.log('auth user:', req.user)
+
+    // db.getSubList(req.user.id)
+    //   .then(result => {
+    //     console.log('result of getSubList',result);
+    //     res.json(req.user);
+    //   }).catch(err => {
+    //     console.log(err);
+    //   });
+    
     res.json(req.user);
 });
 

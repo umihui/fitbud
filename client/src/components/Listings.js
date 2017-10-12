@@ -2,8 +2,12 @@ import React, { Component } from 'react';
 import { Card, Container, Icon, Transition, Grid, Rail } from 'semantic-ui-react';
 import ListingCard from './ListingCard.js';
 import ListingModal from './ListingModal.js';
+<<<<<<< HEAD
 import Messaging from './Messaging.js';
 
+=======
+import ListingNav from './ListingNav.jsx';
+>>>>>>> add database schema and query for subscription
 
 class Listings extends Component {
   images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
@@ -58,9 +62,12 @@ class Listings extends Component {
     console.log(listings);
     console.log(this.images);
 
-    return (
-      [<Transition visible={this.state.visible} duration={1000} animation='fade'>
+    return ([
+      
+      <Transition visible={this.state.visible} duration={1000} animation='fade'>
+
         <Container style={{marginTop: '20px'}}>
+          <ListingNav user={this.props.user}/>
           <Card.Group itemsPerRow={3}>
             {listings.map(listing => (
 

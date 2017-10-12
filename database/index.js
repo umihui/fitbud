@@ -5,7 +5,7 @@ var bcrypt = require('bcrypt');
 var connection = mysql.createConnection({
   host: process.env.DBSERVER || 'localhost',
   user: process.env.DBUSER || 'root',
-  password: process.env.DBPASSWORD || '',
+  password: process.env.DBPASSWORD || 'root',
   database : 'fitbud'
 });
 
@@ -258,6 +258,18 @@ var getFriendsList = function(userId, callback) {
 			callback(result.allFriends);
 		}
   })
+
+var getSubList = function(userId) {
+	var query = "SELECT publisherId FROM subscription WHERE subscriberId=?";
+	return new Promise((resolve, reject) => {
+		connection.query(query, [userId], (err, result) => {
+			if(err) {
+				reject(err);
+			} else {
+				resolve(result);
+			}
+		});
+	});
 }
 
 //insert into postings (title, location, date, duration, details, meetup_spot, buddies, userId) values ('hike', 'sf', '2017-01-01 00:00:00', 1, 'hike in muir woods', 'parking', 2, 1);
@@ -281,4 +293,5 @@ module.exports = {
   createFriendsRequest,
   updateFriendsRequest,
   getFriendsList
+	getSubList,
 };
