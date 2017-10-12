@@ -27,21 +27,20 @@ class Messaging extends Component {
     this.setState({visible: true})
   }
 
+  initMessages = () => {
+    // let userId = this.firebase.auth().currentUser.uid;
+    this.database.ref('chats/').once('value').then(snapshot => {
+      // var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
+      this.setState({messages: snapshot.val()});
+      this.setState({sendDisabled: false});
+    });
+  }
+
   writeMessage = (userId, name, message) => {
     this.database.ref('chats/' + userId).set({
       userId: userId,
       userName: name,
       message: message
-    });
-  }
-
-  initMessages = () => {
-    // let userId = this.firebase.auth().currentUser.uid;
-    this.database.ref('chats/').once('value').then(snapshot => {
-      // var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
-      console.log("here>>>>>");
-      this.setState({messages: snapshot.val()});
-      this.setState({sendDisabled: false});
     });
   }
 
@@ -60,7 +59,7 @@ class Messaging extends Component {
   }
 
   handleSubmit = () => {
-    this.writeMessage(9, 'Victor', this.state.input);
+    this.writeMessage(10, 'Victor', this.state.input);
   }
 
   render() {

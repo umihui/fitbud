@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Input } from 'formsy-semantic-ui-react';
-import { Container, Grid, Header, Image, Segment, Button, Transition, Label, Message } from 'semantic-ui-react';
+import { Container, Grid, Header, Image, Segment, Button, Divider, Icon, Transition, Label, Message } from 'semantic-ui-react';
 import { Redirect, Link } from 'react-router-dom';
 
 const styles = {
@@ -28,10 +28,48 @@ class Signup extends Component {
     console.log(this.props);
   }
 
+  componentWillMount() {
+    window.firebase.auth().getRedirectResult().then((result) => {
+      if (result.credential) {
+        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+        var token = result.credential.accessToken;
+        console.log(token);
+      }
+      // The signed-in user info.
+      var user = result.user;
+      console.log(user);
+      var formData = {
+        name: user.displayName,
+        password: user.uid,
+        passwordConfirm: user.uid,
+        username: user.email
+      }
+      // profilePicture: user.photoURL
+
+      this.onValidSubmit(formData);
+    }).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+      // ...
+    });
+  }
+
   componentDidMount() {
     this.setState({
       visible: true
     });
+  }
+
+  fbRedirect = (e) => {
+    e.preventDefault();
+    var firebase = window.firebase;
+    var provider = new firebase.auth.FacebookAuthProvider();
+    firebase.auth().signInWithRedirect(provider);
   }
 
   onValidSubmit = (formData) => {
@@ -173,8 +211,12 @@ class Signup extends Component {
                   { passwordInput }
                   { passwordConfirmInput }
                 </Form.Group>
-                <Button loading={this.state.submit} color='teal' size='large' fluid>CREATE AN ACCOUNT</Button>                                                                                                                                                          
-                <Message error 
+                <Button loading={this.state.submit} color='teal' size='large' fluid>Create Account</Button>
+                <Divider horizontal>Or</Divider>
+                <Button onClick={this.fbRedirect} color='facebook' fluid size='large'>
+                  <Icon name='facebook square' />Signup with Facebook
+                </Button>
+                <Message error
                          header={this.state.errorHeader}
                          content={this.state.errorContent}
                 />
