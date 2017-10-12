@@ -55,13 +55,15 @@ class ProfilePic extends Component {
         <Image onError={this.noPic} onClick={this.clickImg} src={this.props.user} size='small' shape='circular' centered style={{margin: 'auto'}} />
         <input ref={input => this.inputElement = input} id="fileInput" style={{visibility: 'hidden'}} type="file" onChange={this.setFile} accept="image/png, image/jpeg"/>
 
-      
+
         <Container style={{"textAlign": "center"}}>
-          <List style={{margin: '10px'}}>
-            <List.Item>
-              <List.Header>My Dashboard</List.Header>
-            </List.Item>
-          </List>
+          { u ? <h2 class="ui center aligned icon header" style={{margin: '10px'}}>
+
+            {u.name}
+          </h2> :
+          <h2></h2>
+          }
+
         </Container>
 
       </Container>
@@ -70,5 +72,3 @@ class ProfilePic extends Component {
 }
 
 export default ProfilePic;
-
-

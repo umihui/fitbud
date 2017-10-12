@@ -102,10 +102,6 @@ app.get(
 app.use('/search', routeSearch);
 app.use(express.static('client/build'));
 
-app.use(function(req,res,next) {
-  console.log('YU TEST!!!');
-  next();
-})
 app.use(checkAuth);
 
 // Below are the protected routes

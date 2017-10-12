@@ -5,7 +5,7 @@ var bcrypt = require('bcrypt');
 var connection = mysql.createConnection({
   host: process.env.DBSERVER || 'localhost',
   user: process.env.DBUSER || 'root',
-  password: process.env.DBPASSWORD || 'root',
+  password: process.env.DBPASSWORD || '',
   database : 'fitbud'
 });
 
@@ -369,7 +369,3 @@ module.exports = {
 	serachPostings,
 	updateProfilePic,
 };
-
-
-
-

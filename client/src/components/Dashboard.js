@@ -69,18 +69,17 @@ class Dashboard extends Component {
 
   render() {
     var { listings } = this.props;
-
     return (
       <Container style={{marginTop: '20px'}}>
 
         <ProfilePic user={(this.props.user && this.props.user.photo) || ''} default={this.user}/>
 
-        <DashNav handleClick={this.handleTabClick} view={this.state.view}/>
+        <DashNav handleClick={this.handleTabClick} view={this.state.view} />
 
         {this.state.view === 'my workouts' && (<Workouts data={this.state.data} user={this.user} update={this.update} dataPull={this.dataPull} />)}
         {this.state.view === 'my requests' && ([<Requests />])}
         {this.state.view === 'upcoming workouts' && ([<Invites />])}
-        
+
       </Container>
     )
   }
