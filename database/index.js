@@ -94,7 +94,6 @@ var findByFB = function(fb_id, callback) {
 			callback(null, dbResultArr[0]);
 		}
 	})
-
 }
 
 var getWorkouts = function(id, callback) {

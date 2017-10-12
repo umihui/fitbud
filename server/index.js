@@ -20,7 +20,6 @@ var options = {
   expiration: 3600000,
 }
 
-require('../config/passport.js')(passport);
 
 var sessionStore = new MYSQLStore(options);
 
@@ -52,6 +51,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+require('../config/passport.js')(passport);
 
 app.use(function (req, res, next) {
   // console.log('body', req.body);
