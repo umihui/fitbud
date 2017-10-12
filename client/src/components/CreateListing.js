@@ -11,12 +11,13 @@ class CreateListing extends Component {
 
     this.state = {
       visible: false,
-      friendsStatus: false,
       submit: false,
       formData: null,
-      privte: false,
-      event: [1,2,3,4,5,9],
+      private: false,
+      event: [1,2,3,4,5,9,'a'],
       currentEvent: 1,
+      currentLevel: 'Intermediate',
+      level: ['Beginner','Intermediate','Advanced']
     }
 
     this.options = _.range(1, 11).map(num => {
@@ -35,7 +36,7 @@ class CreateListing extends Component {
   }
 
   toggleVisibility = () => {
-    this.setState({friendsStatus: !this.state.friendsStatus});
+    this.setState({private: !this.state.private});
   }
 
   changeEvent = (index) => {
@@ -44,15 +45,15 @@ class CreateListing extends Component {
 
   handleLevelClick = (e) => {
     e.preventDefault();
-    console.log('event:',e);
+    this.setState({currentLevel: e.target.innerHTML});
   }
 
   onValidSubmit = (formData) => {
     this.setState({submit: true});
+    formData.currentLevel = this.state.currentLevel;
+    formData.currentEvent = this.state.currentEvent;
+    formData.private = this.state.private;
     formData.date = new Date(formData.date).toISOString().slice(0, 19).replace('T', ' ');
-
-    // console.log('create postings formdata', formData);
-
     var options = {
       headers: {
         'Content-Type': 'application/json'
@@ -202,27 +203,30 @@ class CreateListing extends Component {
 
     const toggleInput = (
       <div style={{'paddingBottom':'20px'}}>
-        <Radio  slider label={this.state.friendsStatus ? 'Public' : 'Private'} onChange={this.toggleVisibility} />
+        <Radio  slider label={this.state.private ? 'Public' : 'Private'} onChange={this.toggleVisibility} />
       </div>
     )
 
     const sectionInput = (
-      <div className='inline' >
-      { this.state.event.map((ele,index) => 
-        <img
-          key={index} 
-          height="42" 
-          width="42" 
-          src={
-            this.state.currentEvent !== index ?
-            `${ele}.svg`
-            : `${ele}_on.svg`
-          } 
-          style={{'marginLeft': '28px'}}
-          onClick={this.changeEvent.bind(this,index)}
-        ></img>
-      )}
-      </div>
+      <Grid style={{'padding':'10px'}}>
+        <Grid.Row columns={this.state.event.length}>
+          { this.state.event.map((ele,index) => 
+            <Grid.Column>
+              <Image
+                key={index} 
+                height="36" 
+                width="36" 
+                src={
+                  this.state.currentEvent !== index ?
+                  `${ele}.svg`
+                  : `${ele}_on.svg`
+                } 
+                onClick={this.changeEvent.bind(this,index)}
+              />
+            </Grid.Column>
+          )}
+        </Grid.Row>
+      </Grid>
     )
 
 
@@ -281,14 +285,21 @@ class CreateListing extends Component {
                   { durationInput }
                   { buddiesInput }
                 </Form.Group >
-                <div style={{'padding':'20px'}}>
-                   <Button.Group onClick={this.handleLevelClick}>
-                    <Button id='1'>Beginner</Button>
-                    <Button id='2'>Intermediate</Button>
-                    <Button id='3'>Advanced</Button>
-                  </Button.Group>
-                </div>
-                { toggleInput }
+                <Segment attached='bottom'>
+                  { sectionInput }
+                  <div style={{'padding':'20px'}}>
+                     <Button.Group >
+                      { 
+                        this.state.level.map((ele,index) =>
+                          this.state.currentLevel === ele ?
+                          <Button key={index} passive onClick={this.handleLevelClick} style={{'background-color':'gray','color':'white'}}>{ele}</Button>
+                          : <Button key={index} onClick={this.handleLevelClick}>{ele}</Button>
+                        )
+                      }
+                    </Button.Group>
+                  </div>
+                  { toggleInput }
+                </Segment>
                 { detailsInput }
                 <Button loading={this.state.submit} color='teal' size='large' fluid>CREATE LISTING</Button> 
                 <Message error 
@@ -299,13 +310,13 @@ class CreateListing extends Component {
               </Segment>
             </Grid.Column>
             <Grid.Column width={3}>
-                <Transition visible={this.state.friendsStatus} animation='scale' duration={1000}>
-                  <div>
-                      <Header as='h2' color='purple' textAlign='center'>
+                <Transition visible={this.state.private} animation='slide right' duration={200}>
+                  <div style={{'paddingTop':'50px'}}>
+                    <Segment raised>
+                      <Header as='h3' color='teal' textAlign='center'>
                         Friends List
                       </Header>
-                    <Segment raised>
-                      <div display='hidden' style={{'height':'485px','overflowY': 'scroll', 'overflowX': 'hidden'}}>
+                      <div display='hidden' style={{'height':'565px','overflowY': 'scroll', 'overflowX': 'hidden'}}>
                       </div>
                     </Segment>
                   </div>

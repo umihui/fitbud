@@ -6,7 +6,8 @@ class ListingModal extends Component {
     super(props);
 
     this.state = {
-      requestSent: false
+      requestSent: false,
+      event: [1,2,3,4,5,9,'a'],
     }
   }
 

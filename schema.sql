@@ -50,8 +50,9 @@ CREATE TABLE postings (
   meetup_spot varchar(255) NOT NULL,
   buddies INT NOT NULL,
   userId INT,
-  private boolean NOT NULL,
+  private boolean,
   currentEvent INT,
+  currentLevel ENUM('Beginner','Intermediate','Advanced'),
   
   PRIMARY KEY (id),
   FOREIGN KEY (userId) REFERENCES users(id)

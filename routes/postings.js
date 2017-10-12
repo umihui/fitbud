@@ -24,7 +24,10 @@ router.post('/', (req, res) => {
     details: req.body.details, 
     meetup_spot: req.body.meetup_point, 
     buddies: req.body.buddies,
-    userId: req.user.id
+    userId: req.user.id,
+    private: req.body.private,
+    currentEvent: req.body.currentEvent,
+    currentLevel: req.body.currentLevel
   };
 
   db.createWorkout(workoutObj, (err, dbResult) => {
@@ -42,7 +45,7 @@ router.get('/:id', (req, res) => {
 });
 
 router.get('/requests/:id', (req, res) => {
-  console.log('workout req query', req.params.id);
+  console.log('workout req query!!!!!!!!!!!!!', req.params.id);
   db.getRequestsByPostingId(req.params.id, (result) => {
     //console.log('result of the get for a single workout', result);
     res.status(200).json(result);
