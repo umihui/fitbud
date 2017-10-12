@@ -26,21 +26,17 @@ class ListingModal extends Component {
 
   render() {
     var { listing, open, hideListingModal, userImage, user } = this.props;
-    console.log('listing modal user', user);
-
     return (
       <Modal open={open} onClose={hideListingModal} closeIcon dimmer='blurring'>
-        <Modal.Header>{listing.title}</Modal.Header>
-        
         <Modal.Content image scrolling>
           <Image
             size='small'
-            src={userImage}
+            src={`${this.state.event[listing.currentEvent]}_on.svg`}
             wrapped
-            shape='circular'
           />
 
           <Modal.Description>
+            <Header>{listing.title}</Header>
             <Header>{listing.name}</Header>
             <p>Location: <span>{listing.location}</span></p>
             <p>Meetup point: <span>{listing.meetup_spot}</span></p>
