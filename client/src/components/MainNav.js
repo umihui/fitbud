@@ -10,7 +10,6 @@ class MainNav extends Component {
     super(props);
 
     this.state = {
-      searchTerm: '',
       isLoading: false,
       value: '',
       results: {},
@@ -28,22 +27,6 @@ class MainNav extends Component {
           }
         });
     }, 500, {'leading': true, 'trailing': false});
-  }
-
-  updateSearch (event, data) {
-    this.setState({
-      searchTerm: data.value,
-    });
-
-    this.debouncedSearch(data.value);
-  }
-
-  handleKeyPress (event) {
-    // if (event.key === 'Enter') {
-    //   this.setState({
-    //     searchTerm: '',
-    //   });
-    // }
   }
 
   resetComponent = () => this.setState({ isLoading: false, results: [], value: '' });
@@ -80,25 +63,6 @@ class MainNav extends Component {
           results: results,
         });
       });
-
-    // setTimeout(() => {
-    //   if (this.state.value.length < 1) return this.resetComponent()
-
-    //   const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
-    //   const isMatch = result => re.test(result.title)
-
-    //   const filteredResults = _.reduce(source, (memo, data, name) => {
-    //     const results = _.filter(data.results, isMatch)
-    //     if (results.length) memo[name] = { name, results } // eslint-disable-line no-param-reassign
-
-    //     return memo
-    //   }, {})
-
-    //   this.setState({
-    //     isLoading: false,
-    //     results: filteredResults,
-    //   })
-    // }, 500)
   }
 
   signOutRedirect = () => {}
@@ -154,7 +118,4 @@ class MainNav extends Component {
 }
 
 export default MainNav;
-
-
-// <Input icon='search' placeholder='Search...' value={this.state.searchTerm} onChange={this.updateSearch.bind(this)} onKeyUp={this.handleKeyPress.bind(this)} />
 
