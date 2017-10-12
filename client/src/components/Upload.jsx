@@ -57,7 +57,7 @@ class Upload extends Component {
     return (
       <div>
         <Input onClick={this.selectFile.bind(this)} readOnly placeholder={this.state.fname} action={{icon: 'upload', onClick:this.upload.bind(this)}}/>
-        <input ref={input => this.inputElement = input} id="fileInput" onClick={this.testing} style={{visibility: 'hidden'}} type="file" onChange={this.setFile.bind(this)} />
+        <input ref={input => this.inputElement = input} id="fileInput" onClick={this.testing} style={{visibility: 'hidden'}} type="file" onChange={this.setFile.bind(this)} accept="image/png, image/jpeg"/>
       </div>
     );
   }

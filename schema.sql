@@ -78,4 +78,18 @@ CREATE TABLE requests (
 
 );
 
+
+DROP TABLE IF EXISTS subscription;
+
+CREATE TABLE subscription (
+  id INT NOT NULL AUTO_INCREMENT,
+  subscriberId INT NOT NULL,
+  publisherId INT NOT NULL,
+  
+  PRIMARY KEY (id),
+  FOREIGN KEY (subscriberId) REFERENCES users(id),
+  FOREIGN KEY (publisherId) REFERENCES users(id)
+  
+);
+
 select postings.*, users.name from postings inner join users on postings.userId=users.id where postings.id=3;

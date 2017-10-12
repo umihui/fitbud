@@ -5,7 +5,7 @@ var bcrypt = require('bcrypt');
 var connection = mysql.createConnection({
   host: process.env.DBSERVER || 'localhost',
   user: process.env.DBUSER || 'root',
-  password: process.env.DBPASSWORD || '',
+  password: process.env.DBPASSWORD || 'root',
   database : 'fitbud'
 });
 
@@ -260,6 +260,47 @@ var getFriendsList = function(userId, callback) {
   })
 }
 
+var getSubList = function(userId) {
+	var query = "SELECT publisherId FROM subscription WHERE subscriberId=?";
+	return new Promise((resolve, reject) => {
+		connection.query(query, [userId], (err, result) => {
+			if (err) {
+				reject(err);
+			} else {
+				resolve(result);
+			}
+		});
+	});
+}
+
+var searchUsers = function(term) {
+	var query = `SELECT * FROM users WHERE name LIKE "%${term}%"`;
+
+	return new Promise((resolve, reject) => {
+		connection.query(query, (err, result) => {
+			if (err) {
+				reject(err);
+			} else {
+				resolve(result);
+			}
+		})
+	});
+}
+
+var serachPostings = function(term) {
+	var query = `SELECT * FROM postings WHERE title LIKE "%${term}%"`;
+
+	return new Promise((resolve, reject) => {
+		connection.query(query, (err, result) => {
+			if (err) {
+				reject(err);
+			} else {
+				resolve(result);
+			}
+		});
+	});
+}
+
 //insert into postings (title, location, date, duration, details, meetup_spot, buddies, userId) values ('hike', 'sf', '2017-01-01 00:00:00', 1, 'hike in muir woods', 'parking', 2, 1);
 
 module.exports = {
@@ -280,5 +321,12 @@ module.exports = {
 	updateRequest,
   createFriendsRequest,
   updateFriendsRequest,
-  getFriendsList
+  getFriendsList,
+	getSubList,
+	searchUsers,
+	serachPostings,
 };
+
+
+
+

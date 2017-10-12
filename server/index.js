@@ -36,13 +36,15 @@ var routeProfile = require('../routes/profile');
 var routeWorkout = require('../routes/workout');
 var routeDashboard = require('../routes/dashboard');
 var routeLogout = require('../routes/logout');
+var routeSearch = require('../routes/search');
 
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); 
 app.use(cookieParser());
 app.use(express.static('build'));
 app.use(session({
     secret: 'secret',
-    store: sessionStore,
+    // store: sessionStore,
     saveUninitialized: false,
     resave: false,
     cookie: { maxAge: 3600000}
@@ -52,11 +54,11 @@ app.use(passport.session());
 app.use(flash());
 
 app.use(function (req, res, next) {
-  console.log('body', req.body);
-  console.log('session', req.session);
-  console.log('isAuth?', req.isAuthenticated());
-  console.log('req user:', req.user);
-  console.log('cookie', req.cookies);
+  // console.log('body', req.body);
+  // console.log('session', req.session);
+  // console.log('isAuth?', req.isAuthenticated());
+  // console.log('req user:', req.user);
+  // console.log('cookie', req.cookies);
   next();
 })
 
@@ -64,7 +66,7 @@ app.use(function (req, res, next) {
 app.use('/register', routeRegister);
 app.use('/login', routeLogin);
 app.use('/postings', routePostings);
-
+app.use('/search', routeSearch);
 
 app.use(checkAuth);
 
@@ -73,6 +75,7 @@ app.use('/profile', routeProfile);
 app.use('/workout', routeWorkout);
 app.use('/dashboard', routeDashboard);
 app.use('/logout', routeLogout);
+
 
 // middleware function to check if this is one of the protected routes
 

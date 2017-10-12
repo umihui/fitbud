@@ -16,7 +16,7 @@ router.post('/', (req, res) => {
     userId: id
   };
   db.createWorkout(workoutObj, (result) => {
-    console.log('createworkout result', result);
+    // console.log('createworkout result', result);
     res.redirect('/postings');
   });
   
