@@ -36,6 +36,11 @@ class Signup extends Component {
 
   onValidSubmit = (formData) => {
     this.setState({submit: true});
+    
+    // add default profile pic
+    var defaultImg = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
+    var usrImgPath = '/' + defaultImg[Math.floor(Math.random() * defaultImg.length)];
+    formData.photo = usrImgPath;
 
     var options = {
       headers: {

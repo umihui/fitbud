@@ -18,11 +18,11 @@ connection.connect(function(err){
 });
 
 var createUser = function(userObj) {
-	var query = 'INSERT INTO users (name, email, password) values (?, ?, ?)';
+	var query = 'INSERT INTO users (name, email, password, photo) values (?, ?, ?, ?)';
 	bcrypt.genSalt(10, function(err, salt) {
 		    bcrypt.hash(userObj.password, salt, function(err, hash) {
 		        userObj.password = hash;
-		        connection.query(query, [userObj.name, userObj.username, userObj.password], function(err, result){
+		        connection.query(query, [userObj.name, userObj.username, userObj.password, userObj.photo], function(err, result){
 		        	if (err) {
 		        		console.log('error inserting user');
 		        	} else {
@@ -301,6 +301,21 @@ var serachPostings = function(term) {
 	});
 }
 
+var updateProfilePic = function(username) {
+	var query = `UPDATE users SET photo=? WHERE name=?`;
+	var value = [`/pic/usr/${username}`, username];
+
+	return new Promise((resolve, reject) => {
+		connection.query(query, value, (err, result) => {
+			if (err) {
+				reject(err);
+			} else {
+				resolve(result);
+			}
+		});
+	});
+}
+
 //insert into postings (title, location, date, duration, details, meetup_spot, buddies, userId) values ('hike', 'sf', '2017-01-01 00:00:00', 1, 'hike in muir woods', 'parking', 2, 1);
 
 module.exports = {
@@ -325,6 +340,7 @@ module.exports = {
 	getSubList,
 	searchUsers,
 	serachPostings,
+	updateProfilePic,
 };
 
 

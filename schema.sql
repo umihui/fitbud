@@ -22,10 +22,10 @@ CREATE TABLE users (
   PRIMARY KEY (id)
 );
 
-INSERT INTO users (name, email, password) VALUES ('Victor Wang', 'victor.wang@me.com', 'qwertyui' );
-INSERT INTO users (name, email, password) VALUES ('kevin', 'ya@gmail.com', 'hahaha');
-INSERT INTO users (name, email, password) VALUES ('albert', 'ya@gmail.com', 'hahaha');
-INSERT INTO users (name, email, password) VALUES ('umi', 'ya@gmail.com', 'hahaha');
+INSERT INTO users (name, email, password, photo) VALUES ('Victor Wang', 'victor.wang@me.com', 'qwertyui', '/daniel.jpg');
+INSERT INTO users (name, email, password, photo) VALUES ('kevin', 'ya@gmail.com', 'hahaha', '/elliot.jpg');
+INSERT INTO users (name, email, password, photo) VALUES ('albert', 'ya@gmail.com', 'hahaha', '/matthew.png');
+INSERT INTO users (name, email, password, photo) VALUES ('umi', 'ya@gmail.com', 'hahaha', '/rachel.png');
 
 CREATE TABLE friends (
   id INT NOT NULL AUTO_INCREMENT,

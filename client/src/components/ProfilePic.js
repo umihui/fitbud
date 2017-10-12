@@ -48,10 +48,11 @@ class ProfilePic extends Component {
   }
 
   render() {
+    console.log(this.props.user);
     return (
       <Container style={{margin: '30px'}}>
 
-        <Image onError={this.noPic} onClick={this.clickImg} src={`/pic/usr/${this.props.user}`} size='small' shape='circular' centered style={{margin: 'auto'}} />
+        <Image onError={this.noPic} onClick={this.clickImg} src={this.props.user} size='small' shape='circular' centered style={{margin: 'auto'}} />
         <input ref={input => this.inputElement = input} id="fileInput" style={{visibility: 'hidden'}} type="file" onChange={this.setFile} accept="image/png, image/jpeg"/>
 
       
