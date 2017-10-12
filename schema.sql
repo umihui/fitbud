@@ -11,10 +11,13 @@ DROP TABLE IF EXISTS requests;
 
 
 CREATE TABLE users (
-  id INT NOT NULL AUTO_INCREMENT,
+  id int NOT NULL AUTO_INCREMENT,
+  fb_id varchar(50) UNIQUE,
+  photo varchar(100),
   name varchar(255) NOT NULL,
   email varchar(255) NOT NULL,
-  password varchar(255) NOT NULL,
+  password varchar(255),
+  description varchar(255),
 
   PRIMARY KEY (id)
 );
