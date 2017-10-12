@@ -6,15 +6,15 @@ var db = require('../database/index.js');
 const multer  = require('multer')
 
 const storage = multer.diskStorage({
-  destination: './database/files',
+  destination: './client/public/pic/usr',
   filename(req, file, cb) {
     var fname = req.user.name;
-    console.log(file.mimetype);
-    if(file.mimetype === 'image/jpeg') {
-      fname += '.jpg';
-    } else if (file.mimtype === 'image/png') {
-      fname += '.png';
-    }
+    // console.log(file.mimetype);
+    // if(file.mimetype === 'image/jpeg') {
+    //   fname += '.jpg';
+    // } else if (file.mimtype === 'image/png') {
+    //   fname += '.png';
+    // }
     cb(null, fname);
   },
 });
@@ -47,7 +47,7 @@ router.post('/', (req, res) => {
   });
 });
 
-router.post('/file', upload.single('file'), (req, res) => {
+router.post('/pic', upload.single('file'), (req, res) => {
   console.log('here');
   console.log('file body:', req.body.name, req.body.filename);
   console.log('file file:', req.file);
@@ -58,4 +58,12 @@ router.post('/file', upload.single('file'), (req, res) => {
   //   });
 });
 
+// router.get('/pic', (req, res) => {
+//   console.log('here!!!!!!!!!');
+//   var filePath = '../database/usr/a.jpg';
+//   res.sendFile(filePath);
+// });
+
 module.exports = router;
+
+
