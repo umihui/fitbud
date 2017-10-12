@@ -41,6 +41,7 @@ class ProfilePic extends Component {
   }
 
   noPic() {
+    console.log('page load error');
     this.setState({
       imgSrc: false,
     });
