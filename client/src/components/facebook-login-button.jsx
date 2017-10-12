@@ -16,7 +16,7 @@ class FacebookLoginButton extends React.Component {
 
   render() {
     return (
-      <Button href='http://localhost:3001/auth/facebook' fluid size='large'><i class="facebook icon"></i>Facebook Login</Button>
+      <Button href='http://localhost:3001/auth/facebook' fluid size='large' color='blue'><i class="facebook icon"></i>Facebook Login</Button>
     );
   }
 }

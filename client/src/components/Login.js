@@ -116,8 +116,9 @@ class Login extends Component {
                   />
 
                   <Button loading={this.state.submit} color='teal' fluid size='large'>Log In</Button>
+                  <div class="ui horizontal divider">OR</div>
+                  <FacebookLoginButton />
                 </Segment>
-                <FacebookLoginButton />
                 <Message error
                          header={this.state.errorHeader}
                          content={this.state.errorContent}
