@@ -83,7 +83,7 @@ app.get('/login', (req, res) => {
   res.end();
 });
 
-app.get('/auth/facebook',passport.authenticate('facebook'));
+app.get('/auth/facebook',passport.authenticate('facebook',{ scope : ['email']}));
 
 app.get(
   '/auth/facebook/callback',
@@ -95,7 +95,7 @@ app.get(
   ),
   (req, res, next) => {
     console.log("REQEUST UMIUMIUMI", req);
-    res.redirect(res.headers.location);
+    res.redirect('/');
   }
 );
 

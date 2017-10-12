@@ -18,11 +18,12 @@ connection.connect(function(err){
 });
 
 var insertFBuser = function(userObj, cb) {
+  console.log('userObj',userObj);
   var query = 'INSERT INTO users (fb_id, name, email) values (?, ?, ?)';
   var values = [userObj.id, userObj.name, userObj.email];
   connection.query(query, values,function(err, result){
     if (err) {
-      console.log('error inserting FBuser');
+      console.log('error inserting FBuser',err);
     } else {
       cb(result);
     }
@@ -86,7 +87,7 @@ var findById = function(id, callback) {
 var findByFB = function(fb_id, callback) {
 
 	var query = 'SELECT * from users WHERE fb_id=?';
-	connection.query(query, [option], function(err, dbResultArr){
+	connection.query(query, [fb_id], function(err, dbResultArr){
 		if (err) {
 			console.log('error when finding ');
 		} else {
