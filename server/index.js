@@ -40,7 +40,7 @@ var routeSearch = require('../routes/search');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(express.static('client/build'));
+
 app.use(session({
     secret: 'secret',
     // store: sessionStore,
@@ -83,7 +83,7 @@ app.get('/login', (req, res) => {
   res.end();
 });
 
-app.get('/auth/facebook', passport.authenticate('facebook'));
+app.get('/auth/facebook',passport.authenticate('facebook'));
 
 app.get(
   '/auth/facebook/callback',
@@ -100,7 +100,12 @@ app.get(
 );
 
 app.use('/search', routeSearch);
+app.use(express.static('client/build'));
 
+app.use(function(req,res,next) {
+  console.log('YU TEST!!!');
+  next();
+})
 app.use(checkAuth);
 
 // Below are the protected routes
@@ -119,7 +124,6 @@ function checkAuth(req, res, next) {
     res.status(401).json({});
   }
 }
-
 
 
 app.listen(process.env.PORT || 3001, function(err){

@@ -33,11 +33,13 @@ module.exports = function(passport) {
     {
       clientID        : configAuth.facebookAuth.clientID,
       clientSecret    : configAuth.facebookAuth.clientSecret,
-      callbackURL     : configAuth.facebookAuth.callbackURL
+      callbackURL     : configAuth.facebookAuth.callbackURL,
+      passReqToCallback: true,
+      profileFields: ['id', 'emails', 'name', 'displayName', 'gender']
     },
 
       // facebook will send back the token and profile
-    function(token, refreshToken, profile, done) {
+    function(req, token, refreshToken, profile, done) {
       console.log('UMI FACEBOOK', token, refreshToken, profile);
 
       process.nextTick(function() {

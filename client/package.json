@@ -2,14 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "proxy": {
-     "/": {
-       "target": "http://localhost:3001/"
-     },
-     "/auth": {
-        "target": "http://localhost:3001/"
-     }
-  },
+  "proxy": "http://127.0.0.1:3001",
   "dependencies": {
     "create-react-class": "^15.6.2",
     "formsy-react": "^0.19.5",
