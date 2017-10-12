@@ -2,12 +2,8 @@ import React, { Component } from 'react';
 import { Card, Container, Icon, Transition, Grid, Rail } from 'semantic-ui-react';
 import ListingCard from './ListingCard.js';
 import ListingModal from './ListingModal.js';
-<<<<<<< HEAD
 import Messaging from './Messaging.js';
-
-=======
 import ListingNav from './ListingNav.jsx';
->>>>>>> add database schema and query for subscription
 
 class Listings extends Component {
   images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];

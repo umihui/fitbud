@@ -258,12 +258,41 @@ var getFriendsList = function(userId, callback) {
 			callback(result.allFriends);
 		}
   })
+}
 
 var getSubList = function(userId) {
 	var query = "SELECT publisherId FROM subscription WHERE subscriberId=?";
 	return new Promise((resolve, reject) => {
 		connection.query(query, [userId], (err, result) => {
-			if(err) {
+			if (err) {
+				reject(err);
+			} else {
+				resolve(result);
+			}
+		});
+	});
+}
+
+var searchUsers = function(term) {
+	var query = `SELECT * FROM users WHERE name LIKE "%${term}%"`;
+
+	return new Promise((resolve, reject) => {
+		connection.query(query, (err, result) => {
+			if (err) {
+				reject(err);
+			} else {
+				resolve(result);
+			}
+		})
+	});
+}
+
+var serachPostings = function(term) {
+	var query = `SELECT * FROM postings WHERE title LIKE "%${term}%"`;
+
+	return new Promise((resolve, reject) => {
+		connection.query(query, (err, result) => {
+			if (err) {
 				reject(err);
 			} else {
 				resolve(result);
@@ -292,6 +321,12 @@ module.exports = {
 	updateRequest,
   createFriendsRequest,
   updateFriendsRequest,
-  getFriendsList
+  getFriendsList,
 	getSubList,
+	searchUsers,
+	serachPostings,
 };
+
+
+
+
