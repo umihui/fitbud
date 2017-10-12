@@ -41,7 +41,7 @@ var routeSearch = require('../routes/search');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); 
 app.use(cookieParser());
-app.use(express.static('build'));
+app.use(express.static('client/build'));
 app.use(session({
     secret: 'secret',
     // store: sessionStore,
@@ -61,7 +61,6 @@ app.use(function (req, res, next) {
   // console.log('cookie', req.cookies);
   next();
 })
-
 
 app.use('/register', routeRegister);
 app.use('/login', routeLogin);
