@@ -81,18 +81,23 @@ class Listings extends Component {
                         user={this.props.user}
                         userImage={this.props.user.photo}  />
         )}
-      </Container>,
-      <Grid centered columns={3}>
-        <Grid.Column>
-          <div ref={this.handleContextRef}>
-            <Rail position='right'>
-              <Messaging context={this.contextRef}/>
-            </Rail>
-          </div>
-        </Grid.Column>
-      </Grid>]
+      </Container>]
     )
   }
 }
+
+// ,
+//
+// <Grid centered columns={3}>
+// <Grid.Column>
+// <div ref={this.handleContextRef}>
+// <Rail position='right'>
+// <Messaging context={this.contextRef}
+// style={{'position': 'absolute',
+//         'bottom': '0'}}/>
+// </Rail>
+// </div>
+// </Grid.Column>
+// </Grid>
 
 export default Listings;

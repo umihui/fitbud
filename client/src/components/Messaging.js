@@ -15,37 +15,42 @@ class Messaging extends Component {
     this.database = window.firebase.database();
   }
 
-  componentWillMount() {
-
-
-    // this.writeMessage(1, 'Victor', 'Hey, there');
-    this.initMessages();
-    this.updateMessages();
-  }
-
   componentDidMount() {
-    this.setState({visible: true})
+    this.setState({sendDisabled: false});
+    this.setState({visible: true});
   }
 
-  initMessages = () => {
-    // let userId = this.firebase.auth().currentUser.uid;
-    this.database.ref('chats/').once('value').then(snapshot => {
-      // var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
-      this.setState({messages: snapshot.val()});
-      this.setState({sendDisabled: false});
-    });
+  componentWillReceiveProps(nextProps) {
+    var user = this.props.user;
+    var current = this.props.friend;
+    var next = nextProps.friend;
+    if (!next) return;
+    if (!current) this.updateMessages(user, next);
+    else if (current.id !== next.id) {
+      this.database.ref(`chats/${user.id}/${current.id}`).off();
+      this.updateMessages(user, next)
+      this.setState({messages: []});
+    }
   }
 
-  writeMessage = (userId, name, message) => {
-    this.database.ref('chats/' + userId).set({
+  writeMessage = (message) => {
+    var userId = (this.props.user && this.props.user.id) || null;
+    var friendId = (this.props.friend && this.props.friend.id) || null;
+    var payload = {
       userId: userId,
-      userName: name,
-      message: message
-    });
+      userName: this.props.user.name,
+      message: message,
+      createdAt: Date.now()
+    }
+    console.log(payload);
+    this.database.ref(`chats/${userId}/${friendId}`).push().set(payload);
+    this.database.ref(`chats/${friendId}/${userId}`).push().set(payload);
   }
 
-  updateMessages = () => {
-    this.database.ref('chats/').on('child_added', (data) => {
+  updateMessages = (user, friend) => {
+    var userId = (user && user.id) || null;
+    var friendId = (friend && friend.id) || null;
+    this.database.ref(`chats/${userId}/${friendId}`).on('child_added', (data) => {
       this.setState((prevState) => {
         let newMessages = prevState.messages;
         newMessages.push(data.val());
@@ -58,44 +63,48 @@ class Messaging extends Component {
     this.setState({input: data.value});
   }
 
-  handleSubmit = () => {
-    this.writeMessage(10, 'Victor', this.state.input);
+  handleSubmit = (e) => {
+    this.setState({input: ''});
+    this.writeMessage(this.state.input);
   }
 
   render() {
-    var { sendDisabled } = this.state;
+    var { sendDisabled, messages } = this.state;
+    // console.log('messsages', messages);
+
+    const messagingStyle = {
+      height: '400px',
+      overflowY: 'auto'
+    }
 
     return (
-      <Transition visible={this.state.visible} duration={1000} animation='fade'>
-        <Sticky bottomOffset={0} >
-          <Card centered={true}>
-            <Card.Content>
-              <Card.Header>
-                Recent Activity
-              </Card.Header>
-            </Card.Content>
-            <Card.Content>
-              <Feed>
-                {this.state.messages.map(message =>
-                  <Feed.Event>
-                    <Feed.Label image='elliot.jpg' />
-                    <Feed.Content>
-                      <Feed.Date content='1 day ago' />
-                      <Feed.Summary>
-                        {message.message}
-                      </Feed.Summary>
-                    </Feed.Content>
-                  </Feed.Event>
-                )}
-              </Feed>
-            </Card.Content>
-            <Form onSubmit={this.handleSubmit}>
-              <Input disabled={sendDisabled} action={{icon: 'send'}}
-                placeholder='Message...' onChange={this.handleChange} />
-            </Form>
-          </Card>
-        </Sticky>
-      </Transition>
+      [<Card raised={true}>
+        <Card.Content>
+          <Card.Header>
+            {(this.props.friend && this.props.friend.name) || ''}
+          </Card.Header>
+        </Card.Content>
+        <Card.Content>
+          <Feed style={messagingStyle}>
+            {messages.map(message =>
+              <Feed.Event>
+                <Feed.Label image='elliot.jpg' />
+                <Feed.Content>
+                  <Feed.Date content='1 day ago' />
+                  <Feed.Summary>
+                    {message.message}
+                  </Feed.Summary>
+                </Feed.Content>
+              </Feed.Event>
+            )}
+          </Feed>
+        </Card.Content>
+        <Form onSubmit={this.handleSubmit}>
+          <Input disabled={sendDisabled} action={{icon: 'send'}} fluid={true}
+            placeholder='Message...' onChange={this.handleChange}
+            value={this.state.input} />
+        </Form>
+      </Card>]
     );
   }
 }

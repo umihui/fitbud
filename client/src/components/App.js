@@ -9,6 +9,7 @@ import Listings from './Listings';
 import NoMatch from './NoMatch';
 import Dashboard from './Dashboard';
 import CreateListing from './CreateListing';
+import FriendsList from './FriendsList.js';
 import data from '../sampleData';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
@@ -19,12 +20,20 @@ class App extends Component {
     this.state = {
       authenticated: false,
       user: null,
-      visible: null
+      visible: null,
+      friends: []
     }
+  }
 
+  componentWillMount() {
     this.cookies = new Cookies();
     console.log('checking auth...');
     this.checkAuth();
+    this.getFriends();
+  }
+
+  componentWillUpdate() {
+    console.log('user', this.state.user);
   }
 
   checkAuth = () => {
@@ -43,6 +52,19 @@ class App extends Component {
       }
     })
     .catch(err => {console.log('profile',err);});
+  }
+
+  getFriends = () => {
+    fetch('/friends', { credentials: "include" })
+      .then(response => response.json())
+      .then(response => {
+        console.log('friends', response);
+        if (Array.isArray(response)) {
+          this.setState({friends: response})
+        }
+      })
+
+    console.log('getting data...');
   }
 
   handleAuthenticated = (user) => {
@@ -69,18 +91,21 @@ class App extends Component {
   }
 
   render() {
+    var { authenticated, user, visible, friends } = this.state;
+
     return (
       <Router>
         <div>
-          <MainNav authenticate={this.handleAuthenticated} isAuthed={this.state.authenticated}
-                   signoff={this.handleSignOff} user={this.state.user} />
+          <MainNav authenticate={this.handleAuthenticated} isAuthed={authenticated}
+                   signoff={this.handleSignOff} user={user} />
+
           <Switch>
             <Route exact path='/' render={props => (
-              <Home user={this.state.user} visible={this.state.visible} {...props} />
+              <Home user={user} visible={visible} {...props} />
             )} />
 
             <Route exact path='/listings' render={props => (
-              <Listings {...props} user={this.state.user} />
+              <Listings {...props} user={user} />
             )} />
 
             <Route exact path='/about' component={About} />
@@ -106,6 +131,7 @@ class App extends Component {
 
 
           </Switch>
+          <FriendsList user={user} friends={friends}/>
         </div>
       </Router>
     );

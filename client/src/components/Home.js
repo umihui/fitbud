@@ -14,7 +14,7 @@ class Home extends React.Component {
   render() {
     return (
       <Transition visible={this.state.visible} animation='fade up' duration={1500}>
-        <Segment textAlign='center' vertical style={{ minHeight: 700, padding: '1em 0em' }}> 
+        <Segment textAlign='center' vertical style={{ minHeight: 700, padding: '1em 0em' }}>
           <Container text>
             {this.props.user && (
               <Header

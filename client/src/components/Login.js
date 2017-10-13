@@ -33,8 +33,6 @@ class Login extends Component {
       //   password: user.fbId
       // }, () => {
       // })
-
-
       this.handleSubmit();
     }).catch(function(error) {
       // Handle Errors here.

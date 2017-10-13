@@ -37,7 +37,6 @@ class Signup extends Component {
       }
       // The signed-in user info.
       var user = result.user;
-      console.log(user);
       var formData = {
         name: user.displayName,
         password: user.uid,
