@@ -58,7 +58,8 @@ CREATE TABLE postings (
   private boolean,
   currentEvent INT,
   currentLevel ENUM('Beginner','Intermediate','Advanced'),
-
+  photo varchar(100),
+  
   PRIMARY KEY (id),
   FOREIGN KEY (userId) REFERENCES users(id)
 );

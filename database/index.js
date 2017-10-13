@@ -52,7 +52,6 @@ var checkUser = function(username, callback) {
 		if (err) {
 			//console.log('error when finding user', err);
 		} else{
-			//console.log('result of finding a user', dbUserResult);
 			if (dbUserResult.length === 0) {
 				callback(err, null);
 			}
@@ -78,7 +77,7 @@ var findById = function(id, callback) {
 		if (err) {
 			console.log('error when finding id');
 		} else {
-			console.log('result of finding a id', dbResultArr[0]);
+			// console.log('result of finding a id', dbResultArr[0]);
 			callback(null, dbResultArr[0]);
 		}
 	})
@@ -108,7 +107,7 @@ var getWorkouts = function(id, callback) {
 		if (err) {
 			console.log('error getting postings');
 		} else {
-			console.log('DB POSTING RESULTS:', result);
+			// console.log('DB POSTING RESULTS:', result);
 			callback(result);
 		}
 	});
@@ -121,7 +120,7 @@ var getSingleWorkout = function(postingId, callback){
 		if (err) {
 			console.log('error getting single posting');
 		} else {
-			console.log('SINGLE POSTING with username RESULT:', result);
+			// console.log('SINGLE POSTING with username RESULT:', result);
 			callback(result);
 		}
 	});
@@ -135,7 +134,7 @@ var createWorkout = function(workoutObj, callback) {
 		if (err) {
 			console.log('error creating workout', err);
 		} else {
-			console.log('created workout result:', result);
+			// console.log('created workout result:', result);
 			callback(result);
 		}
 	});
@@ -147,7 +146,7 @@ var createProfile = function(profileObj, callback) {
 		if (err) {
 			console.log('error creating profile');
 		} else {
-			console.log('created profile result:', result);
+			// console.log('created profile result:', result);
 			callback(result);
 		}
 	});
@@ -165,7 +164,7 @@ var getUserPostings = function(userId, callback) {
 		if (err) {
 			console.log('error getting posting by userId');
 		} else {
-			console.log('success posting by userId:', result);
+			// console.log('success posting by userId:', result);
 			callback(result);
 		}
 	});
@@ -177,7 +176,7 @@ var getRequestsByPostingId = function(postingId, callback) {
 		if (err) {
 			console.log('error getting posting by userId',err);
 		} else {
-			console.log('success posting by userId:', result);
+			// console.log('success posting by userId:', result);
 			callback(result);
 		}
 	});
@@ -191,7 +190,7 @@ var getUserRequestPostings = function(userId, callback) {
 		if (err) {
 			console.log('error getting requests by userId');
 		} else {
-			console.log('success requests by userId:', result);
+			// console.log('success requests by userId:', result);
 			callback(result);
 		}
 	});
@@ -203,7 +202,7 @@ var createRequest = function(requestObj, callback) {
 		if (err) {
 			console.log('error creating request', err);
 		} else {
-			console.log('created request:', result);
+			// console.log('created request:', result);
 			callback(result);
 		}
 	});
@@ -215,7 +214,7 @@ var createPair = function(requestObj, callback) {
 		if (err) {
 			console.log('error creating request');
 		} else {
-			console.log('created request:', result);
+			// console.log('created request:', result);
 			callback(result);
 		}
 	});
@@ -227,7 +226,7 @@ var getUserAcceptPostings = function(userId, callback) {
 		if (err) {
 			console.log('error getting accepted requests');
 		} else {
-			console.log('accepted requests', result);
+			// console.log('accepted requests', result);
 			callback(result);
 		}
 	});
@@ -240,7 +239,7 @@ var updateRequest = function(userId, callback) {
 		if (err) {
 			console.log('error updating reqest');
 		} else {
-			console.log('updated request to accept!', result);
+			// console.log('updated request to accept!', result);
 			callback(result);
 		}
 	});
@@ -252,7 +251,7 @@ var createFriendsRequest = function(originator, receiver, callback) {
     if (err) {
       console.log('error updating friend request');
     } else {
-      console.log('created friends request!', result);
+      // console.log('created friends request!', result);
       callback(result);
     }
   })
@@ -264,7 +263,7 @@ var updateFriendsRequest = function(originator, receiver, callback) {
     if (err) {
       console.log('error updating friend request');
     } else {
-      console.log('updated friends request to accept!', result);
+      // console.log('updated friends request to accept!', result);
       callback(result);
     }
   })
@@ -277,9 +276,8 @@ var getFriendsList = function(userId, callback) {
                WHERE users.id = allFriends.id`;
   connection.query(query, [userId, userId], (err, result) => {
     if (err) {
-			console.log('error getting friends list');
+			console.log('error getting friends list', err);
 		} else {
-			console.log('friends list retrieved', result);
 			callback(result);
 		}
   })
@@ -360,6 +358,38 @@ var updateDescription = function(options, callback) {
 		}
 	});
 }
+
+var updateEventPic = function(title, username) {
+  var fname = '';
+  for (var i = 0; i < username.length; i++) {
+    if (username.charAt(i) === ' ') {
+      fname += '_';
+    } else {
+      fname += username.charAt(i);
+    }
+  }
+  fname += '-_-';
+  for (var i = 0; i < title.length; i++) {
+    if (title.charAt(i) === ' ') {
+      fname += '_';
+    } else {
+      fname += title.charAt(i);
+    }
+  }
+	var query = `UPDATE postings SET photo=? WHERE title=?`;
+	var value = [`/pic/event/${fname}`, title];
+
+	return new Promise((resolve, reject) => {
+		connection.query(query, value, (err, result) => {
+			if (err) {
+				reject(err);
+			} else {
+				resolve(result);
+			}
+		});
+	});
+}
+
 //insert into postings (title, location, date, duration, details, meetup_spot, buddies, userId) values ('hike', 'sf', '2017-01-01 00:00:00', 1, 'hike in muir woods', 'parking', 2, 1);
 
 module.exports = {
@@ -388,4 +418,5 @@ module.exports = {
 	searchUsers,
 	serachPostings,
 	updateProfilePic,
+	updateEventPic,
 };

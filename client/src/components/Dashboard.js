@@ -74,8 +74,6 @@ class Dashboard extends Component {
     var { listings } = this.props;
     return (
       <Container style={{marginTop: '20px'}}>
-
-
         <ProfilePic user={(this.props.user && this.props.user.photo) || ''} default={this.user}/>
         <Profile user={this.props.user}/>
 
@@ -100,6 +98,3 @@ class Dashboard extends Component {
 
 export default Dashboard;
 
-//profile pic
-  //username
-//
