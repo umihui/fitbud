@@ -6,36 +6,13 @@ import { Header, Segment, Input, Container, Image, List, Button, Form, TextArea 
 class Profile extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      value:''
-    }
-    this.handleSubmit =this.handleSubmit.bind(this);
   }
-
-  handleSubmit() {
-    console.log('text submit');
-  }
-
-  handleKeyPress = (e) => {
-    if (e.charCode === 13) {
-      // Prevent the default action to stop scrolling when space is pressed
-      e.preventDefault()
-      console.log('Button received click with keyboard')
-    }
-  }
-
   render() {
 
     // console.log('profile render', this.props.user);
     const { user } = this.props;
 
-    const NoDescription = (props) => (
-      <Container style={{width: '250px'}}>
-        <Form onKeyPress={props.handleKeyPress}>
-            <TextArea placeholder='Tell us more about yourself...' style={{ minHeight: 70 }}/>
-        </Form>
-      </Container>
-    )
+
 
     const ShowDescription = (props) => (
       <Container style={{width: '400px'}} textAlign='center'>
@@ -52,7 +29,7 @@ class Profile extends Component {
         </Header>
         {user.description ?
           <ShowDescription description={user.description} handleSubmit={this.handleSubmit}/>
-          : <NoDescription handleKeyPress={this.handleKeyPress} />
+          : ''
         }
       </div>
     )

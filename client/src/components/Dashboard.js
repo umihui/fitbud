@@ -31,6 +31,7 @@ class Dashboard extends Component {
         console.log('response', response);
         this.setState({ data: response })
       })
+      .catch(err => console.log(err))
 
     console.log('getting data...')
   }
