@@ -17,7 +17,7 @@ module.exports = function(passport) {
             //console.log('cannot compare passwords');
           }
           if(isMatch) {
-            return done(null, dbUserResult, {message: 'password matched'});
+            return done(null, dbUserResult[0], {message: 'password matched'});
           } else {
             //console.log('checking for invalid password')
             return done(null, false, {message: 'invalid password'});

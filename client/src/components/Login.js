@@ -60,8 +60,8 @@ class Login extends Component {
           })
         }
       }).then(user => {
-        if (user && user[0].email) {
-          this.props.authenticate(user[0]);
+        if (user && user.email) {
+          this.props.authenticate(user);
           this.props.history.replace('/');
         }
       });
