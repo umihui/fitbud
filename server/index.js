@@ -99,7 +99,7 @@ app.get(
 //for updating profile Description
 app.post('/description',(req, res) => {
   var options = req.body;
-  //console.log('description',options);
+  options.id =req.session.passport.user
   db.updateDescription(options, (err, result) => {
     if(err) {
       console.log('description err');
