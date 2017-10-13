@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Container } from 'semantic-ui-react';
 
 import ProfilePic from './ProfilePic';
+import Profile from './Profile';
 import DashNav from './DashNav';
 import Workouts from './Workouts';
 import Requests from './Requests';
@@ -72,7 +73,9 @@ class Dashboard extends Component {
     return (
       <Container style={{marginTop: '20px'}}>
 
+
         <ProfilePic user={(this.props.user && this.props.user.photo) || ''} default={this.user}/>
+        <Profile user={this.props.user}/>
 
         <DashNav handleClick={this.handleTabClick} view={this.state.view} />
 

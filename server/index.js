@@ -19,8 +19,6 @@ var options = {
   checkExpirationInterval: 60000,
   expiration: 3600000,
 }
-
-
 var sessionStore = new MYSQLStore(options);
 
 var app = express();
@@ -43,7 +41,7 @@ app.use(cookieParser());
 
 app.use(session({
     secret: 'secret',
-    // store: sessionStore,
+    store: sessionStore,
     saveUninitialized: false,
     resave: false,
     cookie: { maxAge: 3600000}
@@ -98,6 +96,19 @@ app.get(
     res.redirect('/');
   }
 );
+//for updating profile Description
+app.post('/description',(req, res) => {
+  var options = req.body;
+  //console.log('description',options);
+  db.updateDescription(options, (err, result) => {
+    if(err) {
+      console.log('description err');
+      throw err;
+    } else {
+      res.redirect('/dashboard')
+    }
+  })
+})
 
 app.use('/search', routeSearch);
 app.use(express.static('client/build'));

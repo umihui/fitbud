@@ -341,9 +341,21 @@ var updateProfilePic = function(username) {
 	});
 }
 
+var updateDescription = function(options, callback) {
+  var query = 'UPDATE users SET description=? where id=?';
+  connection.query(query, [options.description,options.id], (err, result) => {
+		if (err) {
+			console.log('error updateDescription');
+		} else {
+			console.log('success updateDescription:', result);
+			callback(null,result);
+		}
+	});
+}
 //insert into postings (title, location, date, duration, details, meetup_spot, buddies, userId) values ('hike', 'sf', '2017-01-01 00:00:00', 1, 'hike in muir woods', 'parking', 2, 1);
 
 module.exports = {
+  updateDescription,
   findByFB,
   insertFBuser,
 	checkUser,

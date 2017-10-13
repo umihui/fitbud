@@ -48,23 +48,17 @@ class ProfilePic extends Component {
   }
 
   render() {
+<<<<<<< HEAD
     console.log(this.props.user);
+=======
+
+>>>>>>> make the endpoint for profile update
     return (
       <Container style={{margin: '30px'}}>
 
         <Image onError={this.noPic} onClick={this.clickImg} src={this.props.user} size='small' shape='circular' centered style={{margin: 'auto'}} />
         <input ref={input => this.inputElement = input} id="fileInput" style={{visibility: 'hidden'}} type="file" onChange={this.setFile} accept="image/png, image/jpeg"/>
 
-
-        <Container style={{"textAlign": "center"}}>
-          { u ? <h2 class="ui center aligned icon header" style={{margin: '10px'}}>
-
-            {u.name}
-          </h2> :
-          <h2></h2>
-          }
-
-        </Container>
 
       </Container>
     );
