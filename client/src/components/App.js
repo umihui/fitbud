@@ -34,6 +34,8 @@ class App extends Component {
 
   componentWillUpdate() {
     console.log('user', this.state.user);
+    // this.checkAuth();
+    // this.getFriends();
   }
 
   checkAuth = () => {
@@ -111,7 +113,8 @@ class App extends Component {
             <Route exact path='/about' component={About} />
 
             <Route exact path='/login' render={props => (
-              <Login authenticate={this.handleAuthenticated} {...props} />
+              <Login authenticate={this.handleAuthenticated}
+                     getFriends={this.getFriends} {...props} />
             )} />
 
             <Route exact path='/signup' component={Signup} />
@@ -131,7 +134,7 @@ class App extends Component {
 
 
           </Switch>
-          <FriendsList user={user} friends={friends}/>
+          {user ? <FriendsList user={user} friends={friends}/> : <div></div>}
         </div>
       </Router>
     );

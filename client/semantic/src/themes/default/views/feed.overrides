@@ -1,3 +1,5 @@
 /*******************************
          Theme Overrides
 *******************************/
+/* Content */
+@contentTextAlign: right;

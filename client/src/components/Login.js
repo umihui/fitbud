@@ -28,11 +28,6 @@ class Login extends Component {
       this.state.email = user.email;
       this.state.password = user.uid;
 
-      // this.setState({
-      //   email: user.email,
-      //   password: user.fbId
-      // }, () => {
-      // })
       this.handleSubmit();
     }).catch(function(error) {
       // Handle Errors here.
@@ -98,6 +93,7 @@ class Login extends Component {
       }).then(user => {
         if (user && user.email) {
           this.props.authenticate(user);
+          this.props.getFriends();
           this.props.history.replace('/');
         }
       });

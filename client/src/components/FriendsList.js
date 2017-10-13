@@ -11,7 +11,6 @@ class FriendsList extends Component {
   }
 
   componentWillMount() {
-    // this.dataPull();
     this.setState({selected: this.props.friends[0]});
   }
 
@@ -19,30 +18,31 @@ class FriendsList extends Component {
     this.setState({visible: true});
   }
 
-  componentWillReceiveProps() {
-    this.dataPull();
+  componentWillReceiveProps(nextProps) {
+    // this.state.selected = nextProps.friends[0];
   }
 
-  dataPull = () => {
-    fetch('/friends', { credentials: "include" })
-      .then(response => response.json())
-      .then(response => {
-        console.log('friends', response);
-        if (Array.isArray(response)) {
-          this.setState({friends: response})
-          this.setState({selected: response[0]});
-        }
-      })
-
-    console.log('getting data...');
-  }
+  // dataPull = () => {
+  //   fetch('/friends', { credentials: "include" })
+  //     .then(response => response.json())
+  //     .then(response => {
+  //       console.log('friends', response);
+  //       if (Array.isArray(response)) {
+  //         this.setState({friends: response})
+  //         this.setState({selected: response[0]});
+  //       }
+  //     })
+  //
+  //   console.log('getting data...');
+  // }
 
   handleClick = (index) => {
-    this.setState({selected: this.state.friends[index]});
+    this.setState({selected: this.props.friends[index]});
   }
 
   render() {
     var { sendDisabled, selected } = this.state;
+    var { user, friends } = this.props;
     const friendsListStyle = {
       position: 'fixed',
       float: 'right',
@@ -55,7 +55,7 @@ class FriendsList extends Component {
       <Grid divided='vertically' style={friendsListStyle}>
         <Grid.Row>
           <Grid.Column width={7}>
-            <Messaging user={this.props.user} friend={selected} />
+            <Messaging user={user} friend={selected} />
           </Grid.Column>
           <Grid.Column width={7}>
             <Card >
@@ -66,7 +66,7 @@ class FriendsList extends Component {
               </Card.Content>
               <Card.Content>
                 <Feed>
-                  {this.props.friends.map((friend, index) =>
+                  {friends.map((friend, index) =>
                     <Feed.Event onClick={() => this.handleClick(index)}>
                       <Feed.Label image='elliot.jpg' />
                       <Feed.Content>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Input, Form, Button, Card, Feed, Sticky, Transition } from 'semantic-ui-react';
+import { Input, Form, Button, Card, Feed, Transition, Dimmer, Loader } from 'semantic-ui-react';
+import moment from 'moment';
 
 class Messaging extends Component {
   constructor(props) {
@@ -8,7 +9,8 @@ class Messaging extends Component {
       visible: false,
       messages: [],
       sendDisabled: true,
-      input: ''
+      input: '',
+      loading: true
     }
 
     this.firebase = window.firebase;
@@ -18,6 +20,10 @@ class Messaging extends Component {
   componentDidMount() {
     this.setState({sendDisabled: false});
     this.setState({visible: true});
+    this.scrollToBottom();
+    setInterval(() => {
+      this.setState({message: this.state.messages});
+    }, 45000);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -25,11 +31,30 @@ class Messaging extends Component {
     var current = this.props.friend;
     var next = nextProps.friend;
     if (!next) return;
-    if (!current) this.updateMessages(user, next);
-    else if (current.id !== next.id) {
+    if (!current) {
+      this.setState({loading: true});
+      this.updateMessages(user, next);
+    } else if (current.id !== next.id) {
       this.database.ref(`chats/${user.id}/${current.id}`).off();
-      this.updateMessages(user, next)
+      this.setState({loading: true});
+      this.updateMessages(user, next);
       this.setState({messages: []});
+    }
+  }
+
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
+
+  scrollToBottom = () => {
+    // if (this.messageList) {
+    //   this.messageList.scrollTop = this.messageList.scrollHeight;
+    // }
+    if (this.messageList) {
+      const scrollHeight = this.messageList.scrollHeight;
+      const height = this.messageList.clientHeight;
+      const maxScrollTop = scrollHeight - height;
+      this.messageList.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
     }
   }
 
@@ -51,11 +76,9 @@ class Messaging extends Component {
     var userId = (user && user.id) || null;
     var friendId = (friend && friend.id) || null;
     this.database.ref(`chats/${userId}/${friendId}`).on('child_added', (data) => {
-      this.setState((prevState) => {
-        let newMessages = prevState.messages;
-        newMessages.push(data.val());
-        return {message: newMessages};
-      });
+      this.setState({message: this.state.messages.push(data.val())}, () => {
+        this.setState({loading: false});
+      })
     });
   }
 
@@ -69,7 +92,7 @@ class Messaging extends Component {
   }
 
   render() {
-    var { sendDisabled, messages } = this.state;
+    var { sendDisabled, messages, loading } = this.state;
     // console.log('messsages', messages);
 
     const messagingStyle = {
@@ -85,18 +108,24 @@ class Messaging extends Component {
           </Card.Header>
         </Card.Content>
         <Card.Content>
-          <Feed style={messagingStyle}>
-            {messages.map(message =>
-              <Feed.Event>
-                <Feed.Label image='elliot.jpg' />
-                <Feed.Content>
-                  <Feed.Date content='1 day ago' />
-                  <Feed.Summary>
-                    {message.message}
-                  </Feed.Summary>
-                </Feed.Content>
-              </Feed.Event>
-            )}
+          <Feed style={messagingStyle} ref={div => (this.messageList = div)}>
+            {loading ?
+              (<Dimmer active inverted>
+                <Loader inverted content='Loading' />
+              </Dimmer>) :
+              (messages.map(message =>
+                <Feed.Event style={{marginTop: '5px'}}>
+                  {message.userId === (this.props.friend && this.props.friend.id) ? <Feed.Label image='elliot.jpg' /> : <div></div>}
+                  <Feed.Content style={{textAlign: message.userId === (this.props.user && this.props.user.id) ? 'right' : 'left',
+                                        marginRight: '10px'}}>
+                    <Feed.Date content={moment(message.createdAt).fromNow()}/>
+                    <Feed.Summary>
+                      {message.message}
+                    </Feed.Summary>
+                  </Feed.Content>
+                  {/* {message.userId === (this.props.user && this.props.user.id) ? <Feed.Label image='elliot.jpg' /> : <div></div>} */}
+                </Feed.Event>
+              ))}
           </Feed>
         </Card.Content>
         <Form onSubmit={this.handleSubmit}>
