@@ -41,7 +41,8 @@ class App extends Component {
           authenticated: true
         })
       }
-    }).catch(err => {console.log('profile',err);})
+    })
+    .catch(err => {console.log('profile',err);});
   }
 
   handleAuthenticated = (user) => {

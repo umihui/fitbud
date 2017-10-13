@@ -105,7 +105,6 @@ class MainNav extends Component {
             <Dropdown text={this.props.user.name} className='link item' pointing>
               <Dropdown.Menu>
                 <Dropdown.Item as={Link} to='/dashboard'>Dashboard</Dropdown.Item>
-                <Dropdown.Item>Profile</Dropdown.Item>
                 <Dropdown.Item>Referral</Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item onClick={this.props.signoff} as={Link} to='/'>Log Out</Dropdown.Item>

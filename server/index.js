@@ -72,7 +72,7 @@ app.post('/login',
     // console.log('request inside login:', req)
     //console.log('cookies', req.cookies);
     // res.redirect('/dashboard');
-    console.log('auth user:', req.user)
+    //console.log('auth user:', req.user)
     res.json(req.user);
 });
 
@@ -81,7 +81,20 @@ app.get('/login', (req, res) => {
   res.end();
 });
 
-app.get('/auth/facebook',passport.authenticate('facebook',{ scope : ['email']}));
+app.use(function (req, res, next) {
+  //var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+  //console.log('body', fullUrl);
+  // console.log('session', req.session);
+  // console.log('isAuth?', req.isAuthenticated());
+  // console.log('req user:', req.user);
+  // console.log('cookie', req.cookies);
+  next();
+})
+app.get('/auth/facebook',(req, res, next) => {
+  //console.log('AUTH/FACE');
+  next()
+},
+  passport.authenticate('facebook',{ scope : ['email']}));
 
 app.get(
   '/auth/facebook/callback',
@@ -92,8 +105,13 @@ app.get(
 	  }
   ),
   (req, res, next) => {
-    console.log("REQEUST UMIUMIUMI", req);
-    res.redirect('/');
+    var fullUrl = req.protocol + '://' + req.get('host');
+    console.log("REQEUST UMIUMIUMI", fullUrl);
+    if (fullUrl.includes('localhost')) {
+      res.redirect('http://localhost:3000');
+    } else {
+      res.redirect(fullUrl);
+    }
   }
 );
 //for updating profile Description
@@ -111,7 +129,8 @@ app.post('/description',(req, res) => {
 })
 
 app.use('/search', routeSearch);
-app.use(express.static('client/build'));
+// app.use(express.static('client/build'));
+
 
 app.use(checkAuth);
 
@@ -132,6 +151,9 @@ function checkAuth(req, res, next) {
   }
 }
 
+app.get('*', function(req,res){
+  res.sendFile(path.join(__dirname,'../client/public/index.html'))
+});
 
 app.listen(process.env.PORT || 3001, function(err){
 	if(err) {

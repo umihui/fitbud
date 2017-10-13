@@ -4,9 +4,9 @@ var db = require('../database/index.js');
 
 // we will add the routes for a particular user id
 // get all the workouts posted by the user - select * from postings where userId = "x"
-// 
+//
 
-router.get('/', (req, res) => {
+router.get('/all', (req, res) => {
   var id = req.session.passport.user;
   // console.log('user id>>>>>>>>>>>:', id);
   db.getUserPostings(id, (dbResult) => {
@@ -42,4 +42,3 @@ router.get('/accepted', (req,res) => {
 
 
 module.exports = router;
-

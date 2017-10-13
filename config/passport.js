@@ -40,7 +40,7 @@ module.exports = function(passport) {
 
       // facebook will send back the token and profile
     function(req, token, refreshToken, profile, done) {
-      console.log('UMI FACEBOOK', token, refreshToken, profile);
+      //console.log('UMI FACEBOOK', token, refreshToken, profile);
 
       process.nextTick(function() {
         db.findByFB(profile.id, function(err, user) {

@@ -24,7 +24,8 @@
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",
     "passport-http": "*",
-    "passport-local": "*"
+    "passport-local": "*",
+    "passport-oauth2": "^1.4.0"
   },
   "engines": {
     "node": "6.11.2",

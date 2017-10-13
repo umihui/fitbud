@@ -25,7 +25,7 @@ class Dashboard extends Component {
   }
 
   dataPull() {
-    fetch('/dashboard', { credentials: "include" })
+    fetch('/dashboard/all', { credentials: "include" })
       .then(response => response.json())
       .then(response => {
         console.log('response', response);
