@@ -68,7 +68,7 @@ class Listings extends Component {
             {listings.map(listing => (
 
               <ListingCard listing={listing} showListingModal={this.showListingModal.bind(this)}
-                           user={'/' + this.images[Math.floor(Math.random() * this.images.length)]}
+                           user={this.props.user.photo}
               />
             ))}
           </Card.Group>
@@ -79,7 +79,7 @@ class Listings extends Component {
           <ListingModal listing={selectedListing} open={this.state.showModal}
                         hideListingModal={this.hideListingModal}
                         user={this.props.user}
-                        userImage={'/' + this.images[Math.floor(Math.random() * this.images.length)]}  />
+                        userImage={this.props.user.photo}  />
         )}
       </Container>,
       <Grid centered columns={3}>
