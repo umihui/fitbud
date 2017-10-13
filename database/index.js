@@ -237,7 +237,7 @@ var createPair = function(requestObj, callback) {
 };
 
 var getUserAcceptPostings = function(userId, callback) {
-	var query = 'select p.location, p.date, p.duration, p.details from requests r left join postings p on r.postingId = p.id where r.UserId = ? and r.status = ?';
+	var query = 'select p.location,p.currentEvent,p.title, p.date, p.duration, p.details from requests r left join postings p on r.postingId = p.id where r.UserId = ? and r.status = ?';
 	connection.query(query, [userId, 'accept'], (err, result) => {
 		if (err) {
 			console.log('error getting accepted requests', err);
