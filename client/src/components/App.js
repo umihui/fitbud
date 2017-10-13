@@ -42,6 +42,7 @@ class App extends Component {
         })
       }
     })
+    .catch(err => {console.log('profile',err);});
   }
 
   handleAuthenticated = (user) => {
@@ -91,14 +92,19 @@ class App extends Component {
             <Route exact path='/signup' component={Signup} />
 
             <Route exact path='/dashboard' render={props => (
-              <Dashboard user={this.state.user} listings={data} {...props} />
+              <Dashboard
+                listings={data}
+                user={this.state.user}
+                fetchProfile={this.checkAuth}
+                {...props}
+              />
             )} />
 
             <Route exact path='/create' render={props => (
               <CreateListing {...props} />
             )} />
 
-            <Route component={NoMatch} />
+
           </Switch>
         </div>
       </Router>

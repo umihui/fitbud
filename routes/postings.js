@@ -15,14 +15,14 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
   // var id = req.session.passport.user;
-  // console.log('session id in workout', req.user.id);
+  console.log('session id in workout', req.user.id);
   var workoutObj = {
-    title: req.body.title, 
-    location: req.body.location, 
-    date: req.body.date, 
-    duration: req.body.duration, 
-    details: req.body.details, 
-    meetup_spot: req.body.meetup_point, 
+    title: req.body.title,
+    location: req.body.location,
+    date: req.body.date,
+    duration: req.body.duration,
+    details: req.body.details,
+    meetup_spot: req.body.meetup_point,
     buddies: req.body.buddies,
     userId: req.user.id,
     private: req.body.private,
@@ -33,7 +33,7 @@ router.post('/', (req, res) => {
   db.createWorkout(workoutObj, (err, dbResult) => {
     res.status(201).send(dbResult);
   })
-  
+
 });
 
 router.get('/:id', (req, res) => {

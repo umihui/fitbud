@@ -5,7 +5,7 @@ var bcrypt = require('bcrypt');
 var connection = mysql.createConnection({
   host: process.env.DBSERVER || 'localhost',
   user: process.env.DBUSER || 'root',
-  password: process.env.DBPASSWORD || 'root',
+  password: process.env.DBPASSWORD || '',
   database : 'fitbud'
 });
 
@@ -16,6 +16,19 @@ connection.connect(function(err){
 		console.log('connected to db');
 	}
 });
+
+var insertFBuser = function(userObj, cb) {
+  console.log('userObj',userObj);
+  var query = 'INSERT INTO users (fb_id, name, email) values (?, ?, ?)';
+  var values = [userObj.id, userObj.name, userObj.email];
+  connection.query(query, values,function(err, result){
+    if (err) {
+      console.log('error inserting FBuser',err);
+    } else {
+      cb(result);
+    }
+  });
+}
 
 var createUser = function(userObj) {
 	var query = 'INSERT INTO users (name, email, password) values (?, ?, ?)';
@@ -37,9 +50,9 @@ var checkUser = function(username, callback) {
 	var query = 'SELECT * from users WHERE email = ?';
 	connection.query(query, [username], function(err, dbUserResult){
 		if (err) {
-			console.log('error when finding user', err);
+			//console.log('error when finding user', err);
 		} else{
-			console.log('result of finding a user', dbUserResult);
+			//console.log('result of finding a user', dbUserResult);
 			if (dbUserResult.length === 0) {
 				callback(err, null);
 			}
@@ -69,7 +82,19 @@ var findById = function(id, callback) {
 			callback(null, dbResultArr[0]);
 		}
 	})
+}
 
+var findByFB = function(fb_id, callback) {
+
+	var query = 'SELECT * from users WHERE fb_id=?';
+	connection.query(query, [fb_id], function(err, dbResultArr){
+		if (err) {
+			console.log('error when finding ');
+		} else {
+			console.log('result of finding a ', dbResultArr[0]);
+			callback(null, dbResultArr[0]);
+		}
+	})
 }
 
 var getWorkouts = function(id, callback) {
@@ -147,10 +172,10 @@ var getUserPostings = function(userId, callback) {
 };
 
 var getRequestsByPostingId = function(postingId, callback) {
-	var query = 'select r.postingId, r.userId, r.status, p.title,p.location, p.date, p.duration, u.name p.private p.currentEvent p.currentLevel from requests r join postings p on r.postingId = p.id join users u  on r.userId = u.id where r.postingId = ?';
+	var query = 'select r.postingId, r.userId, r.status, p.title, p.location, p.date, p.duration, u.name, p.private, p.currentEvent, p.currentLevel from requests r join postings p on r.postingId = p.id join users u  on r.userId = u.id where r.postingId = ?';
 	connection.query(query, [postingId], (err, result) => {
 		if (err) {
-			console.log('error getting posting by userId');
+			console.log('error getting posting by userId',err);
 		} else {
 			console.log('success posting by userId:', result);
 			callback(result);
@@ -161,7 +186,7 @@ var getRequestsByPostingId = function(postingId, callback) {
 
 var getUserRequestPostings = function(userId, callback) {
 //title, loation, date, duration
-	var query = 'select p.location, p.date, p.duration, p.details from requests r left join postings p on r.postingId = p.id where r.status = "pending" and r.userId = ?';
+	var query = 'select p.location,p.title, p.date, p.duration, p.details from requests r left join postings p on r.postingId = p.id where r.status = "pending" and r.userId = ?';
 	connection.query(query, [userId], (err, result) => {
 		if (err) {
 			console.log('error getting requests by userId');
@@ -316,9 +341,23 @@ var updateProfilePic = function(username) {
 	});
 }
 
+var updateDescription = function(options, callback) {
+  var query = 'UPDATE users SET description=? where id=?';
+  connection.query(query, [options.description,options.id], (err, result) => {
+		if (err) {
+			console.log('error updateDescription');
+		} else {
+			console.log('success updateDescription:', result);
+			callback(null,result);
+		}
+	});
+}
 //insert into postings (title, location, date, duration, details, meetup_spot, buddies, userId) values ('hike', 'sf', '2017-01-01 00:00:00', 1, 'hike in muir woods', 'parking', 2, 1);
 
 module.exports = {
+  updateDescription,
+  findByFB,
+  insertFBuser,
 	checkUser,
 	comparePassword,
 	createUser,
@@ -342,7 +381,3 @@ module.exports = {
 	serachPostings,
 	updateProfilePic,
 };
-
-
-
-

@@ -61,5 +61,8 @@ typings/
 # dotenv environment variables file
 .env
 
+
 database/files/
+# auth
+config/auth.js
 client/public/pic/

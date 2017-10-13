@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { Container } from 'semantic-ui-react';
 
 import ProfilePic from './ProfilePic';
+import Profile from './Profile';
 import DashNav from './DashNav';
 import Workouts from './Workouts';
 import Requests from './Requests';
 import Invites from './Invites';
+
 
 class Dashboard extends Component {
   constructor(props) {
@@ -23,12 +25,13 @@ class Dashboard extends Component {
   }
 
   dataPull() {
-    fetch('/dashboard', { credentials: "include" })
+    fetch('/dashboard/all', { credentials: "include" })
       .then(response => response.json())
       .then(response => {
         console.log('response', response);
         this.setState({ data: response })
       })
+      .catch(err => console.log(err))
 
     console.log('getting data...')
   }
@@ -55,7 +58,7 @@ class Dashboard extends Component {
   }
 
   handleTabClick(e, { name }) {
-    // console.log('I\'ve been clicked, and my name is: ' + name);
+    console.log('I\'ve been clicked, and my name is: ' + name);
     this.setState({ view: name });
   };
 
@@ -69,18 +72,27 @@ class Dashboard extends Component {
 
   render() {
     var { listings } = this.props;
-
     return (
       <Container style={{marginTop: '20px'}}>
 
+
         <ProfilePic user={(this.props.user && this.props.user.photo) || ''} default={this.user}/>
+        <Profile user={this.props.user}/>
 
-        <DashNav handleClick={this.handleTabClick} view={this.state.view}/>
+        <DashNav
+          handleClick={this.handleTabClick}
+          view={this.state.view}
+          fetchProfile={this.props.fetchProfile}
+        />
 
-        {this.state.view === 'my workouts' && (<Workouts data={this.state.data} user={this.user} update={this.update} dataPull={this.dataPull} />)}
+        {this.state.view === 'my workouts' &&
+          (<Workouts data={this.state.data}
+            user={this.user}
+            update={this.update}
+            dataPull={this.dataPull} />)}
         {this.state.view === 'my requests' && ([<Requests />])}
         {this.state.view === 'upcoming workouts' && ([<Invites />])}
-        
+
       </Container>
     )
   }

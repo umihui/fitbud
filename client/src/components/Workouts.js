@@ -6,6 +6,9 @@ import WorkoutDropdown from './WorkoutDropdown';
 class Workouts extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+    event: [1,2,3,4,5,9,'a'],
+    }
   }
 
   render() {
@@ -14,10 +17,19 @@ class Workouts extends Component {
         {this.props.data.map(listing => (
           <Card>
             <Card.Content>
-              <Image src={this.props.user} size='mini' floated='left'/>
-              <Card.Header>{listing.title}</Card.Header>
-              <Card.Meta>{listing.location}</Card.Meta>
-              <Card.Description>{`${listing.details} on ${listing.date} for ${listing.duration} hour(s)`}</Card.Description>
+              <Image src={`${this.state.event[listing.currentEvent]}_on.svg`} size='mini' floated='right'/>
+              <Card.Header>{listing.title.toUpperCase()}</Card.Header>
+              <Card.Meta><Icon name='marker' />{listing.location}</Card.Meta>
+              <Card.Description style={{'padding':'10px 10px 10px 0px'}}>
+                {`${listing.details}`}
+              </Card.Description>
+              <Card.Description>
+                {`on ${new Date(listing.date).toDateString()}`}
+              </Card.Description>
+              <Card.Description>
+
+                {listing.duration > 1 ? `for ${listing.duration} hours` :`for ${listing.duration} hour`}
+              </Card.Description>
               <Card.Content extra>
                 <WorkoutDropdown postingId={listing.id} buddies={listing.buddies} update={this.props.update} dataPull={this.props.dataPull} />
               </Card.Content>

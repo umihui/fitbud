@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Container, Grid, Header, Image, Segment, Button, Message, Transition } from 'semantic-ui-react';
 import { Redirect, Link } from 'react-router-dom';
+import FacebookLoginButton from './facebook-login-button';
 
 class Login extends Component {
   constructor(props) {
@@ -59,9 +60,9 @@ class Login extends Component {
           })
         }
       }).then(user => {
-        if (user && user[0].email) {
-          this.props.authenticate(user[0]);
-          this.props.history.replace('/');                    
+        if (user && user.email) {
+          this.props.authenticate(user);
+          this.props.history.replace('/');
         }
       });
   }
@@ -115,8 +116,10 @@ class Login extends Component {
                   />
 
                   <Button loading={this.state.submit} color='teal' fluid size='large'>Log In</Button>
+                  <div class="ui horizontal divider">OR</div>
+                  <FacebookLoginButton />
                 </Segment>
-                <Message error 
+                <Message error
                          header={this.state.errorHeader}
                          content={this.state.errorContent}
                 />
