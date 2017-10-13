@@ -11,18 +11,21 @@ DROP TABLE IF EXISTS requests;
 
 
 CREATE TABLE users (
-  id INT NOT NULL AUTO_INCREMENT,
+  id int NOT NULL AUTO_INCREMENT,
+  fb_id varchar(50) UNIQUE,
+  photo varchar(100),
   name varchar(255) NOT NULL,
   email varchar(255) NOT NULL,
-  password varchar(255) NOT NULL,
+  password varchar(255),
+  description varchar(255),
 
   PRIMARY KEY (id)
 );
 
-INSERT INTO users (name, email, password) VALUES ('Victor Wang', 'victor.wang@me.com', 'qwertyui' );
-INSERT INTO users (name, email, password) VALUES ('kevin', 'ya@gmail.com', 'hahaha');
-INSERT INTO users (name, email, password) VALUES ('albert', 'ya@gmail.com', 'hahaha');
-INSERT INTO users (name, email, password) VALUES ('umi', 'ya@gmail.com', 'hahaha');
+INSERT INTO users (name, email, password, photo) VALUES ('Victor Wang', 'victor.wang@me.com', 'qwertyui', '/daniel.jpg');
+INSERT INTO users (name, email, password, photo) VALUES ('kevin', 'ya@gmail.com', 'hahaha', '/elliot.jpg');
+INSERT INTO users (name, email, password, photo) VALUES ('albert', 'ya@gmail.com', 'hahaha', '/matthew.png');
+INSERT INTO users (name, email, password, photo) VALUES ('umi', 'ya@gmail.com', 'hahaha', '/rachel.png');
 
 CREATE TABLE friends (
   id INT NOT NULL AUTO_INCREMENT,

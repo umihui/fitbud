@@ -49,13 +49,11 @@ router.post('/', (req, res) => {
 
 router.post('/pic', upload.single('file'), (req, res) => {
   console.log('here');
-  console.log('file body:', req.body.name, req.body.filename);
   console.log('file file:', req.file);
-  // db.saveImageInfo();
-  // models.saveFileInformation(req.body.username, req.body.roomname, req.file.filename)
-  //   .then(data => {
-  //     res.status(201).send();
-  //   });
+  db.updateProfilePic(req.user.name)
+    .then(result => {
+      res.send('ok');
+    });
 });
 
 // router.get('/pic', (req, res) => {
