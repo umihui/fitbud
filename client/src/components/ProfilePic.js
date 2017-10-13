@@ -48,11 +48,7 @@ class ProfilePic extends Component {
   }
 
   render() {
-<<<<<<< HEAD
-    console.log(this.props.user);
-=======
 
->>>>>>> make the endpoint for profile update
     return (
       <Container style={{margin: '30px'}}>
 
