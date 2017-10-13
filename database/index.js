@@ -172,10 +172,10 @@ var getUserPostings = function(userId, callback) {
 };
 
 var getRequestsByPostingId = function(postingId, callback) {
-	var query = 'select r.postingId, r.userId, r.status, p.title,p.location, p.date, p.duration, u.name p.private p.currentEvent p.currentLevel from requests r join postings p on r.postingId = p.id join users u  on r.userId = u.id where r.postingId = ?';
+	var query = 'select r.postingId, r.userId, r.status, p.title, p.location, p.date, p.duration, u.name, p.private, p.currentEvent, p.currentLevel from requests r join postings p on r.postingId = p.id join users u  on r.userId = u.id where r.postingId = ?';
 	connection.query(query, [postingId], (err, result) => {
 		if (err) {
-			console.log('error getting posting by userId');
+			console.log('error getting posting by userId',err);
 		} else {
 			console.log('success posting by userId:', result);
 			callback(result);
@@ -186,7 +186,7 @@ var getRequestsByPostingId = function(postingId, callback) {
 
 var getUserRequestPostings = function(userId, callback) {
 //title, loation, date, duration
-	var query = 'select p.location, p.date, p.duration, p.details from requests r left join postings p on r.postingId = p.id where r.status = "pending" and r.userId = ?';
+	var query = 'select p.location,p.title, p.date, p.duration, p.details from requests r left join postings p on r.postingId = p.id where r.status = "pending" and r.userId = ?';
 	connection.query(query, [userId], (err, result) => {
 		if (err) {
 			console.log('error getting requests by userId');

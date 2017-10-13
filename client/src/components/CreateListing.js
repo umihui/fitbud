@@ -106,12 +106,12 @@ class CreateListing extends Component {
         iconPosition="left"
         required
         validations={{
-          minLength: 8,
+          minLength: 4,
           maxLength: 50,
           isWords: true
         }}
         validationErrors={{
-          minLength: 'Minimum of 8 characters',
+          minLength: 'Minimum of 4 characters',
           maxLength: 'Maximum of 50 characters',
           isDefaultRequiredValue: 'Title is required',
           isWords: 'Only letters allowed for title'
@@ -147,9 +147,9 @@ class CreateListing extends Component {
         icon="point"
         iconPosition="left"
         required
-        validations={{
-          isWords: true
-        }}
+        // validations={{
+        //   isWords: true
+        // }}
         validationErrors={{
           isDefaultRequiredValue: 'Meeting point is required',
           isWords: 'Only words allowed for meeting point'
@@ -210,17 +210,17 @@ class CreateListing extends Component {
     const sectionInput = (
       <Grid style={{'padding':'10px'}}>
         <Grid.Row columns={this.state.event.length}>
-          { this.state.event.map((ele,index) => 
+          { this.state.event.map((ele,index) =>
             <Grid.Column>
               <Image
-                key={index} 
-                height="36" 
-                width="36" 
+                key={index}
+                height="36"
+                width="36"
                 src={
                   this.state.currentEvent !== index ?
                   `${ele}.svg`
                   : `${ele}_on.svg`
-                } 
+                }
                 onClick={this.changeEvent.bind(this,index)}
               />
             </Grid.Column>
@@ -289,7 +289,7 @@ class CreateListing extends Component {
                   { sectionInput }
                   <div style={{'padding':'20px'}}>
                      <Button.Group >
-                      { 
+                      {
                         this.state.level.map((ele,index) =>
                           this.state.currentLevel === ele ?
                           <Button key={index} passive onClick={this.handleLevelClick} style={{'background-color':'gray','color':'white'}}>{ele}</Button>
@@ -301,8 +301,8 @@ class CreateListing extends Component {
                   { toggleInput }
                 </Segment>
                 { detailsInput }
-                <Button loading={this.state.submit} color='teal' size='large' fluid>CREATE LISTING</Button> 
-                <Message error 
+                <Button loading={this.state.submit} color='teal' size='large' fluid>CREATE LISTING</Button>
+                <Message error
                          header={this.state.errorHeader}
                          content={this.state.errorContent}
                 />
@@ -324,7 +324,7 @@ class CreateListing extends Component {
             </Grid.Column>
           </Grid>
         </div>
-      </Transition>   
+      </Transition>
     )
   }
 }

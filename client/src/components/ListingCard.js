@@ -15,7 +15,7 @@ class ListingCard extends Component {
 
     return (
       <Card onClick={() => showListingModal(listing)} link>
-      {console.log(`${listing.currentEvent}.svg`)}
+      
         <Card.Content>
           <Image src={`${this.state.event[listing.currentEvent]}_on.svg`} size='mini' floated='right'/>
           <Card.Header>{listing.title}</Card.Header>

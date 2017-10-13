@@ -100,7 +100,7 @@ class MainNav extends Component {
 
           {this.props.isAuthed && ([
             <Menu.Item style={{paddingLeft: '0px'}}>
-              <Button as={Link} to='/create' primary content='Create Listing' />
+              <Button as={Link} to='/create' color='teal' color='teal' content='Create Listing' />
             </Menu.Item>,
             <Dropdown text={this.props.user.name} className='link item' pointing>
               <Dropdown.Menu>

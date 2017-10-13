@@ -15,7 +15,7 @@ class Profile extends Component {
 
 
     const ShowDescription = (props) => (
-      <Container style={{width: '400px'}} textAlign='center'>
+      <Container style={{width: '400px','font-style': 'italic','font-size':'16px','color':'#3BC4B2'}}  textAlign='center' >
         <p>{props.description}</p>
       </Container>
     )
