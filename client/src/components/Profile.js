@@ -38,9 +38,8 @@ class Profile extends Component {
     )
 
     const ShowDescription = (props) => (
-      <Container style={{width: '400px'}} textAlign='left'>
+      <Container style={{width: '400px'}} textAlign='center'>
         <p>{props.description}</p>
-        <Button circular onClick={props.handleSubmit} icon='write' color='white' floated='right'/>
       </Container>
     )
 
