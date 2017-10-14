@@ -33,13 +33,14 @@ class ListingModal extends Component {
       method: 'POST'
     }).then(response => {
       if (response.ok) console.log('request made!');
+    }).then( () => {
+      console.log('postings got fetched!!!!!!!!')
     })
   }
 
   render() {
     var { listing, open, hideListingModal, userImage, user } = this.props;
     var { targetUser } = this.state;
-
     return (
       <Modal open={open} onClose={hideListingModal} closeIcon dimmer={false}>
         <Modal.Content image scrolling>
@@ -49,6 +50,7 @@ class ListingModal extends Component {
             wrapped
           />
           <Modal.Description>
+          {console.log('props',this.props)}
             <Header>{listing.title}</Header>
             <Header>{listing.name}</Header>
             <p>Location: <span>{listing.location}</span></p>

@@ -132,7 +132,7 @@ var getWorkouts = function(id, callback) {
 
 //get workout id, user associated with that posting
 var getSingleWorkout = function(postingId, callback){
-	var query = 'select postings.*, users.name from postings inner join users on postings.userId=users.id where postings.id=?';
+	var query = 'select postings.*, users.name, users.photo, users.description, users.friendsNum from postings inner join users on postings.userId=users.id where postings.id=?';
 	connection.query(query, [postingId], (err, result) => {
 		if (err) {
 			console.log('error getting single posting', err);
