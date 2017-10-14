@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Container, Grid, Header, Image, Segment, Button, Divider, Icon, Message, Transition } from 'semantic-ui-react';
 import { Redirect, Link } from 'react-router-dom';
-import FacebookLoginButton from './facebook-login-button';
+import FacebookLoginButton from './FacebookLoginButton';
 
 class Login extends Component {
   constructor(props) {
