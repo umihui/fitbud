@@ -18,10 +18,25 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
   var {originator, receiver} = req.body;
-  db.createFriendsRequest(originator, receiver, (dbResult) => {
-    res.send(dbResult);
+  db.checkFriendsStatus(originator, receiver, (dbResult) => {
+    console.log(dbResult);
+    if (!dbResult) {
+      db.createFriendsRequest(originator, receiver, (dbResult) => {
+        res.send(dbResult);
+      })
+    }
   })
 })
+// 
+// router.get('/status', (req, res) => {
+//   console.log('REACHED>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+//   var id = req.session.passport.user;
+//   console.log('user id>>>>>>>>>>>:', id);
+//   db.getFriendsList(id, (dbResult) => {
+//     console.log('database RESULTS>>:', dbResult);
+//     res.send(dbResult);
+//   })
+// })
 
 router.patch('/accept', (req, res) => {
   // console.log('workout req query', req.params.id);

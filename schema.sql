@@ -17,7 +17,7 @@ CREATE TABLE users (
   name varchar(255) NOT NULL,
   email varchar(255) NOT NULL,
   password varchar(255),
-  description varchar(255),
+  description varchar(255) DEFAULT '',
   friendsNum INT(5) DEFAULT 0,
 
   PRIMARY KEY (id)

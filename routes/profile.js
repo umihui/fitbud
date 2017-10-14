@@ -33,6 +33,13 @@ router.get('/', (req, res) => {
   }
 });
 
+router.get('/:userId', (req, res) => {
+  db.findById(req.params.userId, (err, result) => {
+    console.log(result);
+    res.json(result);
+  })
+});
+
 router.post('/', (req, res) => {
 
   //console.log('user from request', req.session.passport.user);
@@ -42,10 +49,10 @@ router.post('/', (req, res) => {
     activity: req.body.activity,
     userId: id
   };
-  
+
   db.createProfile(profileObj, (result) => {
     //console.log('created profile');
-    
+
     res.redirect('/postings');
   });
 });
@@ -66,5 +73,3 @@ router.post('/pic', upload.single('file'), (req, res) => {
 // });
 
 module.exports = router;
-
-

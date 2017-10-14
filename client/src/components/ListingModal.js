@@ -12,6 +12,17 @@ class ListingModal extends Component {
     }
   }
 
+  componentWillMount() {
+    this.fetchUserProfile();
+  }
+
+  fetchUserProfile = () => {
+    fetch('/profile/' + this.props.listing.ownerId, {
+      credentials: 'include'
+    }).then(response => response.json())
+      .then(response => this.setState({targetUser: response}));
+  }
+
   sendRequest = () => {
     this.setState({
       requestSent: true
@@ -27,6 +38,7 @@ class ListingModal extends Component {
 
   render() {
     var { listing, open, hideListingModal, userImage, user } = this.props;
+    var { targetUser } = this.state;
 
     return (
       <Modal open={open} onClose={hideListingModal} closeIcon dimmer={false}>
@@ -45,7 +57,7 @@ class ListingModal extends Component {
             <p>Duration: <span>{listing.duration} hours</span></p>
             <p>Details: <span>{listing.details}</span></p>
             <p>Hoster:</p>
-            <ProfilePopup user={this.props.user}/>
+            <ProfilePopup currentUser={user} user={targetUser}/>
             <p>Attenders:</p>
           </Modal.Description>
         </Modal.Content>
@@ -64,4 +76,3 @@ class ListingModal extends Component {
 }
 
 export default ListingModal;
-       

@@ -14,9 +14,13 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
   var {subscriberId, publisherId} = req.body;
-  db.newSubscription(subscriberId, publisherId, (dbResult) => {
-    console.log('database RESULTS>>:', dbResult);
-    res.send(dbResult);
+  db.checkSubExist(subscriberId, publisherId, (dbResult) => {
+    if (!dbResult) {
+      db.newSubscription(subscriberId, publisherId, (dbResult) => {
+        console.log('database RESULTS>>:', dbResult);
+        res.send(dbResult);
+      })
+    }
   })
 })
 

@@ -61,7 +61,8 @@ class FriendsList extends Component {
       float: 'right',
       right: '0',
       bottom: 0,
-      width: '700px'
+      width: '700px',
+      zIndex: 99
     }
 
     return (

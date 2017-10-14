@@ -261,6 +261,18 @@ var updateRequest = function(userId, callback) {
 	});
 };
 
+var checkFriendsStatus = function(originator, receiver, callback) {
+  var query = "SELECT status FROM friends WHERE (originator=? AND receiver=?)";
+	connection.query(query, [originator, receiver], (err, result) => {
+		if (err) {
+			console.log('error checking friendship status');
+		} else {
+			console.log(`status between user ${originator} and user ${receiver} is: `, result[0]);
+			callback(result[0]);
+		}
+	});
+}
+
 var createFriendsRequest = function(originator, receiver, callback) {
   var query = "INSERT INTO friends (originator, receiver, status) VALUES (?, ?, ?)";
   connection.query(query, [originator, receiver, 'pending'], (err, result) => {
@@ -313,7 +325,7 @@ var getFriendsList = function(userId, callback) {
 }
 
 var newSubscription = function(subscriberId, publisherId, callback) {
-  var query = "INSERT INTO subscription (subscriberId, publisherId) VALUES (?, ?, ?)";
+  var query = "INSERT INTO subscription (subscriberId, publisherId) VALUES (?, ?)";
     connection.query(query, [subscriberId, publisherId], (err, result) => {
       if (err) {
         console.log('error creating new subscription');
@@ -322,6 +334,17 @@ var newSubscription = function(subscriberId, publisherId, callback) {
         callback(result);
       }
     })
+}
+
+var checkSubExist = function(subscriberId, publisherId, callback) {
+  var query = "SELECT * FROM subscription WHERE subscriberId=? AND publisherId=?";
+  connection.query(query, [subscriberId, publisherId], (err, result) => {
+    if (err) {
+      console.log('error checking subscription');
+    } else {
+      callback(result);
+    }
+  })
 }
 
 var getSubList = function(userId) {
@@ -452,6 +475,7 @@ module.exports = {
 	getUserAcceptPostings,
 	getRequestsByPostingId,
 	updateRequest,
+  checkFriendsStatus,
   createFriendsRequest,
   updateFriendsRequest,
   getFriendsList,
