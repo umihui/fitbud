@@ -18,16 +18,16 @@ CREATE TABLE users (
   email varchar(255) NOT NULL,
   password varchar(255),
   description varchar(255),
-  friends int,
+  friendsNum int,
 
 
   PRIMARY KEY (id)
 );
 
-INSERT INTO users (name, email, password, photo, friends) VALUES ('Victor Wang', 'victor.wang@me.com', 'qwertyui', '/daniel.jpg',0);
-INSERT INTO users (name, email, password, photo, frineds) VALUES ('kevin', 'ya@gmail.com', 'hahaha', '/elliot.jpg',0);
-INSERT INTO users (name, email, password, photo, frineds) VALUES ('albert', 'ya@gmail.com', 'hahaha', '/matthew.png',0);
-INSERT INTO users (name, email, password, photo, friends) VALUES ('umi', 'ya@gmail.com', 'hahaha', '/rachel.png',0);
+INSERT INTO users (name, email, password, photo, friendsNum) VALUES ('Victor Wang', 'victor.wang@me.com', 'qwertyui', '/daniel.jpg',0);
+INSERT INTO users (name, email, password, photo, friendsNum) VALUES ('kevin', 'ya@gmail.com', 'hahaha', '/elliot.jpg',0);
+INSERT INTO users (name, email, password, photo, friendsNum) VALUES ('albert', 'ya@gmail.com', 'hahaha', '/matthew.png',0);
+INSERT INTO users (name, email, password, photo, friendsNum) VALUES ('umi', 'ya@gmail.com', 'hahaha', '/rachel.png',0);
 
 CREATE TABLE friends (
   id INT NOT NULL AUTO_INCREMENT,
