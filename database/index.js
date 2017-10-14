@@ -280,7 +280,7 @@ var getFriendsList = function(userId, callback) {
 			console.log('error getting friends list');
 		} else {
 			console.log('friends list retrieved', result);
-			callback(result.allFriends);
+			callback(result);
 		}
   })
 }

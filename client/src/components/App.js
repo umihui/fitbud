@@ -9,7 +9,9 @@ import Listings from './Listings';
 import NoMatch from './NoMatch';
 import Dashboard from './Dashboard';
 import CreateListing from './CreateListing';
+import FriendsList from './FriendsList.js';
 import data from '../sampleData';
+import { Button } from 'semantic-ui-react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 class App extends Component {
@@ -19,12 +21,21 @@ class App extends Component {
     this.state = {
       authenticated: false,
       user: null,
-      visible: null
+      visible: null,
+      friends: [],
+      messagingVisible: false
     }
+  }
 
+  componentWillMount() {
     this.cookies = new Cookies();
     console.log('checking auth...');
     this.checkAuth();
+    this.getFriends();
+  }
+
+  componentWillUpdate() {
+    console.log('user', this.state.user);
   }
 
   checkAuth = () => {
@@ -43,6 +54,19 @@ class App extends Component {
       }
     })
     .catch(err => {console.log('profile',err);});
+  }
+
+  getFriends = () => {
+    fetch('/friends', { credentials: "include" })
+      .then(response => response.json())
+      .then(response => {
+        console.log('friends', response);
+        if (Array.isArray(response)) {
+          this.setState({friends: response})
+        }
+      })
+
+    console.log('getting data...');
   }
 
   handleAuthenticated = (user) => {
@@ -68,25 +92,38 @@ class App extends Component {
     }).then(response => console.log(response.status));
   }
 
+  toggleMessaging = () => {
+    this.setState({messagingVisible: !this.state.messagingVisible});
+  }
+
   render() {
+    var { authenticated, user, visible, friends, messagingVisible } = this.state;
+    var buttonStyle = {
+      position: 'fixed',
+      bottom: 0,
+      float: 'left'
+    }
+
     return (
       <Router>
         <div>
-          <MainNav authenticate={this.handleAuthenticated} isAuthed={this.state.authenticated}
-                   signoff={this.handleSignOff} user={this.state.user} />
+          <MainNav authenticate={this.handleAuthenticated} isAuthed={authenticated}
+                   signoff={this.handleSignOff} user={user} />
+
           <Switch>
             <Route exact path='/' render={props => (
-              <Home user={this.state.user} visible={this.state.visible} {...props} />
+              <Home user={user} visible={visible} {...props} />
             )} />
 
             <Route exact path='/listings' render={props => (
-              <Listings {...props} user={this.state.user} />
+              <Listings {...props} user={user} />
             )} />
 
             <Route exact path='/about' component={About} />
 
             <Route exact path='/login' render={props => (
-              <Login authenticate={this.handleAuthenticated} {...props} />
+              <Login authenticate={this.handleAuthenticated}
+                     getFriends={this.getFriends} {...props} />
             )} />
 
             <Route exact path='/signup' component={Signup} />
@@ -104,8 +141,9 @@ class App extends Component {
               <CreateListing {...props} />
             )} />
 
-
           </Switch>
+          <Button onClick={this.toggleMessaging} style={buttonStyle}>Chat</Button>
+          {user && messagingVisible ? <FriendsList user={user} friends={friends} /> : <div></div>}
         </div>
       </Router>
     );

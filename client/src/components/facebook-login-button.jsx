@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 
 class FacebookLoginButton extends React.Component {
   constructor(props) {
@@ -16,7 +16,8 @@ class FacebookLoginButton extends React.Component {
 
   render() {
     return (
-      <Button href='http://localhost:3001/auth/facebook' fluid size='large' color='facebook'><i class="facebook icon"></i>Facebook Login</Button>
+      <Button href='http://localhost:3001/auth/facebook' fluid size='large' color='facebook'><Icon name='facebook square' />Continue with Facebook</Button>
+
     );
   }
 }

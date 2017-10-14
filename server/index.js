@@ -30,6 +30,7 @@ var routeRegister = require('../routes/register');
 // var routeFBLogin = require('../routes/fblogin');
 var routePostings = require('../routes/postings');
 var routeProfile = require('../routes/profile');
+var routeFriends = require('../routes/friends');
 var routeWorkout = require('../routes/workout');
 var routeDashboard = require('../routes/dashboard');
 var routeLogout = require('../routes/logout');
@@ -44,7 +45,7 @@ app.use(session({
     store: sessionStore,
     saveUninitialized: false,
     resave: false,
-    cookie: { maxAge: 3600000}
+    cookie: { maxAge: 3600000 }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -136,6 +137,7 @@ app.use(checkAuth);
 
 // Below are the protected routes
 app.use('/profile', routeProfile);
+app.use('/friends', routeFriends);
 app.use('/workout', routeWorkout);
 app.use('/dashboard', routeDashboard);
 app.use('/logout', routeLogout);

@@ -1,20 +1,44 @@
 import React, { Component } from 'react';
-import { Form, Container, Grid, Header, Image, Segment, Button, Message, Transition } from 'semantic-ui-react';
+import { Form, Container, Grid, Header, Image, Segment, Button, Divider, Icon, Message, Transition } from 'semantic-ui-react';
 import { Redirect, Link } from 'react-router-dom';
 import FacebookLoginButton from './facebook-login-button';
 
 class Login extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       visible: false,
       submit: false,
       email: '',
       password: ''
     }
+  }
 
-    console.log(this.props);
+  componentWillMount() {
+    // window.firebase.auth().getRedirectResult().then((result) => {
+    //   if (result.credential) {
+    //     // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+    //     var token = result.credential.accessToken;
+    //     console.log(token);
+    //   }
+    //   // The signed-in user info.
+    //   var user = result.user;
+    //   console.log(user.email);
+    //   console.log(user.uid);
+    //   this.state.email = user.email;
+    //   this.state.password = user.uid;
+    //
+    //   this.handleSubmit();
+    // }).catch(function(error) {
+    //   // Handle Errors here.
+    //   var errorCode = error.code;
+    //   var errorMessage = error.message;
+    //   // The email of the user's account used.
+    //   var email = error.email;
+    //   // The firebase.auth.AuthCredential type that was used.
+    //   var credential = error.credential;
+    //   // ...
+    // });
   }
 
   componentDidMount() {
@@ -23,8 +47,15 @@ class Login extends Component {
     });
   }
 
+  // fbRedirect = (e) => {
+  //   e.preventDefault();
+  //   var firebase = window.firebase;
+  //   var provider = new firebase.auth.FacebookAuthProvider();
+  //   firebase.auth().signInWithRedirect(provider);
+  // }
+
   handleSubmit = (event) => {
-    event.preventDefault();
+    if (event) event.preventDefault();
 
     this.setState({submit: true});
 
@@ -62,6 +93,7 @@ class Login extends Component {
       }).then(user => {
         if (user && user.email) {
           this.props.authenticate(user);
+          this.props.getFriends();
           this.props.history.replace('/');
         }
       });
@@ -116,8 +148,9 @@ class Login extends Component {
                   />
 
                   <Button loading={this.state.submit} color='teal' fluid size='large'>Log In</Button>
-                  <div class="ui horizontal divider">OR</div>
+                  <Divider horizontal>Or</Divider>
                   <FacebookLoginButton />
+
                 </Segment>
                 <Message error
                          header={this.state.errorHeader}
