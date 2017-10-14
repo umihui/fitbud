@@ -15,30 +15,30 @@ class Login extends Component {
   }
 
   componentWillMount() {
-    window.firebase.auth().getRedirectResult().then((result) => {
-      if (result.credential) {
-        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-        var token = result.credential.accessToken;
-        console.log(token);
-      }
-      // The signed-in user info.
-      var user = result.user;
-      console.log(user.email);
-      console.log(user.uid);
-      this.state.email = user.email;
-      this.state.password = user.uid;
-
-      this.handleSubmit();
-    }).catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // The email of the user's account used.
-      var email = error.email;
-      // The firebase.auth.AuthCredential type that was used.
-      var credential = error.credential;
-      // ...
-    });
+    // window.firebase.auth().getRedirectResult().then((result) => {
+    //   if (result.credential) {
+    //     // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+    //     var token = result.credential.accessToken;
+    //     console.log(token);
+    //   }
+    //   // The signed-in user info.
+    //   var user = result.user;
+    //   console.log(user.email);
+    //   console.log(user.uid);
+    //   this.state.email = user.email;
+    //   this.state.password = user.uid;
+    //
+    //   this.handleSubmit();
+    // }).catch(function(error) {
+    //   // Handle Errors here.
+    //   var errorCode = error.code;
+    //   var errorMessage = error.message;
+    //   // The email of the user's account used.
+    //   var email = error.email;
+    //   // The firebase.auth.AuthCredential type that was used.
+    //   var credential = error.credential;
+    //   // ...
+    // });
   }
 
   componentDidMount() {
@@ -47,12 +47,12 @@ class Login extends Component {
     });
   }
 
-  fbRedirect = (e) => {
-    e.preventDefault();
-    var firebase = window.firebase;
-    var provider = new firebase.auth.FacebookAuthProvider();
-    firebase.auth().signInWithRedirect(provider);
-  }
+  // fbRedirect = (e) => {
+  //   e.preventDefault();
+  //   var firebase = window.firebase;
+  //   var provider = new firebase.auth.FacebookAuthProvider();
+  //   firebase.auth().signInWithRedirect(provider);
+  // }
 
   handleSubmit = (event) => {
     if (event) event.preventDefault();
@@ -148,15 +148,9 @@ class Login extends Component {
                   />
 
                   <Button loading={this.state.submit} color='teal' fluid size='large'>Log In</Button>
-<<<<<<< HEAD
-                  <div class="ui horizontal divider">OR</div>
-                  <FacebookLoginButton />
-=======
                   <Divider horizontal>Or</Divider>
-                  <Button onClick={this.fbRedirect} color='facebook' fluid size='large'>
-                    <Icon name='facebook square' />Continue with Facebook
-                  </Button>
->>>>>>> implement facebook login
+                  <FacebookLoginButton />
+
                 </Segment>
                 <Message error
                          header={this.state.errorHeader}

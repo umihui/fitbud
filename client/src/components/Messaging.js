@@ -10,7 +10,7 @@ class Messaging extends Component {
       messages: [],
       sendDisabled: true,
       input: '',
-      loading: true
+      loading: false
     }
 
     this.firebase = window.firebase;
@@ -32,7 +32,7 @@ class Messaging extends Component {
     var next = nextProps.friend;
     if (!next) return;
     if (!current) {
-      this.setState({loading: true});
+      // this.setState({loading: true});
       this.updateMessages(user, next);
     } else if (current.id !== next.id) {
       this.database.ref(`chats/${user.id}/${current.id}`).off();

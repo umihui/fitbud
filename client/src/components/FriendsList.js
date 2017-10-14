@@ -12,6 +12,14 @@ class FriendsList extends Component {
 
   componentWillMount() {
     this.setState({selected: this.props.friends[0]});
+    // var token = (this.props.user.id).toString();
+    // window.firebase.auth().signInWithCustomToken(token).catch(function(error) {
+    //   // Handle Errors here.
+    //   var errorCode = error.code;
+    //   var errorMessage = error.message;
+    //   console.log(errorCode, errorMessage);
+    //   // ...
+    // });
   }
 
   componentDidMount() {
