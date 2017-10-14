@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import LoginButtonModal from './LoginButtonModal.js';
 import { Menu, Input, Button, Dropdown, Search } from 'semantic-ui-react';
-import { NavLink, Link, Redirect } from 'react-router-dom';
+import { NavLink, Link, Redirect, withRouter } from 'react-router-dom';
 import _ from 'lodash';
 import $ from 'jquery';
 
@@ -28,34 +28,73 @@ class MainNav extends Component {
           }
         });
     }, 500, {'leading': true, 'trailing': false});
+
+    this.handleResultSelect = this.handleResultSelect.bind(this);
+    this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.resetComponent = this.resetComponent.bind(this);
   }
 
-  resetComponent = () => this.setState({ isLoading: false, results: [], value: '' });
+  resetComponent () {
+    this.setState({ 
+      isLoading: false, 
+      results: [], 
+      value: '' 
+    });
+  }
 
-  handleResultSelect = (e, { result }) => console.log(result);
+  handleResultSelect (e, {result, results}) {
+    var isUser = false;
+    for (var i=0; i < results[0].results.length; i++) {
+      if (results[0].results[i].description === result.description) {
+        isUser = true;
+      }
+    }
+    if (isUser) {
+      this.props.handleUserSearch(result);
+    } else {
+      this.props.handleEventSearch(result);
+      this.props.history.push('/listings');
+    }
+  };
 
-  handleSearchChange = (e, { value }) => {
-    this.setState({
-      isLoading: true,
-      value
+
+  handleSearchChange (e, { value }) {
+    this.setState({ 
+      isLoading: true, 
+      value 
     });
 
     this.debouncedSearch(value)
       .then(data => {
-        console.log(data);
 
         var results = [];
-        // =[{name:'Users', results:[]}, {name:'Events', results:[]}];
         if (data[0].length !== 0) {
-          results.push({name:'Users', results:[]});
+          results.push({
+            name: 'Users', 
+            results: []
+          });
           data[0].forEach(val => {
-            results[0].results.push({title:val.name, description:val.email, image:val.photo});
+            results[0].results.push({
+              title: val.name, 
+              description: val.email, 
+              image: val.photo,
+            });
           });
         }
         if (data[1].length !== 0) {
-          results.push({name:'Postings', results:[]});
+          results.push({
+            name: 'Postings', 
+            results: []
+          });
           data[1].forEach(val => {
-            results[results.length - 1].results.push({title:val.title, description:val.details});
+            var temp = {
+              title: val.title, 
+              description: val.details
+            };
+            if (val.photo) {
+              temp.image = val.photo;
+            }
+            results[results.length - 1].results.push(temp);
           });
         }
 
@@ -65,8 +104,6 @@ class MainNav extends Component {
         });
       });
   }
-
-  signOutRedirect = () => {}
 
   render() {
     return (
@@ -117,4 +154,4 @@ class MainNav extends Component {
   }
 }
 
-export default MainNav;
+export default withRouter(MainNav);

@@ -17,10 +17,13 @@ connection.connect(function(err){
 	}
 });
 
+const defaultImg = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
+
 var insertFBuser = function(userObj, cb) {
-  console.log('userObj',userObj);
-  var query = 'INSERT INTO users (fb_id, name, email) values (?, ?, ?)';
-  var values = [userObj.id, userObj.name, userObj.email];
+  var usrImgPath = '/' + defaultImg[Math.floor(Math.random() * defaultImg.length)];
+
+  var query = 'INSERT INTO users (fb_id, name, email, photo) values (?, ?, ?, ?)';
+  var values = [userObj.id, userObj.name, userObj.email, usrImgPath];
   connection.query(query, values,function(err, result){
     if (err) {
       console.log('error inserting FBuser',err);
@@ -31,13 +34,15 @@ var insertFBuser = function(userObj, cb) {
 }
 
 var createUser = function(userObj) {
-	var query = 'INSERT INTO users (name, email, password) values (?, ?, ?)';
+  var usrImgPath = '/' + defaultImg[Math.floor(Math.random() * defaultImg.length)];
+
+	var query = 'INSERT INTO users (name, email, password, photo) values (?, ?, ?, ?)';
 	bcrypt.genSalt(10, function(err, salt) {
 		    bcrypt.hash(userObj.password, salt, function(err, hash) {
 		        userObj.password = hash;
-		        connection.query(query, [userObj.name, userObj.username, userObj.password], function(err, result){
+		        connection.query(query, [userObj.name, userObj.username, userObj.password, usrImgPath], function(err, result){
 		        	if (err) {
-		        		console.log('error inserting user');
+		        		console.log('error inserting user', err);
 		        	} else {
 		        		console.log('successfully added');
 		        	}
@@ -70,14 +75,17 @@ var comparePassword = function(passwordEntered, hash, callback) {
 };
 
 var findById = function(id, callback) {
-	console.log('database finding by id');
 
 	var query = 'SELECT * from users WHERE id = ?';
 	connection.query(query, [id], function(err, dbResultArr){
 		if (err) {
-			console.log('error when finding id');
+			console.log('error when finding id', err);
 		} else {
 			// console.log('result of finding a id', dbResultArr[0]);
+      if (!dbResultArr[0].photo) {
+        var usrImgPath = '/' + defaultImg[Math.floor(Math.random() * defaultImg.length)];
+        dbResultArr[0].photo = usrImgPath;
+      }
 			callback(null, dbResultArr[0]);
 		}
 	})
@@ -97,17 +105,23 @@ var findByFB = function(fb_id, callback) {
 }
 
 var getWorkouts = function(id, callback) {
-	var query = 'select posting.*, requests.status, (posting.buddies - 1) as modified_buddies \
-               from (select users.name, users.id as ownerId, postings.* from postings inner join users on postings.userId=users.id) as posting \
-               left outer join requests \
-               on requests.postingId=posting.id \
+	var query = 'SELECT posting.*, requests.status, (posting.buddies - 1) AS modified_buddies \
+               FROM (SELECT users.name, users.id as ownerId, users.photo as ownerPhoto, postings.* FROM postings INNER JOIN users ON postings.userId=users.id) AS posting \
+               LEFT OUTER JOIN requests \
+               ON requests.postingId=posting.id \
                AND requests.userId=?';
 
 	connection.query(query, [id], (err, result) => {
 		if (err) {
-			console.log('error getting postings');
+			console.log('error getting postings', err);
 		} else {
-			// console.log('DB POSTING RESULTS:', result);
+			console.log('DB POSTING RESULTS:', result);
+      for (var i = 0; i < result.length; i++) {
+        if (!result[i].ownerPhoto) {
+          var usrImgPath = '/' + defaultImg[Math.floor(Math.random() * defaultImg.length)];
+          result[i].ownerPhoto = usrImgPath;
+        }
+      }
 			callback(result);
 		}
 	});
@@ -118,7 +132,7 @@ var getSingleWorkout = function(postingId, callback){
 	var query = 'select postings.*, users.name from postings inner join users on postings.userId=users.id where postings.id=?';
 	connection.query(query, [postingId], (err, result) => {
 		if (err) {
-			console.log('error getting single posting');
+			console.log('error getting single posting', err);
 		} else {
 			// console.log('SINGLE POSTING with username RESULT:', result);
 			callback(result);
@@ -144,7 +158,7 @@ var createProfile = function(profileObj, callback) {
 	var query = 'INSERT INTO profile SET ?';
 	connection.query(query, profileObj, (err, result) => {
 		if (err) {
-			console.log('error creating profile');
+			console.log('error creating profile', err);
 		} else {
 			// console.log('created profile result:', result);
 			callback(result);
@@ -162,7 +176,7 @@ var getUserPostings = function(userId, callback) {
 	// var query = 'select p.location, p.date, p.duration, p.details from postings p where userId=?'
 	connection.query(query, [userId], (err, result) => {
 		if (err) {
-			console.log('error getting posting by userId');
+			console.log('error getting posting by userId', err);
 		} else {
 			// console.log('success posting by userId:', result);
 			callback(result);
@@ -171,10 +185,19 @@ var getUserPostings = function(userId, callback) {
 };
 
 var getRequestsByPostingId = function(postingId, callback) {
+<<<<<<< HEAD
 	var query = 'select r.postingId, r.userId, r.status, p.title, p.location, p.date, p.duration, u.name, p.private, p.currentEvent, p.currentLevel from requests r join postings p on r.postingId = p.id join users u  on r.userId = u.id where r.postingId = ?';
 	connection.query(query, [postingId], (err, result) => {
 		if (err) {
 			console.log('error getting posting by userId',err);
+=======
+	var query = `
+    SELECT r.postingId, r.userId, r.status, p.title,p.location, p.date, p.duration, u.name p.private, p.currentEvent, p.currentLevel 
+    FROM requests r JOIN postings p on r.postingId = p.id join users u  on r.userId = u.id where r.postingId = ?`;
+	connection.query(query, [postingId], (err, result) => {
+		if (err) {
+			console.log('error getting posting by userId', err);
+>>>>>>> (feat) search evet
 		} else {
 			// console.log('success posting by userId:', result);
 			callback(result);
@@ -188,7 +211,7 @@ var getUserRequestPostings = function(userId, callback) {
 	var query = 'select p.location,p.title, p.date, p.duration, p.details from requests r left join postings p on r.postingId = p.id where r.status = "pending" and r.userId = ?';
 	connection.query(query, [userId], (err, result) => {
 		if (err) {
-			console.log('error getting requests by userId');
+			console.log('error getting requests by userId', err);
 		} else {
 			// console.log('success requests by userId:', result);
 			callback(result);
@@ -212,7 +235,7 @@ var createPair = function(requestObj, callback) {
 	var query = 'INSERT INTO requests SET ?';
 	connection.query(query, requestObj, (err, result) => {
 		if (err) {
-			console.log('error creating request');
+			console.log('error creating request', err);
 		} else {
 			// console.log('created request:', result);
 			callback(result);
@@ -224,7 +247,7 @@ var getUserAcceptPostings = function(userId, callback) {
 	var query = 'select p.location, p.date, p.duration, p.details from requests r left join postings p on r.postingId = p.id where r.UserId = ? and r.status = ?';
 	connection.query(query, [userId, 'accept'], (err, result) => {
 		if (err) {
-			console.log('error getting accepted requests');
+			console.log('error getting accepted requests', err);
 		} else {
 			// console.log('accepted requests', result);
 			callback(result);
@@ -237,7 +260,7 @@ var updateRequest = function(userId, callback) {
 	var query = "UPDATE requests SET STATUS = ? WHERE userId=?";
 	connection.query(query, ['accept', userId], (err, result) => {
 		if (err) {
-			console.log('error updating reqest');
+			console.log('error updating reqest', err);
 		} else {
 			// console.log('updated request to accept!', result);
 			callback(result);
@@ -249,7 +272,7 @@ var createFriendsRequest = function(originator, receiver, callback) {
   var query = "INSERT INTO friends (originator, receiver, status) VALUES (?, ?, ?)";
   connection.query(query, [originator, receiver, 'pending'], (err, result) => {
     if (err) {
-      console.log('error updating friend request');
+      console.log('error updating friend request', err);
     } else {
       // console.log('created friends request!', result);
       callback(result);
@@ -261,7 +284,7 @@ var updateFriendsRequest = function(originator, receiver, callback) {
   var query = "UPDATE friends SET STATUS=? WHERE (originator=? AND receiver=?)";
   connection.query(query, ['accept', originator, receiver], (err, result) => {
     if (err) {
-      console.log('error updating friend request');
+      console.log('error updating friend request', err);
     } else {
       // console.log('updated friends request to accept!', result);
       callback(result);
