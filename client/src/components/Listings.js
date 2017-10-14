@@ -55,9 +55,6 @@ class Listings extends Component {
 
   render() {
     var { listings, showModal, selectedListing, contextRef } = this.state;
-    console.log(listings);
-    console.log(this.images);
-
     return ([
       
       <Transition visible={this.state.visible} duration={1000} animation='fade'>
@@ -66,7 +63,6 @@ class Listings extends Component {
           <ListingNav user={this.props.user}/>
           <Card.Group itemsPerRow={3}>
             {listings.map(listing => (
-
               <ListingCard listing={listing} showListingModal={this.showListingModal.bind(this)}
                            user={this.props.user.photo}
               />
