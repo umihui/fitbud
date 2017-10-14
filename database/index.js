@@ -186,7 +186,7 @@ var getUserPostings = function(userId, callback) {
 
 var getRequestsByPostingId = function(postingId, callback) {
 	var query = `
-    SELECT r.postingId, r.userId, r.status, p.title,p.location, p.date, p.duration, u.name, p.private, p.currentEvent, p.currentLevel 
+    SELECT r.postingId, r.userId, r.status, p.title,p.location, p.date, p.duration, u.name, p.private, p.currentEvent, p.currentLevel
     FROM requests r JOIN postings p on r.postingId = p.id join users u  on r.userId = u.id where r.postingId = ?`;
 	connection.query(query, [postingId], (err, result) => {
 		if (err) {
@@ -273,13 +273,26 @@ var createFriendsRequest = function(originator, receiver, callback) {
   })
 }
 
+var updateFriendsNum = function(originator, receiver, callback) {
+  var query = 'UPDATE users SET friendsNum = friendsNum + 1 WHERE (id=? OR id=?)';
+  connection.query(query, [options.description, options.id], (err, result) => {
+		if (err) {
+			console.log('error updating friends number');
+		} else {
+			console.log('success updating friends number', result);
+			callback(result);
+		}
+	});
+}
+
 var updateFriendsRequest = function(originator, receiver, callback) {
   var query = "UPDATE friends SET STATUS=? WHERE (originator=? AND receiver=?)";
   connection.query(query, ['accept', originator, receiver], (err, result) => {
     if (err) {
       console.log('error updating friend request', err);
     } else {
-      // console.log('updated friends request to accept!', result);
+      console.log('updated friends request to accept!', result);
+      this.updateFriendsNum(originator, receiver, (result) => console.log(result));
       callback(result);
     }
   })
@@ -297,6 +310,18 @@ var getFriendsList = function(userId, callback) {
 			callback(result);
 		}
   })
+}
+
+var newSubscription = function(subscriberId, publisherId, callback) {
+  var query = "INSERT INTO subscription (subscriberId, publisherId) VALUES (?, ?, ?)";
+    connection.query(query, [subscriberId, publisherId], (err, result) => {
+      if (err) {
+        console.log('error creating new subscription');
+      } else {
+        console.log('new subscription created', result);
+        callback(result);
+      }
+    })
 }
 
 var getSubList = function(userId) {
@@ -430,7 +455,8 @@ module.exports = {
   createFriendsRequest,
   updateFriendsRequest,
   getFriendsList,
-	getSubList,
+  newSubscription,
+  getSubList,
 	searchUsers,
 	serachPostings,
 	updateProfilePic,

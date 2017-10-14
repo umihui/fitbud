@@ -16,10 +16,21 @@ router.get('/', (req, res) => {
   })
 })
 
+router.post('/', (req, res) => {
+  var {originator, receiver} = req.body;
+  db.createFriendsRequest(originator, receiver, (dbResult) => {
+    res.send(dbResult);
+  })
+})
 
-
-
-
+router.patch('/accept', (req, res) => {
+  // console.log('workout req query', req.params.id);
+  var {originator, receiver} = req.body;
+  db.updateFriendsRequest(originator, receiver, (result) => {
+    //console.log('request created in the table', result);
+    res.status(200).send('request accepted');
+  });
+});
 
 
 module.exports = router;

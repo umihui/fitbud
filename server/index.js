@@ -31,6 +31,7 @@ var routeRegister = require('../routes/register');
 var routePostings = require('../routes/postings');
 var routeProfile = require('../routes/profile');
 var routeFriends = require('../routes/friends');
+var routeSubscription = require('../routes/subscription');
 var routeWorkout = require('../routes/workout');
 var routeDashboard = require('../routes/dashboard');
 var routeLogout = require('../routes/logout');
@@ -138,6 +139,7 @@ app.use(checkAuth);
 // Below are the protected routes
 app.use('/profile', routeProfile);
 app.use('/friends', routeFriends);
+app.use('/subscription', routeSubscription);
 app.use('/workout', routeWorkout);
 app.use('/dashboard', routeDashboard);
 app.use('/logout', routeLogout);
