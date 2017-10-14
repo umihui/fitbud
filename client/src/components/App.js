@@ -11,6 +11,7 @@ import Dashboard from './Dashboard';
 import CreateListing from './CreateListing';
 import FriendsList from './FriendsList.js';
 import data from '../sampleData';
+import { Button } from 'semantic-ui-react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 class App extends Component {
@@ -21,7 +22,8 @@ class App extends Component {
       authenticated: false,
       user: null,
       visible: null,
-      friends: []
+      friends: [],
+      messagingVisible: false
     }
   }
 
@@ -34,8 +36,6 @@ class App extends Component {
 
   componentWillUpdate() {
     console.log('user', this.state.user);
-    // this.checkAuth();
-    // this.getFriends();
   }
 
   checkAuth = () => {
@@ -92,8 +92,17 @@ class App extends Component {
     }).then(response => console.log(response.status));
   }
 
+  toggleMessaging = () => {
+    this.setState({messagingVisible: !this.state.messagingVisible});
+  }
+
   render() {
-    var { authenticated, user, visible, friends } = this.state;
+    var { authenticated, user, visible, friends, messagingVisible } = this.state;
+    var buttonStyle = {
+      position: 'fixed',
+      bottom: 0,
+      float: 'left'
+    }
 
     return (
       <Router>
@@ -132,9 +141,9 @@ class App extends Component {
               <CreateListing {...props} />
             )} />
 
-
           </Switch>
-          {user ? <FriendsList user={user} friends={friends}/> : <div></div>}
+          <Button onClick={this.toggleMessaging} style={buttonStyle}>Chat</Button>
+          {user && messagingVisible ? <FriendsList user={user} friends={friends}/> : <div></div>}
         </div>
       </Router>
     );

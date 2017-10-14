@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { Input, Form, Button, Card, Feed, Transition, Dimmer, Loader } from 'semantic-ui-react';
 import moment from 'moment';
 
@@ -24,6 +25,8 @@ class Messaging extends Component {
     setInterval(() => {
       this.setState({message: this.state.messages});
     }, 45000);
+
+    this.updateMessages(this.props.user, this.props.friend);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -31,12 +34,12 @@ class Messaging extends Component {
     var current = this.props.friend;
     var next = nextProps.friend;
     if (!next) return;
-    if (!current) {
+    if (!current || !this.state.messages.length) {
       // this.setState({loading: true});
       this.updateMessages(user, next);
     } else if (current.id !== next.id) {
       this.database.ref(`chats/${user.id}/${current.id}`).off();
-      this.setState({loading: true});
+      // this.setState({loading: true});
       this.updateMessages(user, next);
       this.setState({messages: []});
     }
@@ -47,14 +50,9 @@ class Messaging extends Component {
   }
 
   scrollToBottom = () => {
-    // if (this.messageList) {
-    //   this.messageList.scrollTop = this.messageList.scrollHeight;
-    // }
-    if (this.messageList) {
-      const scrollHeight = this.messageList.scrollHeight;
-      const height = this.messageList.clientHeight;
-      const maxScrollTop = scrollHeight - height;
-      this.messageList.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+    if (this.messageView) {
+      console.log(this.messageView);
+      this.messageView.scrollIntoView({ behavior: "smooth" });
     }
   }
 
@@ -108,13 +106,13 @@ class Messaging extends Component {
           </Card.Header>
         </Card.Content>
         <Card.Content>
-          <Feed style={messagingStyle} ref={div => (this.messageList = div)}>
+          <Feed style={messagingStyle} ref={(el) => { this.messageView = el; }}>
             {loading ?
               (<Dimmer active inverted>
                 <Loader inverted content='Loading' />
               </Dimmer>) :
-              (messages.map(message =>
-                <Feed.Event style={{marginTop: '5px'}}>
+              (messages.map((message, index) =>
+                <Feed.Event key={index} style={{marginTop: '5px'}}>
                   {message.userId === (this.props.friend && this.props.friend.id) ? <Feed.Label image='elliot.jpg' /> : <div></div>}
                   <Feed.Content style={{textAlign: message.userId === (this.props.user && this.props.user.id) ? 'right' : 'left',
                                         marginRight: '10px'}}>

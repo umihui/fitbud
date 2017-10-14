@@ -6,12 +6,13 @@ class FriendsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible: false
+      visible: false,
+      showMessaging: false
     }
   }
 
   componentWillMount() {
-    this.setState({selected: this.props.friends[0]});
+    // this.setState({selected: this.props.friends[0]});
     // var token = (this.props.user.id).toString();
     // window.firebase.auth().signInWithCustomToken(token).catch(function(error) {
     //   // Handle Errors here.
@@ -49,24 +50,24 @@ class FriendsList extends Component {
   }
 
   render() {
-    var { sendDisabled, selected } = this.state;
+    var { sendDisabled, selected, showMessaging } = this.state;
     var { user, friends } = this.props;
     const friendsListStyle = {
       position: 'fixed',
       float: 'right',
-      right: '3%',
+      right: '0',
       bottom: 0,
-      marginBottom: 0,
+      width: '700px'
     }
 
     return (
-      <Grid divided='vertically' style={friendsListStyle}>
+      <Grid divided='vertically' style={friendsListStyle} verticalAlign='bottom'>
         <Grid.Row>
           <Grid.Column width={7}>
-            <Messaging user={user} friend={selected} />
+            {selected ? <Messaging user={user} friend={selected} /> : <div></div>}
           </Grid.Column>
-          <Grid.Column width={7}>
-            <Card >
+          <Grid.Column width={5}>
+            <Card>
               <Card.Content>
                 <Card.Header>
                   Friends
@@ -75,7 +76,7 @@ class FriendsList extends Component {
               <Card.Content>
                 <Feed>
                   {friends.map((friend, index) =>
-                    <Feed.Event onClick={() => this.handleClick(index)}>
+                    <Feed.Event key={index} onClick={() => this.handleClick(index)}>
                       <Feed.Label image='elliot.jpg' />
                       <Feed.Content>
                         <Feed.Summary>
