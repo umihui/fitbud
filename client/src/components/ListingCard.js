@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Icon, Image } from 'semantic-ui-react';
+import { Card, Icon, Image, Label, Popup, Button, Grid, Header, Transition} from 'semantic-ui-react';
 
 class ListingCard extends Component {
   constructor(props) {
@@ -14,7 +14,7 @@ class ListingCard extends Component {
     var { listing, showListingModal } = this.props;
 
     return (
-      <Card onClick={() => showListingModal(listing)} link>
+      <Card onClick={() => showListingModal(listing)} link >
         <Card.Content>
           <Image src={`${this.state.event[listing.currentEvent]}_on.svg`} size='mini' floated='right'/>
           <Card.Header>{listing.title}</Card.Header>

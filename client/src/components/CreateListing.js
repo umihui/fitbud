@@ -316,7 +316,7 @@ class CreateListing extends Component {
                       <Header as='h3' color='teal' textAlign='center'>
                         Friends List
                       </Header>
-                      <div display='hidden' style={{'height':'565px','overflowY': 'scroll', 'overflowX': 'hidden'}}>
+                      <div display='hidden' style={{'height':'565px','overflowY': 'auto', 'overflowX': 'hidden'}}>
                       </div>
                     </Segment>
                   </div>
