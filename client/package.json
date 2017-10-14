@@ -7,6 +7,7 @@
     "create-react-class": "^15.6.2",
     "formsy-react": "^0.19.5",
     "formsy-semantic-ui-react": "^0.2.12",
+    "google-maps": "^3.2.1",
     "lodash": "^4.17.4",
     "moment": "^2.19.1",
     "lodash.debounce": "^4.0.8",

@@ -58,11 +58,13 @@ class CreateListing extends Component {
 
   onValidSubmit = (formData) => {
     this.setState({submit: true});
+    formData.location = this.state.address;
     formData.currentLevel = this.state.currentLevel;
     formData.currentEvent = this.state.currentEvent;
     formData.private = this.state.private;
     formData.imgPath = this.state.file.name;
     formData.date = new Date(formData.date).toISOString().slice(0, 19).replace('T', ' ');
+    console.log(formData);
     var options = {
       headers: {
         'Content-Type': 'application/json'
