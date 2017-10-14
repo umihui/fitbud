@@ -4,6 +4,15 @@ body {
   font-family: sans-serif;
 }
 
+.pac-item {
+  height: 40px;
+}
+
+.pac-container {
+  height: auto;
+  padding-right: 20px;
+}
+
 .ui.form .field > label {
 	display: none;
 }

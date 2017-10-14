@@ -5,6 +5,8 @@ import _ from 'lodash';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 // import { Card, Container, Icon, Image, List } from 'semantic-ui-react';
 
+const google = window.google;
+
 class CreateListing extends Component {
   constructor(props) {
     super(props);
@@ -58,7 +60,7 @@ class CreateListing extends Component {
 
   onValidSubmit = (formData) => {
     this.setState({submit: true});
-    formData.location = this.state.address;
+    //formData.location = this.state.address;
     formData.currentLevel = this.state.currentLevel;
     formData.currentEvent = this.state.currentEvent;
     formData.private = this.state.private;
@@ -135,11 +137,11 @@ class CreateListing extends Component {
   }
 
   render() {
-    const inputProps = {
-      value: this.state.address,
-      onChange: this.onChange,
-    }
-
+    // const inputProps = {
+    //   value: this.state.address,
+    //   onChange: this.onChange,
+    // }
+    const autocomplete = new google.maps.places.Autocomplete((document.getElementById('searchBox')));
     const styles = {
       root: {
         marginTop: 18,
@@ -185,6 +187,7 @@ class CreateListing extends Component {
         icon="map"
         iconPosition="left"
         required
+        id='searchBox'
         validations={{
           isWords: true
         }}
@@ -369,14 +372,14 @@ class CreateListing extends Component {
                     onValidSubmit={this.onValidSubmit}
               >
                 { titleInput }
-
-                <PlacesAutocomplete
+                 {locationInput}
+                {/* <PlacesAutocomplete
                   inputProps={inputProps}
                   classNames={{
                     input: 'search-input',
                     autocompleteContainer: 'search-autocomplete-container',
                   }}
-                />
+                /> */}
 
                 <Form.Group widths='equal'>
                   { meetupInput }
