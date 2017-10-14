@@ -143,7 +143,7 @@ class App extends Component {
 
           </Switch>
           <Button onClick={this.toggleMessaging} style={buttonStyle}>Chat</Button>
-          {user && messagingVisible ? <FriendsList user={user} friends={friends}/> : <div></div>}
+          {user && messagingVisible ? <FriendsList user={user} friends={friends} /> : <div></div>}
         </div>
       </Router>
     );
