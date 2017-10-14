@@ -23,8 +23,12 @@ class App extends Component {
       user: null,
       visible: null,
       friends: [],
-      messagingVisible: false
+      messagingVisible: false,
+      modal: null,
     }
+    this.handleUserSearch = this.handleUserSearch.bind(this);
+    this.handleEventSearch = this.handleEventSearch.bind(this);
+    this.doneEventSearch = this.doneEventSearch.bind(this);
   }
 
   componentWillMount() {
@@ -60,13 +64,10 @@ class App extends Component {
     fetch('/friends', { credentials: "include" })
       .then(response => response.json())
       .then(response => {
-        console.log('friends', response);
         if (Array.isArray(response)) {
           this.setState({friends: response})
         }
       })
-
-    console.log('getting data...');
   }
 
   handleAuthenticated = (user) => {
@@ -96,6 +97,24 @@ class App extends Component {
     this.setState({messagingVisible: !this.state.messagingVisible});
   }
 
+  handleUserSearch (userInfo) {
+    console.log('here in user search handler', userInfo);
+
+  }
+
+  handleEventSearch(eventInfo) {
+    console.log('here in event search handler', eventInfo);
+    this.setState({
+      modal: eventInfo,
+    });
+  }
+
+  doneEventSearch() {
+    this.setState({
+      modal:null,
+    });
+  }
+
   render() {
     var { authenticated, user, visible, friends, messagingVisible } = this.state;
     var buttonStyle = {
@@ -107,16 +126,18 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <MainNav authenticate={this.handleAuthenticated} isAuthed={authenticated}
-                   signoff={this.handleSignOff} user={user} />
 
+          <MainNav authenticate={this.handleAuthenticated} isAuthed={this.state.authenticated}
+                   signoff={this.handleSignOff} user={this.state.user} 
+                   handleUserSearch={this.handleUserSearch} handleEventSearch={this.handleEventSearch}
+                   />
           <Switch>
             <Route exact path='/' render={props => (
-              <Home user={user} visible={visible} {...props} />
+              <Home user={this.state.user} {...props} />
             )} />
 
             <Route exact path='/listings' render={props => (
-              <Listings {...props} user={user} />
+              <Listings user={this.state.user} modal={this.state.modal} doneEventSearch={this.doneEventSearch} {...props} />
             )} />
 
             <Route exact path='/about' component={About} />
@@ -151,3 +172,7 @@ class App extends Component {
 }
 
 export default App;
+
+
+
+
