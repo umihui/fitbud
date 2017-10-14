@@ -47,6 +47,10 @@ class FriendsList extends Component {
 
   handleClick = (index) => {
     this.setState({selected: this.props.friends[index]});
+    var selected = this.state.selected;
+    if (!selected || (selected === this.props.friends[index])) {
+      this.setState({showMessaging: !this.state.showMessaging});
+    }
   }
 
   render() {
@@ -64,7 +68,7 @@ class FriendsList extends Component {
       <Grid divided='vertically' style={friendsListStyle} verticalAlign='bottom'>
         <Grid.Row>
           <Grid.Column width={7}>
-            {selected ? <Messaging user={user} friend={selected} /> : <div></div>}
+            {(selected && showMessaging) ? <Messaging user={user} friend={selected} /> : <div></div>}
           </Grid.Column>
           <Grid.Column width={5}>
             <Card>
