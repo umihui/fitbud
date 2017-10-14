@@ -23,7 +23,7 @@ class App extends Component {
       user: null,
       visible: null,
       friends: [],
-      messagingVisible: false
+      messagingVisible: false,
       modal: null,
     }
     this.handleUserSearch = this.handleUserSearch.bind(this);

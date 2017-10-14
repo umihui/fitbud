@@ -185,19 +185,12 @@ var getUserPostings = function(userId, callback) {
 };
 
 var getRequestsByPostingId = function(postingId, callback) {
-<<<<<<< HEAD
-	var query = 'select r.postingId, r.userId, r.status, p.title, p.location, p.date, p.duration, u.name, p.private, p.currentEvent, p.currentLevel from requests r join postings p on r.postingId = p.id join users u  on r.userId = u.id where r.postingId = ?';
-	connection.query(query, [postingId], (err, result) => {
-		if (err) {
-			console.log('error getting posting by userId',err);
-=======
 	var query = `
-    SELECT r.postingId, r.userId, r.status, p.title,p.location, p.date, p.duration, u.name p.private, p.currentEvent, p.currentLevel 
+    SELECT r.postingId, r.userId, r.status, p.title,p.location, p.date, p.duration, u.name, p.private, p.currentEvent, p.currentLevel 
     FROM requests r JOIN postings p on r.postingId = p.id join users u  on r.userId = u.id where r.postingId = ?`;
 	connection.query(query, [postingId], (err, result) => {
 		if (err) {
 			console.log('error getting posting by userId', err);
->>>>>>> (feat) search evet
 		} else {
 			// console.log('success posting by userId:', result);
 			callback(result);
