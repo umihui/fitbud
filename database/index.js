@@ -186,7 +186,7 @@ var getUserPostings = function(userId, callback) {
 
 var getRequestsByPostingId = function(postingId, callback) {
 	var query = `
-    SELECT r.postingId, r.userId, r.status, p.title,p.location, p.date, p.duration, u.name, p.private, p.currentEvent, p.currentLevel 
+    SELECT r.postingId, r.userId, r.status, p.title,p.location, p.date, p.duration, u.name, p.private, p.currentEvent, p.currentLevel
     FROM requests r JOIN postings p on r.postingId = p.id join users u  on r.userId = u.id where r.postingId = ?`;
 	connection.query(query, [postingId], (err, result) => {
 		if (err) {
@@ -261,6 +261,18 @@ var updateRequest = function(userId, callback) {
 	});
 };
 
+var checkFriendsStatus = function(originator, receiver, callback) {
+  var query = "SELECT status FROM friends WHERE (originator=? AND receiver=?)";
+	connection.query(query, [originator, receiver], (err, result) => {
+		if (err) {
+			console.log('error checking friendship status');
+		} else {
+			console.log(`status between user ${originator} and user ${receiver} is: `, result[0]);
+			callback(result[0]);
+		}
+	});
+}
+
 var createFriendsRequest = function(originator, receiver, callback) {
   var query = "INSERT INTO friends (originator, receiver, status) VALUES (?, ?, ?)";
   connection.query(query, [originator, receiver, 'pending'], (err, result) => {
@@ -273,13 +285,26 @@ var createFriendsRequest = function(originator, receiver, callback) {
   })
 }
 
+var updateFriendsNum = function(originator, receiver, callback) {
+  var query = 'UPDATE users SET friendsNum = friendsNum + 1 WHERE (id=? OR id=?)';
+  connection.query(query, [options.description, options.id], (err, result) => {
+		if (err) {
+			console.log('error updating friends number');
+		} else {
+			console.log('success updating friends number', result);
+			callback(result);
+		}
+	});
+}
+
 var updateFriendsRequest = function(originator, receiver, callback) {
   var query = "UPDATE friends SET STATUS=? WHERE (originator=? AND receiver=?)";
   connection.query(query, ['accept', originator, receiver], (err, result) => {
     if (err) {
       console.log('error updating friend request', err);
     } else {
-      // console.log('updated friends request to accept!', result);
+      console.log('updated friends request to accept!', result);
+      this.updateFriendsNum(originator, receiver, (result) => console.log(result));
       callback(result);
     }
   })
@@ -296,6 +321,29 @@ var getFriendsList = function(userId, callback) {
 		} else {
 			callback(result);
 		}
+  })
+}
+
+var newSubscription = function(subscriberId, publisherId, callback) {
+  var query = "INSERT INTO subscription (subscriberId, publisherId) VALUES (?, ?)";
+    connection.query(query, [subscriberId, publisherId], (err, result) => {
+      if (err) {
+        console.log('error creating new subscription');
+      } else {
+        console.log('new subscription created', result);
+        callback(result);
+      }
+    })
+}
+
+var checkSubExist = function(subscriberId, publisherId, callback) {
+  var query = "SELECT * FROM subscription WHERE subscriberId=? AND publisherId=?";
+  connection.query(query, [subscriberId, publisherId], (err, result) => {
+    if (err) {
+      console.log('error checking subscription');
+    } else {
+      callback(result);
+    }
   })
 }
 
@@ -427,10 +475,12 @@ module.exports = {
 	getUserAcceptPostings,
 	getRequestsByPostingId,
 	updateRequest,
+  checkFriendsStatus,
   createFriendsRequest,
   updateFriendsRequest,
   getFriendsList,
-	getSubList,
+  newSubscription,
+  getSubList,
 	searchUsers,
 	serachPostings,
 	updateProfilePic,

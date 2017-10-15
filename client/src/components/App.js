@@ -62,7 +62,13 @@ class App extends Component {
 
   getFriends = () => {
     fetch('/friends', { credentials: "include" })
-      .then(response => response.json())
+      .then(response => {
+        try {
+          return response.json()
+        } catch (err) {
+          return [];
+        }
+      })
       .then(response => {
         if (Array.isArray(response)) {
           this.setState({friends: response})
@@ -120,7 +126,11 @@ class App extends Component {
     var buttonStyle = {
       position: 'fixed',
       bottom: 0,
-      float: 'left'
+      right: 0,
+      marginRight: 0,
+      zIndex: 100,
+      width: '150px',
+      height: '40px'
     }
 
     return (
@@ -163,8 +173,8 @@ class App extends Component {
             )} />
 
           </Switch>
-          <Button onClick={this.toggleMessaging} style={buttonStyle}>Chat</Button>
-          {user && messagingVisible ? <FriendsList user={user} friends={friends} /> : <div></div>}
+          {user ? <Button onClick={this.toggleMessaging} style={buttonStyle}>Chat</Button> : <div></div>}
+          {messagingVisible ? <FriendsList user={user} friends={friends} /> : <div></div>}
         </div>
       </Router>
     );
