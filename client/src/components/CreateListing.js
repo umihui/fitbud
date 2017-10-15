@@ -398,7 +398,7 @@ class CreateListing extends Component {
                       {
                         this.state.level.map((ele,index) =>
                           this.state.currentLevel === ele ?
-                          <Button key={index} passive onClick={this.handleLevelClick} style={{'background-color':'gray','color':'white'}}>{ele}</Button>
+                          <Button key={index} passive onClick={this.handleLevelClick} style={{'backgroundColor':'gray','color':'white'}}>{ele}</Button>
                           : <Button key={index} onClick={this.handleLevelClick}>{ele}</Button>
                         )
                       }
