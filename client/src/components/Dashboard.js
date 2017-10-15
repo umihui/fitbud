@@ -6,6 +6,7 @@ import Profile from './Profile';
 import DashNav from './DashNav';
 import Workouts from './Workouts';
 import Requests from './Requests';
+import Friends from './Friends';
 import Invites from './Invites';
 
 
@@ -60,7 +61,7 @@ class Dashboard extends Component {
   user = '/' + this.images[Math.floor(Math.random() * this.images.length)];
 
   render() {
-    console.log('RENDERRENDER');
+    // console.log('RENDERRENDER');
     var { listings } = this.props;
     return (
       <Container style={{marginTop: '20px'}}>
@@ -79,7 +80,8 @@ class Dashboard extends Component {
             update={this.update}
           />)}
         {this.state.view === 'my requests' && ([<Requests />])}
-        {this.state.view === 'accepted requests' && ([<Invites />])}
+        {this.state.view === 'friends' && ([<Friends />])}
+        {this.state.view === 'invites' && ([<Invites />])}
 
       </Container>
     )

@@ -27,7 +27,6 @@ class Workouts extends Component {
                 {`on ${new Date(listing.date).toDateString()}`}
               </Card.Description>
               <Card.Description>
-
                 {listing.duration > 1 ? `for ${listing.duration} hours` :`for ${listing.duration} hour`}
               </Card.Description>
               <Card.Content extra>
