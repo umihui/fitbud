@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Grid, Header, Image, Segment, Button, Transition, Label, Message, Checkbox, Radio, Sidebar, Menu, Icon} from 'semantic-ui-react';
+import { Container, Input as MapInput, Grid, Header, Image, Segment, Button, Transition, Label, Message, Checkbox, Radio, Sidebar, Menu, Icon} from 'semantic-ui-react';
 import { Form, Input, TextArea, Select } from 'formsy-semantic-ui-react';
 import _ from 'lodash';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
@@ -35,14 +35,18 @@ class CreateListing extends Component {
 
     this.clickEImg = this.clickEImg.bind(this);
     this.setFile = this.setFile.bind(this);
-
-    this.onChange = (address) => this.setState({ address });
   }
 
   componentDidMount() {
     this.setState({
       visible: true
     });
+  }
+
+  handleAddressFocus = () => { !window.autocomplete && this.initializeAutocomplete(); }
+
+  initializeAutocomplete = () => {
+    window.autocomplete = new google.maps.places.Autocomplete(document.getElementById('searchBox'));
   }
 
   toggleVisibility = (e) => {
@@ -141,7 +145,7 @@ class CreateListing extends Component {
     //   value: this.state.address,
     //   onChange: this.onChange,
     // }
-    const autocomplete = new google.maps.places.Autocomplete((document.getElementById('searchBox')));
+
     const styles = {
       root: {
         marginTop: 18,
@@ -153,6 +157,11 @@ class CreateListing extends Component {
         textAlign: 'center',
       },
     };
+
+    const locationInputStyle = {
+      width: '100%',
+      marginBottom: '10px'
+    }
 
     const errorLabel = <Label color="red" pointing/>;
 
@@ -180,24 +189,15 @@ class CreateListing extends Component {
     );
 
     const locationInput = (
-      <Input
+      <MapInput
         name="location"
-        placeholder="Workout location"
         type='text'
         icon="map"
         iconPosition="left"
-        required
-        //value={this.state.address}
         id='searchBox'
-        onChange={this.onChange}
-        // validations={{
-        //   isWords: true
-        // }}
-        // validationErrors={{
-        //   isDefaultRequiredValue: 'Location is required',
-        //   isWords: 'Only letters allowed for location'
-        // }}
-        // errorLabel={ <Label basic color='red' pointing /> }
+        placeholder="Enter a location"
+        style={locationInputStyle}
+        onFocus={this.handleAddressFocus}
       />
     );
 
@@ -386,11 +386,11 @@ class CreateListing extends Component {
                 <Form.Group widths='equal'>
                   { meetupInput }
                   { dateInput }
-                </Form.Group >
+                </Form.Group>
                 <Form.Group widths='equal'>
                   { durationInput }
                   { buddiesInput }
-                </Form.Group >
+                </Form.Group>
                 <Segment >
                   { sectionInput }
                   <div style={{'padding':'20px'}}>
@@ -398,7 +398,7 @@ class CreateListing extends Component {
                       {
                         this.state.level.map((ele,index) =>
                           this.state.currentLevel === ele ?
-                          <Button key={index} passive onClick={this.handleLevelClick} style={{'background-color':'gray','color':'white'}}>{ele}</Button>
+                          <Button key={index} passive onClick={this.handleLevelClick} style={{'backgroundColor':'gray','color':'white'}}>{ele}</Button>
                           : <Button key={index} onClick={this.handleLevelClick}>{ele}</Button>
                         )
                       }

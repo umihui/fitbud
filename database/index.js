@@ -345,6 +345,7 @@ var checkSubExist = function(subscriberId, publisherId, callback) {
     if (err) {
       console.log('error checking subscription');
     } else {
+      console.log(result);
       callback(result);
     }
   })
@@ -464,6 +465,7 @@ module.exports = {
   findByFB,
   insertFBuser,
 	checkUser,
+  checkSubExist,
 	comparePassword,
 	createUser,
 	getWorkouts,

@@ -69,7 +69,7 @@ class FriendsList extends Component {
       <Grid divided='vertically' style={friendsListStyle} verticalAlign='bottom'>
         <Grid.Row>
           <Grid.Column width={7}>
-            {(selected && showMessaging) ? <Messaging user={user} friend={selected} /> : <div></div>}
+            {(selected && showMessaging) && <Messaging user={user} friend={selected} />}
           </Grid.Column>
           <Grid.Column width={5}>
             <Card>
