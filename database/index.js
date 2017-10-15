@@ -265,9 +265,20 @@ var getUserAcceptPostings = function(userId, callback) {
 };
 
 
-var updateRequest = function(userId, callback) {
-	var query = "UPDATE requests SET STATUS = ? WHERE userId=?";
-	connection.query(query, ['accept', userId], (err, result) => {
+var updateRequestAccept = function(postingId, callback) {
+	var query = "UPDATE requests SET STATUS = ? WHERE postingId=?";
+	connection.query(query, ['accept', postingId], (err, result) => {
+		if (err) {
+			console.log('error updating reqest', err);
+		} else {
+			// console.log('updated request to accept!', result);
+			callback(result);
+		}
+	});
+};
+var updateRequestReject = function(postingId, callback) {
+	var query = "UPDATE requests SET STATUS = ? WHERE postingId=?";
+	connection.query(query, ['reject', postingId], (err, result) => {
 		if (err) {
 			console.log('error updating reqest', err);
 		} else {
@@ -493,7 +504,8 @@ module.exports = {
 	createPair,
 	getUserAcceptPostings,
 	getRequestsByPostingId,
-	updateRequest,
+	updateRequestAccept,
+  updateRequestReject,
   checkFriendsStatus,
   createFriendsRequest,
   updateFriendsRequest,

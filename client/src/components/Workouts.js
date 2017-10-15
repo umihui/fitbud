@@ -31,7 +31,7 @@ class Workouts extends Component {
                 {listing.duration > 1 ? `for ${listing.duration} hours` :`for ${listing.duration} hour`}
               </Card.Description>
               <Card.Content extra>
-                <WorkoutDropdown postingId={listing.id} buddies={listing.buddies} update={this.props.update} dataPull={this.props.dataPull} />
+                <WorkoutDropdown postingId={listing.id} buddies={listing.buddies} update={this.props.update} />
               </Card.Content>
             </Card.Content>
           </Card>

@@ -137,7 +137,7 @@ app.use('/profile', routeProfile);
 app.use('/friends', routeFriends);
 app.use('/subscription', routeSubscription);
 app.use('/workout', routeWorkout);
-app.use('/dashboard', routeDashboard);
+app.use('/dashboard', checkAuth, routeDashboard);
 app.use('/logout', routeLogout);
 
 // middleware function to check if this is one of the protected routes
@@ -147,7 +147,8 @@ function checkAuth(req, res, next) {
     next();
   }
   else {
-    res.status(401).json({});
+    res.redirect('/')
+    //res.status(401).json({});
   }
 }
 

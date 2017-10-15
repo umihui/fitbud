@@ -4,6 +4,9 @@ import { Card, Icon, Image, Accordion, Button } from 'semantic-ui-react';
 class DropdownRequest extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      clicked: false
+    }
   }
 
   render() {
@@ -36,18 +39,22 @@ class IndividualRequest extends Component {
           <span>
             <Button basic color='green' size='mini' style={{margin: '10px'}}
               onClick={() => {
-                this.props.update(this.props.request.userId);
+                this.props.update(this.props.request.postingId, 'accept');
                 this.setState({clicked: !this.state.clicked})
-              }} >Accept</Button>
-              <Button basic color='green' size='mini' style={{margin: '10px'}}
-                onClick={() => {
-                  this.props.update(this.props.request.userId);
-                  this.setState({clicked: !this.state.clicked})
-                }} >Reject</Button>
+              }} >
+              Accept
+            </Button>
+            <Button basic color='red' size='mini' style={{margin: '10px'}}
+              onClick={() => {
+                this.props.update(this.props.request.postingId, 'reject');
+                this.setState({clicked: !this.state.clicked})
+              }} >
+              Reject
+            </Button>
           </span>
         </div>
       );
-    } else {
+    } else if (this.props.request.status === 'accept'){
       return(
         <div>
           <span style={{color: '#21ba45'}}>
@@ -55,6 +62,17 @@ class IndividualRequest extends Component {
           </span>
           <span style={{color: '#21ba45', margin: '10px'}}>
             Accepted!
+          </span>
+        </div>
+      )
+    } else {
+      return(
+        <div>
+          <span style={{color: '#21ba45'}}>
+            {this.props.request.name}
+          </span>
+          <span style={{color: '#FF0000', margin: '10px'}}>
+            Rejected!
           </span>
         </div>
       )

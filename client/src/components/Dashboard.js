@@ -29,32 +29,21 @@ class Dashboard extends Component {
       .then(response => response.json())
       .then(response => {
         console.log('response', response);
-        this.setState({ data: response })
+        this.setState({ data: response})
       })
       .catch(err => console.log(err))
 
     console.log('getting data...')
   }
 
-  update = (userid) => {
-    console.log(userid);
-    fetch(`/postings/accept/${userid}`, { method: "PATCH" })
+  update = (postingId, action) => {
+    console.log(postingId);
+    fetch(`/postings/${action}/${postingId}`, { method: "PATCH" })
       .then(response => {
         var newVar = !this.state.var;
-        this.setState({ var: newVar });
+        this.setState({var:newVar})
         this.dataPull();
-      })
-
-    var id = this.props.postingId;
-
-    fetch(`/postings/requests/${id}`, { credentials: "include" })
-      .then(response => response.json())
-      .then(response => {
-        console.log('requests response #' + id, response);
-        this.setState({ requests: response })
-      })
-
-    console.log('getting posting requests');
+      });
   }
 
   handleTabClick(e, { name }) {
@@ -71,6 +60,7 @@ class Dashboard extends Component {
   user = '/' + this.images[Math.floor(Math.random() * this.images.length)];
 
   render() {
+    console.log('RENDERRENDER');
     var { listings } = this.props;
     return (
       <Container style={{marginTop: '20px'}}>
@@ -87,7 +77,7 @@ class Dashboard extends Component {
           (<Workouts data={this.state.data}
             user={this.user}
             update={this.update}
-            dataPull={this.dataPull} />)}
+          />)}
         {this.state.view === 'my requests' && ([<Requests />])}
         {this.state.view === 'accepted requests' && ([<Invites />])}
 
@@ -97,4 +87,3 @@ class Dashboard extends Component {
 }
 
 export default Dashboard;
-
