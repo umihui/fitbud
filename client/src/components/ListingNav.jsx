@@ -9,6 +9,10 @@ class ListingNav extends Component {
     this.handleSortChange = this.handleSortChange.bind(this);
   }
 
+  componentWillMount() {
+    this.setState({active: 'all'});
+  }
+
   handleItemClick(event, {name}) {
     this.props.updateActive(name);
     this.props.toggleFilter(name);
