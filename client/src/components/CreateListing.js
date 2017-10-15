@@ -187,15 +187,17 @@ class CreateListing extends Component {
         icon="map"
         iconPosition="left"
         required
+        //value={this.state.address}
         id='searchBox'
-        validations={{
-          isWords: true
-        }}
-        validationErrors={{
-          isDefaultRequiredValue: 'Location is required',
-          isWords: 'Only letters allowed for location'
-        }}
-        errorLabel={ <Label basic color='red' pointing /> }
+        onChange={this.onChange}
+        // validations={{
+        //   isWords: true
+        // }}
+        // validationErrors={{
+        //   isDefaultRequiredValue: 'Location is required',
+        //   isWords: 'Only letters allowed for location'
+        // }}
+        // errorLabel={ <Label basic color='red' pointing /> }
       />
     );
 
