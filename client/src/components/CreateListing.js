@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { Container, Grid, Header, Image, Segment, Button, Transition, Label, Message, Checkbox, Radio, Sidebar, Menu, Icon} from 'semantic-ui-react';
 import { Form, Input, TextArea, Select } from 'formsy-semantic-ui-react';
 import _ from 'lodash';
-
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 // import { Card, Container, Icon, Image, List } from 'semantic-ui-react';
+
+const google = window.google;
 
 class CreateListing extends Component {
   constructor(props) {
@@ -20,7 +22,8 @@ class CreateListing extends Component {
       level: ['Beginner','Intermediate','Advanced'],
       file: '',
       imagePreviewUrl: '',
-    }
+      address: 'San Francisco, CA'
+    };
 
     this.options = _.range(1, 11).map(num => {
       return {
@@ -29,8 +32,11 @@ class CreateListing extends Component {
         value: num
       }
     });
+
     this.clickEImg = this.clickEImg.bind(this);
     this.setFile = this.setFile.bind(this);
+
+    this.onChange = (address) => this.setState({ address });
   }
 
   componentDidMount() {
@@ -54,11 +60,13 @@ class CreateListing extends Component {
 
   onValidSubmit = (formData) => {
     this.setState({submit: true});
+    //formData.location = this.state.address;
     formData.currentLevel = this.state.currentLevel;
     formData.currentEvent = this.state.currentEvent;
     formData.private = this.state.private;
     formData.imgPath = this.state.file.name;
     formData.date = new Date(formData.date).toISOString().slice(0, 19).replace('T', ' ');
+    console.log(formData);
     var options = {
       headers: {
         'Content-Type': 'application/json'
@@ -129,6 +137,11 @@ class CreateListing extends Component {
   }
 
   render() {
+    // const inputProps = {
+    //   value: this.state.address,
+    //   onChange: this.onChange,
+    // }
+    const autocomplete = new google.maps.places.Autocomplete((document.getElementById('searchBox')));
     const styles = {
       root: {
         marginTop: 18,
@@ -174,14 +187,17 @@ class CreateListing extends Component {
         icon="map"
         iconPosition="left"
         required
-        validations={{
-          isWords: true
-        }}
-        validationErrors={{
-          isDefaultRequiredValue: 'Location is required',
-          isWords: 'Only letters allowed for location'
-        }}
-        errorLabel={ <Label basic color='red' pointing /> }
+        //value={this.state.address}
+        id='searchBox'
+        onChange={this.onChange}
+        // validations={{
+        //   isWords: true
+        // }}
+        // validationErrors={{
+        //   isDefaultRequiredValue: 'Location is required',
+        //   isWords: 'Only letters allowed for location'
+        // }}
+        // errorLabel={ <Label basic color='red' pointing /> }
       />
     );
 
@@ -252,18 +268,18 @@ class CreateListing extends Component {
         <Radio  slider label={this.state.private ? 'Public' : 'Private'} onChange={this.toggleVisibility} />
       </div>
     )
-    const eventImg = 
+    const eventImg =
     (
       <div >
         <Label onClick={this.clickEImg}>
           <Icon name='file image outline' size='big' disabled={!(this.state.file)}/> Upload Image
         </Label>
-        <input 
-          ref={input => this.inputElement = input} 
-          id="fileInput" 
-          style={{visibility: 'hidden'}} 
-          type="file" 
-          onChange={this.setFile} 
+        <input
+          ref={input => this.inputElement = input}
+          id="fileInput"
+          style={{visibility: 'hidden'}}
+          type="file"
+          onChange={this.setFile}
           accept="image/png, image/jpeg"
         />
       </div>
@@ -358,7 +374,15 @@ class CreateListing extends Component {
                     onValidSubmit={this.onValidSubmit}
               >
                 { titleInput }
-                { locationInput }
+                 {locationInput}
+                {/* <PlacesAutocomplete
+                  inputProps={inputProps}
+                  classNames={{
+                    input: 'search-input',
+                    autocompleteContainer: 'search-autocomplete-container',
+                  }}
+                /> */}
+
                 <Form.Group widths='equal'>
                   { meetupInput }
                   { dateInput }

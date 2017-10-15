@@ -89,7 +89,7 @@ class Dashboard extends Component {
             update={this.update}
             dataPull={this.dataPull} />)}
         {this.state.view === 'my requests' && ([<Requests />])}
-        {this.state.view === 'upcoming workouts' && ([<Invites />])}
+        {this.state.view === 'accepted requests' && ([<Invites />])}
 
       </Container>
     )

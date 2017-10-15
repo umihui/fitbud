@@ -74,6 +74,7 @@ class App extends Component {
           this.setState({friends: response})
         }
       })
+      .catch(err => {console.log('App Friends',err);});
   }
 
   handleAuthenticated = (user) => {
@@ -138,7 +139,7 @@ class App extends Component {
         <div>
 
           <MainNav authenticate={this.handleAuthenticated} isAuthed={this.state.authenticated}
-                   signoff={this.handleSignOff} user={this.state.user} 
+                   signoff={this.handleSignOff} user={this.state.user}
                    handleUserSearch={this.handleUserSearch} handleEventSearch={this.handleEventSearch}
                    />
           <Switch>
@@ -182,7 +183,3 @@ class App extends Component {
 }
 
 export default App;
-
-
-
-
