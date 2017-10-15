@@ -14,8 +14,8 @@ class Messaging extends Component {
       loading: false
     }
 
-    this.firebase = window.firebase;
-    this.database = window.firebase.database();
+
+    this.database = window.firebase;
   }
 
   componentDidMount() {
