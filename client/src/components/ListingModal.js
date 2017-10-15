@@ -61,7 +61,7 @@ class ListingModal extends Component {
             <p>Hoster:</p>
             <ProfilePopup currentUser={user} user={targetUser}/>
             <p>Attenders:</p>
-            <ListingAttenders postId={listing.id} />
+            <ListingAttenders currentUser={user} postId={listing.id} />
           </Modal.Description>
         </Modal.Content>
 

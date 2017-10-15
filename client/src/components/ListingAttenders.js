@@ -43,12 +43,14 @@ class ListingAttenders extends Component {
 
   render() {
     return (
-      <div>
-      {console.log('attendersList:',this.state.attendersList)}
-      {
-        <this.state.attendersList.map(ele => ele)
-      }
-      </div>
+      <Grid>
+        { this.state.attendersList.map((ele, index) => {
+          return (
+                <ProfilePopup currentUser={this.props.currentUser} user={ele} key={index}/>
+            )
+          }) 
+        }
+      </Grid>
     )
   }
 }

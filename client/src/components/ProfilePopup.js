@@ -65,7 +65,7 @@ class ProfilePopup extends Component {
 
     return (
     <Popup trigger={<Image src={(user && user.photo) ? user.photo : ''}
-                           size='mini' shape='circular'></Image>}
+                          style={{'height':'35px','padding':'0px','margin-left':'15px','margin-top':'10px'}} size='mini' shape='circular'></Image>}
            style={popupStyle} flowing hoverable >
       <Card style={cardStyle}>
         <Image src={(user && user.photo) ? user.photo : ''} />
