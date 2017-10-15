@@ -1,40 +1,54 @@
 import React, { Component } from 'react';
 import { Modal, Header, Button, Image, Icon, Grid, Segment, Popup } from 'semantic-ui-react';
+import ProfilePopup from './ProfilePopup.js'
 
 class ListingAttenders extends Component {
-  constructor(oprops) {
+  constructor(props) {
     super(props);
 
     this.state = {
+      attenders:[],
+      attendersList:[]
+    }
+    this.getRequestUsers = this.getRequestUsers.bind(this)
+  }
+
+  componentDidMount() {
+    this.getRequestUsers();
+  }
+
+  getRequestUsers() {
+      fetch(`/postings/requests/${this.props.postId}`, { credentials: "include" })
+      .then( response => response.json())
+      .then( attenders => {
+        console.log('attenders:',attenders)
+        this.setState({ attenders: attenders})
+        this.getRequestUsersData(attenders);
+      })
+      // .then( () => console.log('state:',this.state))
+  }
+
+  getRequestUsersData() {
+    var attenders = this.state.attenders.map(ele => ele.userId);
+    if(attenders.length !== 0) {
+      attenders = JSON.stringify(attenders)
+      fetch(`/postings/multiplyId/${attenders}`,{ credentials: "include" })
+      .then(response => response.json())
+      .then(response => {
+        this.setState({ attendersList: response})
+      })
+      .catch( err => console.log('err from get request users data:', err))
     }
   }
 
   render() {
     return (
-    <Popup
-    trigger={<Image src={this.props.user.photo} size='mini' shape='circular'></Image>}
-    flowing
-    hoverable
-    >
-      <Grid centered columns={3} >
-        <Grid.Column textAlign='center' width={4}>
-        {console.log('props:',this.props)}
-        <Image src={this.props.user.photo} size='tiny' shape='circular'></Image>
-        </Grid.Column>
-        <Grid.Column textAlign='center' width={6}>
-          <Header as='h4'>Name:
-            <p>
-              {this.props.user.name}
-            </p>
-          </Header>
-          <Button>Subscribe</Button>
-        </Grid.Column>
-        <Grid.Column textAlign='center' width={6}>
-          <Header as='h4'>History</Header>
-          <Button>Add Friend</Button>
-        </Grid.Column>
-      </Grid>
-    </Popup>
+      <div>
+      {console.log('attendersList:',this.state.attendersList)}
+      {
+        <this.state.attendersList.map(ele => ele)
+      }
+      </div>
     )
   }
 }

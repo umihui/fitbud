@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Header, Button, Image, Icon, Grid, Segment, Popup } from 'semantic-ui-react';
 import ProfilePopup from './ProfilePopup.js'
+import ListingAttenders from './ListingAttenders.js'
 
 class ListingModal extends Component {
   constructor(props) {
@@ -50,7 +51,6 @@ class ListingModal extends Component {
             wrapped
           />
           <Modal.Description>
-          {console.log('props',this.props)}
             <Header>{listing.title}</Header>
             <Header>{listing.name}</Header>
             <p>Location: <span>{listing.location}</span></p>
@@ -61,6 +61,7 @@ class ListingModal extends Component {
             <p>Hoster:</p>
             <ProfilePopup currentUser={user} user={targetUser}/>
             <p>Attenders:</p>
+            <ListingAttenders postId={listing.id} />
           </Modal.Description>
         </Modal.Content>
 
