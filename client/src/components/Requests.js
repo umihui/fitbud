@@ -34,13 +34,13 @@ class Requests extends Component {
   images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
 
   render() {
-    console.log('ACCEPTED >>>>>>>>>',this.state.accepted) ;
     return (
       <Card.Group itemsPerRow={3}>
         {this.state.accepted.map(listing => (
           <Card>
-            <Label corner='right' icon='check' color='teal'></Label>
+
             <Card.Content >
+              <Label color='green' horizontal style={{float:'right'}}>accepted</Label>
               <Card.Header>{listing.title.toUpperCase()}</Card.Header>
               <Card.Meta><Icon name='marker' />{listing.location}</Card.Meta>
               <Card.Description>
@@ -57,8 +57,9 @@ class Requests extends Component {
 
         {this.state.pending.map(listing => (
           <Card>
+
             <Card.Content>
-              <Image src={`${this.state.event[listing.currentEvent]}_on.svg`} size='mini' floated='right'/>
+              <Label color='orange' horizontal style={{float:'right'}}>pending</Label>
               <Card.Header>{listing.title.toUpperCase()}</Card.Header>
               <Card.Meta><Icon name='marker' />{listing.location}</Card.Meta>
               <Card.Description>
@@ -67,15 +68,16 @@ class Requests extends Component {
               <Card.Description>
                 {`for ${listing.duration} hours`}
               </Card.Description>
-
+              <Image src={`${this.state.event[listing.currentEvent]}_on.svg`} size='mini' floated='right' style={{margin:'10px'}}/>
             </Card.Content>
           </Card>
         ))}
         {this.state.rejected.map(listing => (
           <Card>
-            <Label corner='right' icon='x' color='teal'></Label>
             <Card.Content >
-              <Card.Header>{listing.title.toUpperCase()}</Card.Header>
+              <Label color='red' horizontal style={{float:'right'}}>rejected</Label>
+              <Card.Header>{listing.title.toUpperCase()}
+            </Card.Header>
               <Card.Meta><Icon name='marker' />{listing.location}</Card.Meta>
               <Card.Description>
                 {`Schedule on ${new Date(listing.date).toDateString()}`}
