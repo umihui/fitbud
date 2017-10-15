@@ -106,7 +106,7 @@ class MainNav extends Component {
   render() {
     const resultRenderer = ({ title, description, image, cat }) => {
       var $result = [];
-      $result.push(cat==='event' ? 
+      $result.push( (cat==='event' || title === this.props.user.name) ? 
         (image && <div key='image' className='image'><Image src={image} /></div>) : 
         (image && <div key='image' className='image'><ProfilePopup user={{photo:image, name:title}}/></div>));
       $result.push(

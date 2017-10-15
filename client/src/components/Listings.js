@@ -14,8 +14,13 @@ class Listings extends Component {
       visible: false,
       listings: [],
       showModal: false,
-      selectedListing: null
+      selectedListing: null,
+      active: 'all',
+      sorting: 'date',
     }
+    this.updateActive = this.updateActive.bind(this);
+    this.updateSorting = this.updateSorting.bind(this);
+    this.listingsCompare = this.listingsCompare.bind(this);
   }
 
   updateListings = () => {
@@ -23,7 +28,9 @@ class Listings extends Component {
       credentials: 'include'
     }).then(response => response.json())
       .then(listings => {
+
         this.setState({listings: listings});
+          // listings.sort(this.listingsCompare)});
 
         if ((this.props.modal !== null)) {
           var tempListing;
@@ -37,9 +44,44 @@ class Listings extends Component {
             selectedListing: tempListing,
           });
         }
-
       });
   }
+
+  updateActive(name) {
+    this.setState({
+      active: name,
+    });
+  }
+  updateSorting(name) {
+    this.setState({
+      sorting: name,
+      listings: this.state.listings.sort(name === 'date' ? this.dateCompare : this.locationCompare),
+    });
+  }
+
+  dateCompare(a, b) {
+    var c = new Date(a.date);
+    var d = new Date(b.date);
+    //compare year, month, date
+    if(c.valueOf() > d.valueOf()) {
+      return 1;
+    } else if (c.valueOf() < d.valueOf()) {
+      return  -1;
+    } else {
+      return 0;
+    }
+  }
+  locationCompare(a, b) {
+
+  }
+  listingsCompare(a, b) {
+    if (this.state.sorting === 'date') {
+      return this.dateCompare(a,b);
+    } else {
+      return this.locationCompare(a,b);
+    }
+  }
+
 
   componentDidMount() {
     this.setState({visible: true})
@@ -97,7 +139,7 @@ class Listings extends Component {
       <Transition visible={this.state.visible} duration={1000} animation='fade'>
 
         <Container style={{marginTop: '20px'}}>
-          <ListingNav user={this.props.user}/>
+          <ListingNav user={this.props.user} updateSorting={this.updateSorting} updateActive={this.updateActive} active={this.state.active} sorting={this.state.sorting}/>
           {cardGrid}
         </Container>
       </Transition>,

@@ -4,34 +4,27 @@ import { Menu } from 'semantic-ui-react';
 class ListingNav extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      active: 'all',
-      sorting: 'date',
-    };
+
     this.handleItemClick = this.handleItemClick.bind(this);
     this.handleSortChange = this.handleSortChange.bind(this);
   }
   handleItemClick(event, {name}) {
-    this.setState({
-      active: name,
-    });
+    this.props.updateActive(name);
   }
   handleSortChange(event, {name}) {
-    this.setState({
-      sorting: name,
-    })
+    this.props.updateSorting(name);
   }
 
   render() {
     return (
       <Menu text>
         <Menu.Item header>Show: </Menu.Item>
-        <Menu.Item name='all' active={this.state.active === 'all'} onClick={this.handleItemClick} />
-        <Menu.Item name='subscribed' active={this.state.active === 'subscribed'} onClick={this.handleItemClick} />
+        <Menu.Item name='all' active={this.props.active === 'all'} onClick={this.handleItemClick} />
+        <Menu.Item name='subscribed' active={this.props.active === 'subscribed'} onClick={this.handleItemClick} />
         <Menu.Menu position='right'>
           <Menu.Item header>Sort by: </Menu.Item>
-          <Menu.Item name='date' active={this.state.sorting === 'date'} onClick={this.handleSortChange} />
-          <Menu.Item name='location' active={this.state.sorting === 'location'} onClick={this.handleSortChange} />
+          <Menu.Item name='date' active={this.props.sorting === 'date'} onClick={this.handleSortChange} />
+
         </Menu.Menu>
       </Menu>
     );
@@ -41,4 +34,4 @@ class ListingNav extends Component {
 
 export default ListingNav;
 
-        
+          // <Menu.Item name='location' active={this.props.sorting === 'location'} onClick={this.handleSortChange} />
