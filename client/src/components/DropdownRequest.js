@@ -39,6 +39,11 @@ class IndividualRequest extends Component {
                 this.props.update(this.props.request.userId);
                 this.setState({clicked: !this.state.clicked})
               }} >Accept</Button>
+              <Button basic color='green' size='mini' style={{margin: '10px'}}
+                onClick={() => {
+                  this.props.update(this.props.request.userId);
+                  this.setState({clicked: !this.state.clicked})
+                }} >Reject</Button>
           </span>
         </div>
       );

@@ -215,6 +215,19 @@ var getUserRequestPostings = function(userId, callback) {
 	});
 };
 
+var getUserAllRequests = function(userId, callback) {
+//title, loation, date, duration
+	var query = 'select p.location,p.title,p.currentEvent, p.date, p.duration, p.details,r.status from requests r left join postings p on r.postingId = p.id where r.userId = ?';
+	connection.query(query, [userId], (err, result) => {
+		if (err) {
+			console.log('error getting requests by userId', err);
+		} else {
+			// console.log('success requests by userId:', result);
+			callback(result);
+		}
+	});
+};
+
 var createRequest = function(requestObj, callback) {
 	var query = 'INSERT INTO requests SET ?';
 	connection.query(query, requestObj, (err, result) => {
@@ -461,6 +474,7 @@ var updateEventPic = function(title, username) {
 //insert into postings (title, location, date, duration, details, meetup_spot, buddies, userId) values ('hike', 'sf', '2017-01-01 00:00:00', 1, 'hike in muir woods', 'parking', 2, 1);
 
 module.exports = {
+  getUserAllRequests,
   updateDescription,
   findByFB,
   insertFBuser,

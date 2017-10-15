@@ -19,7 +19,7 @@ router.get('/all', (req, res) => {
 router.get('/requests', (req, res) => {
   var id = req.session.passport.user;
   // will need user id and workout posting id
-  db.getUserRequestPostings(id, (dbResult) => {
+  db.getUserAllRequests(id, (dbResult) => {
     res.send(dbResult);
   })
 })

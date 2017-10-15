@@ -136,10 +136,6 @@ class CreateListing extends Component {
     this.inputElement.click();
   }
 
-  componentDidMount() {
-    this.setState({visible: true})
-  }
-
   render() {
     // const inputProps = {
     //   value: this.state.address,
