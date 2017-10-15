@@ -314,7 +314,7 @@ var createFriendsRequest = function(originator, receiver, callback) {
 
 var updateFriendsNum = function(originator, receiver, callback) {
   var query = 'UPDATE users SET friendsNum = friendsNum + 1 WHERE (id=? OR id=?)';
-  connection.query(query, [options.description, options.id], (err, result) => {
+  connection.query(query, [originator, receiver], (err, result) => {
 		if (err) {
 			console.log('error updating friends number');
 		} else {
@@ -324,14 +324,16 @@ var updateFriendsNum = function(originator, receiver, callback) {
 	});
 }
 
-var updateFriendsRequest = function(originator, receiver, callback) {
-  var query = "UPDATE friends SET STATUS=? WHERE (originator=? AND receiver=?)";
-  connection.query(query, ['accept', originator, receiver], (err, result) => {
+var updateFriendsRequest = function(action, id, originator, receiver, callback) {
+  var query = "UPDATE friends SET STATUS=? WHERE id=?";
+  connection.query(query, [action, id], (err, result) => {
     if (err) {
       console.log('error updating friend request', err);
     } else {
       console.log('updated friends request to accept!', result);
-      this.updateFriendsNum(originator, receiver, (result) => console.log(result));
+      if(action==='accept') {
+        updateFriendsNum(originator, receiver, (result) => console.log(result));
+      }
       callback(result);
     }
   })
@@ -482,9 +484,25 @@ var updateEventPic = function(title, username) {
 	});
 }
 
+var getFriendsRequests = function(userId, cb) {
+  var qForSent = 'select f.*, users.name, users.photo, users.description from friends f join users on f.receiver=users.id where status="pending" and originator=' + userId;
+  var qForReceived = 'select f.*, users.name, users.photo, users.description from friends f join users on f.originator=users.id where status="pending" and receiver=' + userId;
+  connection.query(qForSent, (err, result1) => {
+    if(err) throw err;
+    var response = {};
+    response.sent = result1;
+    connection.query(qForReceived, (err, result2) => {
+      if(err) throw err;
+      response.received = result2;
+      cb(response);
+    })
+  })
+}
+
 //insert into postings (title, location, date, duration, details, meetup_spot, buddies, userId) values ('hike', 'sf', '2017-01-01 00:00:00', 1, 'hike in muir woods', 'parking', 2, 1);
 
 module.exports = {
+  getFriendsRequests,
   getUserAllRequests,
   updateDescription,
   findByFB,
