@@ -1,13 +1,16 @@
 var mysql = require('mysql');
 var bcrypt = require('bcrypt');
-
-
-var connection = mysql.createConnection({
-  host: process.env.DBSERVER || 'localhost',
-  user: process.env.DBUSER || 'root',
-  password: process.env.DBPASSWORD || '',
-  database : 'fitbud'
-});
+var connection;
+if (process.env.JAWSDB_URL){
+  connection = mysql.createConnection(process.env.JAWSDB_URL);
+} else {
+  connection = mysql.createConnection({
+    host: process.env.DBSERVER || 'localhost',
+    user: process.env.DBUSER || 'root',
+    password: process.env.DBPASSWORD || '',
+    database : 'fitbud'
+  });
+}
 
 connection.connect(function(err){
 	if (err) {
