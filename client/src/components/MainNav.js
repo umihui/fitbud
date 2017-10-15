@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import LoginButtonModal from './LoginButtonModal.js';
-import { Menu, Input, Button, Dropdown, Search } from 'semantic-ui-react';
+import ProfilePopup from './ProfilePopup.js';
+import { Image, Label, Menu, Input, Button, Dropdown, Search } from 'semantic-ui-react';
 import { NavLink, Link, Redirect, withRouter } from 'react-router-dom';
 import _ from 'lodash';
 import $ from 'jquery';
@@ -42,14 +43,8 @@ class MainNav extends Component {
     });
   }
 
-  handleResultSelect (e, {result, results}) {
-    var isUser = false;
-    for (var i=0; i < results[0].results.length; i++) {
-      if (results[0].results[i].description === result.description) {
-        isUser = true;
-      }
-    }
-    if (isUser) {
+  handleResultSelect (e, {result}) {
+    if (result.cat === 'user') {
       this.props.handleUserSearch(result);
     } else {
       this.props.handleEventSearch(result);
@@ -78,6 +73,7 @@ class MainNav extends Component {
               title: val.name, 
               description: val.email, 
               image: val.photo,
+              cat: 'user',
             });
           });
         }
@@ -89,7 +85,8 @@ class MainNav extends Component {
           data[1].forEach(val => {
             var temp = {
               title: val.title, 
-              description: val.details
+              description: val.details,
+              cat: 'event',
             };
             if (val.photo) {
               temp.image = val.photo;
@@ -105,7 +102,21 @@ class MainNav extends Component {
       });
   }
 
+
   render() {
+    const resultRenderer = ({ title, description, image, cat }) => {
+      var $result = [];
+      $result.push( (cat==='event' || title === this.props.user.name) ? 
+        (image && <div key='image' className='image'><Image src={image} /></div>) : 
+        (image && <div key='image' className='image'><ProfilePopup user={{photo:image, name:title}}/></div>));
+      $result.push(
+        (<div key='content' className='content'>
+          {title && <div className='title'>{title}</div>}
+          {description && <div className='description'>{description}</div>}
+        </div>));
+      return $result;
+    }
+
     return (
       <Menu secondary size='huge' style={{marginBottom: 0}}>
         <Menu.Item exact name='home' as={NavLink} to='/' />
@@ -120,6 +131,7 @@ class MainNav extends Component {
               onSearchChange={this.handleSearchChange}
               results={this.state.results}
               value={this.state.value}
+              resultRenderer={resultRenderer}
               {...this.props}
             />
           </Menu.Item>

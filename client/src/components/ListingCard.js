@@ -14,7 +14,6 @@ class ListingCard extends Component {
   render() {
     var { listing, showListingModal } = this.props;
     var eImg = listing.photo ? (<Image src={listing.photo} />) : null;
-
     return (
 
       <Card onClick={() => showListingModal(listing)} link color={this.color[listing.currentLevel]} >
