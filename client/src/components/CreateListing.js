@@ -43,6 +43,12 @@ class CreateListing extends Component {
     });
   }
 
+  handleAddressFocus = () => { !window.autocomplete && this.initializeAutocomplete(); }
+
+  initializeAutocomplete = () => {
+    window.autocomplete = new google.maps.places.Autocomplete(document.getElementById('searchBox'));
+  }
+
   toggleVisibility = (e) => {
     this.setState({private: !this.state.private});
   }
@@ -139,7 +145,6 @@ class CreateListing extends Component {
     //   value: this.state.address,
     //   onChange: this.onChange,
     // }
-    const autocomplete = new google.maps.places.Autocomplete(document.getElementById('searchBox'));
 
     const styles = {
       root: {
@@ -190,7 +195,9 @@ class CreateListing extends Component {
         icon="map"
         iconPosition="left"
         id='searchBox'
+        placeholder="Enter a location"
         style={locationInputStyle}
+        onFocus={this.handleAddressFocus}
       />
     );
 
