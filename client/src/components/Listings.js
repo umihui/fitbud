@@ -145,19 +145,19 @@ class Listings extends Component {
       ));
     }
 
-    var cardGrid = filtered.length !== 0 ? (
-      <Grid columns='equal'>
-        <Grid.Column>
-          {cardGridCol[0]}
-        </Grid.Column>
-        <Grid.Column>
-          {cardGridCol[1]}
-        </Grid.Column>
-        <Grid.Column>
-          {cardGridCol[2]}
-        </Grid.Column>
-      </Grid>
-    ) : null;
+    var cardGrid = filtered.length && (
+        <Grid columns='equal'>
+          <Grid.Column>
+            {cardGridCol[0]}
+          </Grid.Column>
+          <Grid.Column>
+            {cardGridCol[1]}
+          </Grid.Column>
+          <Grid.Column>
+            {cardGridCol[2]}
+          </Grid.Column>
+        </Grid>
+    );
 
     return ([
       <Transition visible={this.state.visible} duration={1000} animation='fade'>
