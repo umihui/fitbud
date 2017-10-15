@@ -22,7 +22,6 @@ class CreateListing extends Component {
       level: ['Beginner','Intermediate','Advanced'],
       file: '',
       imagePreviewUrl: '',
-    }
       address: 'San Francisco, CA'
     };
 
@@ -33,6 +32,7 @@ class CreateListing extends Component {
         value: num
       }
     });
+
     this.clickEImg = this.clickEImg.bind(this);
     this.setFile = this.setFile.bind(this);
 
