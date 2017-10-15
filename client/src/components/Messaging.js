@@ -113,7 +113,7 @@ class Messaging extends Component {
               </Dimmer>) :
               (messages.map((message, index) =>
                 <Feed.Event key={index} style={{marginTop: '5px'}}>
-                  {message.userId === (this.props.friend && this.props.friend.id) ? <Feed.Label image='elliot.jpg' /> : <div></div>}
+                  {(message.userId === (this.props.friend && this.props.friend.id)) && <Feed.Label image='elliot.jpg' />}
                   <Feed.Content style={{textAlign: message.userId === (this.props.user && this.props.user.id) ? 'right' : 'left',
                                         marginRight: '10px'}}>
                     <Feed.Date content={moment(message.createdAt).fromNow()}/>
