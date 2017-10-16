@@ -74,9 +74,9 @@ class ProfilePopup extends Component {
             {(user && user.name) ? user.name : ''}
           </Card.Header>
           <Card.Meta>
-            <span className='date'>
-              History
-            </span>
+              <span className='date'>
+                History
+              </span>
            </Card.Meta>
           <Card.Description>
             {(user && user.description) ? user.description : ''}
