@@ -7,7 +7,8 @@ class Invites extends Component {
 
     this.state = {
       event: [1,2,3,4,5,9,'a'],
-      invites: []
+      invites: [],
+      var:false
     }
   }
 
@@ -29,8 +30,15 @@ class Invites extends Component {
 
   images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
 
+  clickInvite() {
+    this.props.update()
+      .then(result => {
+        this.fetchInvites();
+      })
+  }
+
   render() {
-    console.log('INvite render', this.state.invites);
+    console.log('INvite render', this.state.var);
     return (
       <Card.Group itemsPerRow={3}>
         {this.state.invites.map(listing => (
@@ -54,7 +62,8 @@ class Invites extends Component {
                   floated='right' size='small'
                   color='teal'
                   onClick={() => {
-                    this.props.update(listing.id, 'invite-accepted');
+                    this.props.update(listing.id, 'invite-accepted')
+                    .then(result => this.fetchInvites())
                   }}>
                   Accept
                 </Button>

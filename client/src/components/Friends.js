@@ -94,7 +94,7 @@ class Friends extends Component {
               </Card.Description>
             </Card.Content>
             <Card.Content extra>
-              <Card.Description color='teal'>
+              <Card.Description >
                 <Label color='orange' horizontal style={{float:'right'}}>Request pending</Label>
               </Card.Description>
             </Card.Content>

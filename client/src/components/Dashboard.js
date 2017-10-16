@@ -39,7 +39,7 @@ class Dashboard extends Component {
 
   update = (postingId, action) => {
     console.log('UPDATE>>>>>>>>>>>>',postingId, action);
-    fetch(`/postings/${action}/${postingId}`, { method: "PATCH" })
+    return fetch(`/postings/${action}/${postingId}`, { method: "PATCH" })
       .then(response => {
         var newVar = !this.state.var;
         this.setState({var:newVar})
