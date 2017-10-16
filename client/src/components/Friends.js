@@ -34,6 +34,7 @@ class Friends extends Component {
       body: JSON.stringify(data),
     }
     console.log(action, id);
+    this.props.getFriends();
     fetch('/friends/action', options)
     this.fetchFriendsReq();
   }

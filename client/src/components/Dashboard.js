@@ -81,7 +81,7 @@ class Dashboard extends Component {
             update={this.update}
           />)}
         {this.state.view === 'my requests' && ([<Requests />])}
-        {this.state.view === 'friends' && ([<Friends />])}
+        {this.state.view === 'friends' && ([<Friends getFriends={this.props.getFriends}/>])}
         {this.state.view === 'invites' && ([<Invites />])}
 
       </Container>

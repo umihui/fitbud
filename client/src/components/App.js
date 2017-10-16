@@ -165,6 +165,7 @@ class App extends Component {
                 listings={data}
                 user={this.state.user}
                 fetchProfile={this.checkAuth}
+                getFriends={this.getFriends}
                 {...props}
               />
             )} />
