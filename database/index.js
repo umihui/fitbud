@@ -132,7 +132,7 @@ var getWorkouts = function(id, callback) {
 		if (err) {
 			console.log('error getting postings', err);
 		} else {
-			console.log('DB POSTING RESULTS:', result);
+			//console.log('DB POSTING RESULTS:', result);
       for (var i = 0; i < result.length; i++) {
         if (!result[i].ownerPhoto) {
           var usrImgPath = '/' + defaultImg[Math.floor(Math.random() * defaultImg.length)];
@@ -190,6 +190,20 @@ var createProfile = function(profileObj, callback) {
 var getUserPostings = function(userId, callback) {
 
 	var query = 'select * from postings where userId=?';
+	// var query = 'select p.location, p.date, p.duration, p.details from postings p where userId=?'
+	connection.query(query, [userId], (err, result) => {
+		if (err) {
+			console.log('error getting posting by userId', err);
+		} else {
+			// console.log('success posting by userId:', result);
+			callback(result);
+		}
+	});
+};
+
+var getUserInviteAcceptPostings = function(userId, callback) {
+  console.log('DB invites');
+	var query = 'select p.* from postings p join requests r on p.id=r.postingId where r.userId=? and r.status="inviteAccepted"';
 	// var query = 'select p.location, p.date, p.duration, p.details from postings p where userId=?'
 	connection.query(query, [userId], (err, result) => {
 		if (err) {
@@ -536,5 +550,6 @@ module.exports = {
 	serachPostings,
 	updateProfilePic,
 	updateEventPic,
-	findMultiplyById
+	findMultiplyById,
+  getUserInviteAcceptPostings
 };

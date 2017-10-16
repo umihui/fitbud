@@ -23,16 +23,31 @@ class Dashboard extends Component {
     this.handleTabClick = this.handleTabClick.bind(this);
     this.update = this.update.bind(this);
     this.dataPull = this.dataPull.bind(this);
+    this.invitesPull = this.invitesPull.bind(this);
   }
 
   dataPull() {
-    fetch('/dashboard/all', { credentials: "include" })
+    return fetch('/dashboard/all', { credentials: "include" })
       .then(response => response.json())
       .then(response => {
-        console.log('response', response);
-        this.setState({ data: response})
+        //console.log('response', response);
+              this.setState({ data: response});
+
       })
-      .catch(err => console.log(err))
+      //.then(response => this.invitesPull())
+      .catch(err => console.log(err));
+
+    console.log('getting dashboard data...')
+  }
+
+  invitesPull () {
+    fetch('/dashboard/invites-accepted', { credentials: "include" })
+      .then(response => response.json())
+      .then(response => {
+        console.log('response', typeof response);
+
+        this.setState({ data: this.state.data.concat(response)});
+      });
 
     console.log('getting dashboard data...')
   }
@@ -53,7 +68,10 @@ class Dashboard extends Component {
   };
 
   componentDidMount() {
-    this.dataPull();
+    this.dataPull()
+    .then(reponse =>
+    this.invitesPull());
+
   }
 
   images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
@@ -61,7 +79,7 @@ class Dashboard extends Component {
   user = '/' + this.images[Math.floor(Math.random() * this.images.length)];
 
   render() {
-    // console.log('RENDERRENDER');
+    console.log('RENDERRENDER', this.state.data);
     var { listings } = this.props;
     return (
       <Container style={{marginTop: '20px'}}>

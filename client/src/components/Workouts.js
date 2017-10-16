@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Icon, Image } from 'semantic-ui-react';
+import { Card, Icon, Image, Label } from 'semantic-ui-react';
 
 import WorkoutDropdown from './WorkoutDropdown';
 
@@ -18,7 +18,10 @@ class Workouts extends Component {
           <Card>
             <Card.Content>
               <Image src={`${this.state.event[listing.currentEvent]}_on.svg`} size='mini' floated='right'/>
-              <Card.Header>{listing.title.toUpperCase()}</Card.Header>
+              <Card.Header>{listing.title.toUpperCase()}
+                {listing.private ? <Label color='orange' horizontal style={{float:'right'}}>private</Label>
+                :''}
+              </Card.Header>
               <Card.Meta><Icon name='marker' />{listing.location}</Card.Meta>
               <Card.Description style={{'padding':'10px 10px 10px 0px'}}>
                 {`${listing.details}`}
@@ -29,9 +32,10 @@ class Workouts extends Component {
               <Card.Description>
                 {listing.duration > 1 ? `for ${listing.duration} hours` :`for ${listing.duration} hour`}
               </Card.Description>
+              {listing.private ? '' :
               <Card.Content extra>
                 <WorkoutDropdown postingId={listing.id} buddies={listing.buddies} update={this.props.update} />
-              </Card.Content>
+              </Card.Content>}
             </Card.Content>
           </Card>
         ))}

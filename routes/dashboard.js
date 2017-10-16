@@ -7,8 +7,9 @@ var db = require('../database/index.js');
 //
 
 router.get('/all', (req, res) => {
+
   var id = req.session.passport.user;
-  // console.log('user id>>>>>>>>>>>:', id);
+  console.log('user id Dashboard Routes>>>>>>>>>>>:', id);
   db.getUserPostings(id, (dbResult) => {
     // console.log('database RESULTS>>:', dbResult);
     res.send(dbResult);
@@ -30,6 +31,16 @@ router.get('/invites', (req,res) => {
   var id = req.session.passport.user;
   // will need user id and workout posting id
   db.getUserInvitesPostings(id, (dbResult) => {
+    res.send(dbResult);
+  })
+});
+
+router.get('/invites-accepted', (req,res) => {
+  var id = req.session.passport.user;
+  console.log('INVITE ROUTES>>>>>>>>>',id);
+  // will need user id and workout posting id
+  db.getUserInviteAcceptPostings(id, (dbResult) => {
+    console.log('DDBDBDBBDBDBD',dbResult);
     res.send(dbResult);
   })
 });
