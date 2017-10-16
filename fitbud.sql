@@ -19,6 +19,12 @@
 -- Table structure for table `friends`
 --
 
+DROP DATABASE IF EXISTS fitbud;
+
+CREATE DATABASE fitbud;
+
+USE fitbud;
+
 DROP TABLE IF EXISTS `friends`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;

@@ -52,10 +52,21 @@ router.post('/', (req, res) => {
     userId: req.user.id,
     private: req.body.private,
     currentEvent: req.body.currentEvent,
-    currentLevel: req.body.currentLevel,
+    currentLevel: req.body.currentLevel
   };
 
   db.createWorkout(workoutObj, (err, dbResult) => {
+    console.log(dbResult);
+    req.body.invited.forEach((user) => {
+      var reqObj = {
+        postingId: dbResult.insertId,
+        userId: user.id,
+        status: 'invited'
+      }
+      db.createRequest(reqObj, (result) => {
+        console.log('invited ' + user.name);
+      })
+    })
     res.status(201).send(dbResult);
   });
 });

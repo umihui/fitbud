@@ -166,7 +166,7 @@ var createWorkout = function(workoutObj, callback) {
 			console.log('error creating workout', err);
 		} else {
 			// console.log('created workout result:', result);
-			callback(result);
+			callback(err, result);
 		}
 	});
 };
