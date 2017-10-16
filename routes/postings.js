@@ -56,12 +56,12 @@ router.post('/', (req, res) => {
   };
 
   db.createWorkout(workoutObj, (err, dbResult) => {
-    console.log(dbResult);
+    console.log(req.body.invited);
     req.body.invited.forEach((user) => {
       var reqObj = {
         postingId: dbResult.insertId,
         userId: user.id,
-        status: 'invited'
+        status: 'invite'
       }
       db.createRequest(reqObj, (result) => {
         console.log('invited ' + user.name);

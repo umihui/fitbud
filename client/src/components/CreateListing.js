@@ -62,6 +62,7 @@ class CreateListing extends Component {
   }
 
   addToInvite = (friend) => {
+    console.log(this.state.invited);
     this.setState({invited: this.state.invited.concat([friend])});
   }
 
