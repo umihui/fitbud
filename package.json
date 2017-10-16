@@ -27,7 +27,8 @@
     "passport-facebook": "^2.1.1",
     "passport-http": "*",
     "passport-local": "*",
-    "passport-oauth2": "^1.4.0"
+    "passport-oauth2": "^1.4.0",
+    "react-places-autocomplete": "^5.4.3"
   },
   "engines": {
     "node": "6.11.2",

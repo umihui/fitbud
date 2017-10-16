@@ -70,6 +70,7 @@ router.post('/pic', upload.single('file'), (req, res) => {
 
 
 router.get('/:id', (req, res) => {
+  console.log('not from multiplyId, its a reguler posting by id')
   //console.log('workout req query', req.params.id);
   db.getSingleWorkout(req.params.id, (result) => {
     //console.log('result of the get for a single workout', result);
@@ -78,11 +79,21 @@ router.get('/:id', (req, res) => {
 });
 
 router.get('/requests/:id', (req, res) => {
+  console.log('not from multiplyId, its a reguler posting by requests id')
   db.getRequestsByPostingId(req.params.id, (result) => {
-    //console.log('result of the get for a single workout', result);
+    // console.log('result of the get for a single workout', result);
     res.status(200).json(result);
   });
 });
+
+router.get('/multiplyId/:ids', (req, res) => {
+  console.log('SERver .....',req.params.ids)
+    db.findMultiplyById(req.params.ids, (a,result) => {
+    console.log('result of the get for a multiply workout', result);
+    res.status(200).json(result);
+  });
+});
+
 
 router.post('/:id', (req, res) => {
   //console.log('workout req query', req.params.id);

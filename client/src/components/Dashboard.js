@@ -34,7 +34,7 @@ class Dashboard extends Component {
       })
       .catch(err => console.log(err))
 
-    console.log('getting data...')
+    console.log('getting dashboard data...')
   }
 
   update = (postingId, action) => {
@@ -65,6 +65,7 @@ class Dashboard extends Component {
     var { listings } = this.props;
     return (
       <Container style={{marginTop: '20px'}}>
+      { console.log('getting data from dashboard:',this.state.data)}
         <ProfilePic user={(this.props.user && this.props.user.photo) || ''} default={this.user}/>
         <Profile user={this.props.user}/>
 

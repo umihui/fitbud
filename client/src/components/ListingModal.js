@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Header, Button, Image, Icon, Grid, Segment, Popup } from 'semantic-ui-react';
 import ProfilePopup from './ProfilePopup.js'
+import ListingAttenders from './ListingAttenders.js'
 
 class ListingModal extends Component {
   constructor(props) {
@@ -33,13 +34,14 @@ class ListingModal extends Component {
       method: 'POST'
     }).then(response => {
       if (response.ok) console.log('request made!');
+    }).then( () => {
+      console.log('postings got fetched!!!!!!!!')
     })
   }
 
   render() {
     var { listing, open, hideListingModal, userImage, user } = this.props;
     var { targetUser } = this.state;
-
     return (
       <Modal open={open} onClose={hideListingModal} closeIcon dimmer={false}>
         <Modal.Content image scrolling>
@@ -59,6 +61,7 @@ class ListingModal extends Component {
             <p>Hoster:</p>
             <ProfilePopup currentUser={user} user={targetUser}/>
             <p>Attenders:</p>
+            <ListingAttenders currentUser={user} postId={listing.id} />
           </Modal.Description>
         </Modal.Content>
 

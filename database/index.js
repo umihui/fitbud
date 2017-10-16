@@ -94,6 +94,20 @@ var findById = function(id, callback) {
 	})
 }
 
+var findMultiplyById = function(id, callback) {
+	console.log('findMultiplyById:', id)
+	id = id.length > 1 ? JSON.parse(id).join(',') : id;
+	var query = "SELECT * from users WHERE id in (" + id + ");";
+	connection.query(query, function(err, dbResultArr){
+		if (err) {
+			console.log('error when finding id', err);
+		} else {
+			console.log('result of finding multipul id', dbResultArr);
+			callback(null, dbResultArr);
+		}
+	})
+}
+
 var findByFB = function(fb_id, callback) {
 
 	var query = 'SELECT * from users WHERE fb_id=?';
@@ -101,7 +115,7 @@ var findByFB = function(fb_id, callback) {
 		if (err) {
 			console.log('error when finding ');
 		} else {
-			console.log('result of finding a ', dbResultArr[0]);
+			console.log('result of finding a id by FB', dbResultArr[0]);
 			callback(null, dbResultArr[0]);
 		}
 	})
@@ -132,7 +146,7 @@ var getWorkouts = function(id, callback) {
 
 //get workout id, user associated with that posting
 var getSingleWorkout = function(postingId, callback){
-	var query = 'select postings.*, users.name from postings inner join users on postings.userId=users.id where postings.id=?';
+	var query = 'select postings.*, users.name, users.photo, users.description, users.friendsNum from postings inner join users on postings.userId=users.id where postings.id=?';
 	connection.query(query, [postingId], (err, result) => {
 		if (err) {
 			console.log('error getting single posting', err);
@@ -534,4 +548,5 @@ module.exports = {
 	serachPostings,
 	updateProfilePic,
 	updateEventPic,
+	findMultiplyById
 };
