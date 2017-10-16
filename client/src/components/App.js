@@ -133,7 +133,7 @@ class App extends Component {
       width: '150px',
       height: '40px'
     }
-
+    console.log('DO I HAVE FRIENDS', this.state.friends);
     return (
       <Router>
         <div>

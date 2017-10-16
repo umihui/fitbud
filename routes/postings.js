@@ -57,7 +57,7 @@ router.post('/', (req, res) => {
 
   db.createWorkout(workoutObj, (err, dbResult) => {
     res.status(201).send(dbResult);
-  });  
+  });
 });
 
 router.post('/pic', upload.single('file'), (req, res) => {
@@ -101,9 +101,18 @@ router.post('/:id', (req, res) => {
 router.patch('/accept/:id', (req, res) => {
   // console.log('workout req query', req.params.id);
   var id = req.params.id;
-  db.updateRequest(id, (result) => {
+  db.updateRequestAccept(id, (result) => {
     //console.log('request created in the table', result);
     res.status(200).send('request accepted');
+  });
+});
+
+router.patch('/reject/:id', (req, res) => {
+  // console.log('workout req query', req.params.id);
+  var id = req.params.id;
+  db.updateRequestReject(id, (result) => {
+    //console.log('request created in the table', result);
+    res.status(200).send('request rejected');
   });
 });
 
