@@ -38,7 +38,7 @@ class Dashboard extends Component {
   }
 
   update = (postingId, action) => {
-    console.log(postingId);
+    console.log('UPDATE>>>>>>>>>>>>',postingId, action);
     fetch(`/postings/${action}/${postingId}`, { method: "PATCH" })
       .then(response => {
         var newVar = !this.state.var;
@@ -82,7 +82,7 @@ class Dashboard extends Component {
           />)}
         {this.state.view === 'my requests' && ([<Requests />])}
         {this.state.view === 'friends' && ([<Friends getFriends={this.props.getFriends}/>])}
-        {this.state.view === 'invites' && ([<Invites />])}
+        {this.state.view === 'invites' && ([<Invites update={this.update} />])}
 
       </Container>
     )

@@ -23,7 +23,7 @@ class IndividualRequest extends Component {
   }
 
   render() {
-    console.log(this.props.request.status, this.state.clicked);
+    // console.log(this.props.request, this.state.clicked);
     if (this.props.request.status === 'pending' && !this.state.clicked) {
       return(
         <div>
@@ -33,14 +33,14 @@ class IndividualRequest extends Component {
           <span>
             <Button basic color='green' size='mini' style={{margin: '10px'}}
               onClick={() => {
-                this.props.update(this.props.request.postingId, 'accept');
+                this.props.update(this.props.request.id, 'accept');
                 this.setState({clicked: 'accept'})
               }} >
               Accept
             </Button>
             <Button basic color='red' size='mini' style={{margin: '10px'}}
               onClick={() => {
-                this.props.update(this.props.request.postingId, 'reject');
+                this.props.update(this.props.request.id, 'reject');
                 this.setState({clicked: 'reject'})
               }} >
               Reject

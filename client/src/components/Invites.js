@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Icon, Image } from 'semantic-ui-react';
+import { Card, Icon, Image, Button } from 'semantic-ui-react';
 
 class Invites extends Component {
   constructor(props) {
@@ -49,9 +49,16 @@ class Invites extends Component {
               <Card.Description>
                 {listing.duration > 1 ? `for ${listing.duration} hours` :`for ${listing.duration} hour`}
               </Card.Description>
-              {/* <Card.Content extra>
-                <WorkoutDropdown postingId={listing.id} buddies={listing.buddies} update={this.props.update} />
-              </Card.Content> */}
+              <Card.Content extra>
+                <Button name='accept'
+                  floated='right' size='small'
+                  color='teal'
+                  onClick={() => {
+                    this.props.update(listing.id, 'invite-accepted');
+                  }}>
+                  Accept
+                </Button>
+              </Card.Content>
             </Card.Content>
           </Card>
         ))}

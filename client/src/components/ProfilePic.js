@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Container, Image, List } from 'semantic-ui-react';
+import { Button, Container, Image, List, Popup } from 'semantic-ui-react';
 
 class ProfilePic extends Component {
   constructor (props) {
@@ -52,7 +52,10 @@ class ProfilePic extends Component {
     return (
       <Container style={{margin: '30px'}}>
 
-        <Image onError={this.noPic} onClick={this.clickImg} src={this.props.user} size='small' shape='circular' centered style={{margin: 'auto'}} />
+        <Popup trigger={<Image onError={this.noPic} onClick={this.clickImg} src={this.props.user} size='small' shape='circular' centered style={{margin: 'auto'}} />}
+        content='click picture to upload'
+        position='right center' >
+        </Popup>
         <input ref={input => this.inputElement = input} id="fileInput" style={{visibility: 'hidden'}} type="file" onChange={this.setFile} accept="image/png, image/jpeg"/>
 
 
@@ -60,5 +63,7 @@ class ProfilePic extends Component {
     );
   }
 }
+
+
 
 export default ProfilePic;

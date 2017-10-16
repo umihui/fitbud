@@ -203,7 +203,7 @@ var getUserPostings = function(userId, callback) {
 
 var getRequestsByPostingId = function(postingId, callback) {
 	var query = `
-    SELECT r.postingId, r.userId, r.status, p.title,p.location, p.date, p.duration, u.name, p.private, p.currentEvent, p.currentLevel
+    SELECT r.id,r.postingId, r.userId, r.status, p.title,p.location, p.date, p.duration, u.name, p.private, p.currentEvent, p.currentLevel
     FROM requests r JOIN postings p on r.postingId = p.id join users u  on r.userId = u.id where r.postingId = ?`;
 	connection.query(query, [postingId], (err, result) => {
 		if (err) {
@@ -267,7 +267,7 @@ var createPair = function(requestObj, callback) {
 };
 
 var getUserInvitesPostings = function(userId, callback) {
-	var query = 'select p.location, p.currentEvent, p.title, p.date, p.duration, p.details, users.name from requests r left join postings p on r.postingId = p.id left join users on p.userId=users.id where r.UserId = ? and r.status = ?';
+	var query = 'select r.id, p.location, p.currentEvent, p.title, p.date, p.duration, p.details, users.name from requests r left join postings p on r.postingId = p.id left join users on p.userId=users.id where r.UserId = ? and r.status = ?';
 	connection.query(query, [userId, 'invite'], (err, result) => {
 		if (err) {
 			console.log('error getting accepted requests', err);
@@ -278,25 +278,14 @@ var getUserInvitesPostings = function(userId, callback) {
 	});
 };
 
-
-var updateRequestAccept = function(postingId, callback) {
-	var query = "UPDATE requests SET STATUS = ? WHERE postingId=?";
-	connection.query(query, ['accept', postingId], (err, result) => {
+var updateRequestStatus = function(status, postingId, callback) {
+	var query = "UPDATE requests SET STATUS = ? WHERE id=?";
+  console.log('UPDATE',status,postingId);
+	connection.query(query, [status, postingId], (err, result) => {
 		if (err) {
 			console.log('error updating reqest', err);
 		} else {
-			// console.log('updated request to accept!', result);
-			callback(result);
-		}
-	});
-};
-var updateRequestReject = function(postingId, callback) {
-	var query = "UPDATE requests SET STATUS = ? WHERE postingId=?";
-	connection.query(query, ['reject', postingId], (err, result) => {
-		if (err) {
-			console.log('error updating reqest', err);
-		} else {
-			// console.log('updated request to accept!', result);
+		  console.log('updated request to accept!', result);
 			callback(result);
 		}
 	});
@@ -536,8 +525,7 @@ module.exports = {
 	createPair,
 	getUserInvitesPostings,
 	getRequestsByPostingId,
-	updateRequestAccept,
-  updateRequestReject,
+  updateRequestStatus,
   checkFriendsStatus,
   createFriendsRequest,
   updateFriendsRequest,

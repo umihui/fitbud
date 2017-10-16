@@ -56,7 +56,7 @@ router.post('/', (req, res) => {
   };
 
   db.createWorkout(workoutObj, (err, dbResult) => {
-    console.log(req.body.invited);
+    //console.log(req.body.invited);
     req.body.invited.forEach((user) => {
       var reqObj = {
         postingId: dbResult.insertId,
@@ -72,7 +72,7 @@ router.post('/', (req, res) => {
 });
 
 router.post('/pic', upload.single('file'), (req, res) => {
-  console.log('title:', req.body.title);
+  //console.log('title:', req.body.title);
   db.updateEventPic(req.body.title, req.user.name)
     .then(result => {
       res.send('ok');
@@ -81,7 +81,7 @@ router.post('/pic', upload.single('file'), (req, res) => {
 
 
 router.get('/:id', (req, res) => {
-  console.log('not from multiplyId, its a reguler posting by id')
+  //console.log('not from multiplyId, its a reguler posting by id')
   //console.log('workout req query', req.params.id);
   db.getSingleWorkout(req.params.id, (result) => {
     //console.log('result of the get for a single workout', result);
@@ -123,7 +123,7 @@ router.post('/:id', (req, res) => {
 router.patch('/accept/:id', (req, res) => {
   // console.log('workout req query', req.params.id);
   var id = req.params.id;
-  db.updateRequestAccept(id, (result) => {
+  db.updateRequestStatus('accept',id, (result) => {
     //console.log('request created in the table', result);
     res.status(200).send('request accepted');
   });
@@ -132,10 +132,20 @@ router.patch('/accept/:id', (req, res) => {
 router.patch('/reject/:id', (req, res) => {
   // console.log('workout req query', req.params.id);
   var id = req.params.id;
-  db.updateRequestReject(id, (result) => {
+  db.updateRequestStatus('reject',id, (result) => {
     //console.log('request created in the table', result);
     res.status(200).send('request rejected');
   });
 });
+
+router.patch('/invite-accepted/:id', (req, res) => {
+  //console.log('workout req query', req.params.id);
+  var id = req.params.id;
+  db.updateRequestStatus('inviteAccepted', id, (result) => {
+    //console.log('request created in the table', result);
+    res.status(200).send('request inviteAccepted');
+  });
+});
+
 
 module.exports = router;
